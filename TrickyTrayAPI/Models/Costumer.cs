@@ -16,5 +16,7 @@
         public string PhoneNumber { get; set; }
 
         public TypeCostumer TypeCostumer { get; set; } = TypeCostumer.User;
+
+
     }
 }
