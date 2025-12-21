@@ -13,7 +13,23 @@ public class AppDbContext : DbContext
     public DbSet<Gift> Gifts { get; set; }
 
     public DbSet<Costumer> Costumers { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<Purchase> Purchases { get; set; }
 
-
+    public DbSet<PurchaseItem> PurchaseItems { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CartItem>()
+        .HasOne(c => c.Gift)
+        .WithMany()
+        .HasForeignKey(c => c.GiftId)
+        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<PurchaseItem>()
+       .HasOne(p => p.Gift)
+       .WithMany()
+       .HasForeignKey(p => p.GiftId)
+       .OnDelete(DeleteBehavior.NoAction);
+    }
 
 }
