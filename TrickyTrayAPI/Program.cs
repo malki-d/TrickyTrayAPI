@@ -22,7 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
-
+builder.Services.AddScoped<IGiftService, GiftService>();
+builder.Services.AddScoped<IGiftRepository, GiftRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
