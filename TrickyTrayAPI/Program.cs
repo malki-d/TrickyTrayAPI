@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

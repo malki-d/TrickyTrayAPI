@@ -8005,19 +8005,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\דיסלדורף\\.nuget\\packages\\": {}
+    "C:\\Users\\user1\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\דיסלדורף\\Desktop\\יד\\api-angular-project\\TrickyTrayAPI\\TrickyTrayAPI\\TrickyTrayAPI.csproj",
+      "projectUniqueName": "C:\\Users\\user1\\Documents\\פרויקט angular-api\\TrickyTrayAPI\\TrickyTrayAPI\\TrickyTrayAPI.csproj",
       "projectName": "TrickyTrayAPI",
-      "projectPath": "C:\\Users\\דיסלדורף\\Desktop\\יד\\api-angular-project\\TrickyTrayAPI\\TrickyTrayAPI\\TrickyTrayAPI.csproj",
-      "packagesPath": "C:\\Users\\דיסלדורף\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\דיסלדורף\\Desktop\\יד\\api-angular-project\\TrickyTrayAPI\\TrickyTrayAPI\\obj\\",
+      "projectPath": "C:\\Users\\user1\\Documents\\פרויקט angular-api\\TrickyTrayAPI\\TrickyTrayAPI\\TrickyTrayAPI.csproj",
+      "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\user1\\Documents\\פרויקט angular-api\\TrickyTrayAPI\\TrickyTrayAPI\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\דיסלדורף\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\user1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8091,7 +8096,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
