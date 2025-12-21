@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TrickyTrayAPI.Models;
-using TrickyTrayAPI.Models;
-
 namespace WebApi.Data;
 
 public class AppDbContext : DbContext
