@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
+using TrickyTrayAPI.Repositories;
+using TrickyTrayAPI.Services;
 using WebApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,9 @@ builder.Services.AddSwaggerGen();
 //    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
+builder.Services.AddScoped<IDonorService, DonorService>();
+builder.Services.AddScoped<IDonorRepository, DonorRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
