@@ -6,8 +6,7 @@
 
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-        public int CostumerId { get; set; }
-
-        public Costumer Costumer { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }

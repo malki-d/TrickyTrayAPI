@@ -23,9 +23,9 @@ public class Gift
 
         public int WinnerId { get; set; }
 
-        public Costumer Winner { get; set; }
+        public User Winner { get; set; }
 
-        public ICollection<Costumer> Costumers { get; set; } = new List<Costumer>();
+        public ICollection<User> Users { get; set; } = new List<User>();
 
 
     }

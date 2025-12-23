@@ -6,7 +6,7 @@
         public int GiftId { get; set; }
         public Gift Gift{ get; set; }
         public bool IsWinner { get; set; }
-        public int CostumerId { get; set; }
-        public Costumer Costumer { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
     }
 }
