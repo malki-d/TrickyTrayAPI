@@ -1,14 +1,15 @@
-﻿using TrickyTrayAPI.Models;
+﻿using TrickyTrayAPI.DTOs;
+using TrickyTrayAPI.Models;
 
 namespace TrickyTrayAPI.Services
 {
     public interface IDonorService
     {
-        Task<Donor> AddDonor(Donor donor);
+        Task<Donor> AddDonor(CreateDonorDTO donor);
         Task<bool> DeleteDonor(int id);
         Task<bool> ExistsAsync(int id);
-        Task<IEnumerable<Donor>> GetAllDonors();
-        Task<Donor?> GetDonorById(int id);
+        Task<IEnumerable<GetDonorDTO>> GetAllDonors();
+        Task<GetDonorDTO?> GetDonorById(int id);
         Task<Donor> UpdateAsync(Donor donor);
     }
 }

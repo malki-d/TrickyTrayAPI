@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using System.Drawing;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Repositories;
 using WebApi.Data;
@@ -7,46 +9,120 @@ using WebApi.Data;
 namespace TrickyTrayAPI.Services
 {
     public class DonorService : IDonorService
+
     {
         private readonly IDonorRepository _donorrepository;
+        private readonly ILogger<DonorService> _logger;
 
-        public DonorService(IDonorRepository donorrepository)
+        public DonorService(IDonorRepository donorrepository, ILogger<DonorService> logger)
         {
             _donorrepository = donorrepository;
+            _logger = logger;
         }
 
-        public async Task<IEnumerable<Donor>> GetAllDonors()
+        public async Task<IEnumerable<GetDonorDTO>> GetAllDonors()
         {
-            return await _donorrepository.GetAllDonors();
+            try
+            {
+                var donors = await _donorrepository.GetAllDonors();
+                _logger.LogInformation("get donors");
+
+                return donors.Select(x => new GetDonorDTO() { Email = x.Email, Name = x.Name, });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message, "cant get donors");
+                throw;
+            }
         }
 
-        public async Task<Donor?> GetDonorById(int id)
+        public async Task<GetDonorDTO?> GetDonorById(int id)
         {
-            return await _donorrepository.GetDonorById(id);
+            try
+            {
+                var donor = await _donorrepository.GetDonorById(id);
+                _logger.LogInformation("get donor by id " + id);
+
+                return new GetDonorDTO { Name = donor.Name, Email = donor.Email };
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant get donor by id " + id);
+                throw;
+            }
 
         }
 
-        public async Task<Donor> AddDonor(Donor donor)
+        public async Task<Donor> AddDonor(CreateDonorDTO donor)
         {
-            return await _donorrepository.AddDonor(donor);
+            try
+            {
+                var newDonor = await _donorrepository.AddDonor(donor);
+                _logger.LogInformation("create donor " + newDonor.Id);
+                return newDonor;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant create donor");
+                throw;
+            }
 
         }
 
         public async Task<Donor> UpdateAsync(Donor donor)
         {
-            return await _donorrepository.UpdateAsync(donor);
+            try
+            {
+
+                var updateDonor = await _donorrepository.UpdateAsync(donor);
+                _logger.LogInformation("update donor " + donor.Id);
+                return updateDonor;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant update donor " + donor.Id);
+                throw;
+            }
 
         }
 
         public async Task<bool> DeleteDonor(int id)
         {
-            return await _donorrepository.DeleteDonor(id);
+            try
+            {
+
+                var isSucceed = await _donorrepository.DeleteDonor(id);
+                _logger.LogInformation("delete donor " + id);
+                return isSucceed;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant delete donor " + id);
+                throw;
+            }
 
         }
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _donorrepository.ExistsAsync(id);
+            try
+            {
+
+                var isSucceed = await _donorrepository.ExistsAsync(id);
+                _logger.LogInformation("check Exists donor " + id);
+                return isSucceed;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant check Exists donor " + id);
+                throw;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using WebApi.Data;
 
@@ -24,11 +25,12 @@ namespace TrickyTrayAPI.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Donor> AddDonor(Donor donor)
+        public async Task<Donor> AddDonor(CreateDonorDTO donor)
         {
-            _context.Donors.Add(donor);
+            var item = new Donor { Name = donor.Name, Email = donor.Email, PhoneNumber = donor.PhoneNumber };
+            _context.Donors.Add(item);
             await _context.SaveChangesAsync();
-            return donor;
+            return item;
         }
 
         public async Task<Donor> UpdateAsync(Donor donor)

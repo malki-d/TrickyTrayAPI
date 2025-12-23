@@ -1,15 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrickyTrayAPI.Models
+namespace TrickyTrayAPI.DTOs
 {
-    public class Donor
+    public class CreateDonorDTO
     {
-        public int Id { get; set; }
         [MaxLength(100)]
         public string? Name { get; set; }
-        [EmailAddress,Required]
+        [EmailAddress, Required]
         public string? Email { get; set; }
         [Phone]
         public string PhoneNumber { get; set; }
+    }
+    public class GetDonorDTO
+    {
+        public string? Name { get; set; }
+        public string? Email { get; set; }
     }
 }

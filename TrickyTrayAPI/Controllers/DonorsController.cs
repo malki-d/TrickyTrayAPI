@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Services;
 
@@ -10,13 +11,14 @@ namespace TrickyTrayAPI.Controllers
     public class DonorsController : ControllerBase
     {
         private readonly IDonorService _donorservice;
+
         public DonorsController(IDonorService donorservice)
         {
             _donorservice = donorservice;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Donor>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GetDonorDTO>>> GetAll()
         {
             var donors = await _donorservice.GetAllDonors();
             return Ok(donors);
@@ -24,7 +26,7 @@ namespace TrickyTrayAPI.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Donor>> GetById(int id)
+        public async Task<ActionResult<CreateDonorDTO>> GetById(int id)
         {
             var donor = await _donorservice.GetDonorById(id);
 
@@ -35,7 +37,7 @@ namespace TrickyTrayAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Donor>> Create(Donor donor)
+        public async Task<ActionResult<Donor>> Create(CreateDonorDTO donor)
         {
             var createdDonor = await _donorservice.AddDonor(donor);
             return CreatedAtAction(nameof(GetById), new { id = createdDonor.Id }, createdDonor);

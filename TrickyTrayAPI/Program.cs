@@ -1,13 +1,23 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using TrickyTrayAPI.Repositories;
 using TrickyTrayAPI.Services;
 using WebApi.Data;
 
-var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 
+Log.Information("Starting Store API application");
+var builder = WebApplication.CreateBuilder(args);
+
+// Add Serilog configuration
+Log.Logger = new LoggerConfiguration()
+.WriteTo.Console()
+.WriteTo.File("logs/student-api. log", rollingInterval: RollingInterval.Day)
+.CreateLogger();
+
+// Add Serilog
+builder.Host.UseSerilog();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -18,8 +28,10 @@ builder.Services.AddSwaggerGen();
 //    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=srv2\\pupils;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 builder.Services.AddScoped<IGiftService, GiftService>();

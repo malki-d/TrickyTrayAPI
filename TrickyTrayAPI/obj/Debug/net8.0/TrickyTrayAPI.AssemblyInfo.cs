@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrickyTrayAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7abbbdb47f35f04687d718ad580a0a7122865add")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e740d8fc71fd558b26edbf8fffc3d9ef480ec3a5")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrickyTrayAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrickyTrayAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
