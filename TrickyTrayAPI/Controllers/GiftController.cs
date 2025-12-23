@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Repositories;
 using TrickyTrayAPI.Services;
@@ -19,7 +20,7 @@ namespace TrickyTrayAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Gift>>> GetAll()
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> GetAll()
         {
             var gifts = await _giftservice.GetAllAsync();
             return Ok(gifts);
@@ -27,7 +28,7 @@ namespace TrickyTrayAPI.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Gift>> GetById(int id)
+        public async Task<ActionResult<GetGiftDTO>> GetById(int id)
         {
             var gift = await _giftservice.GetByIdAsync(id);
 
@@ -39,25 +40,21 @@ namespace TrickyTrayAPI.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Gift>> Create(Gift gift)
+        public async Task<ActionResult<Gift>> Create(CreateGiftDTO gift)
         {
             var createdGift = await _giftservice.AddAsync(gift);
-            //return CreatedAtAction(nameof(GetById), new { id = createdProduct.Id }, createdProduct);
-            //return Ok(createdGift);
-            return CreatedAtAction(nameof(GetById), new { id = createdGift.Id }, createdGift);
+            return Ok(createdGift);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Gift>> Update(int id, Gift gift)
+        public async Task<ActionResult<Gift>> Update(UpdateGiftDTO gift,int id)
         {
-            if (id != gift.Id)
-                return BadRequest();
 
             var exists = await _giftservice.ExistsAsync(id);
             if (!exists)
                 return NotFound();
 
-            var updatedProduct = await _giftservice.UpdateAsync(gift);
+            var updatedProduct = await _giftservice.UpdateAsync(gift,id);
             return Ok(updatedProduct);
         }
 

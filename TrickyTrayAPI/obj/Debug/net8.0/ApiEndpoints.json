@@ -128,7 +128,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -148,7 +148,7 @@
     "Parameters": [
       {
         "Name": "gift",
-        "Type": "TrickyTrayAPI.Models.Gift",
+        "Type": "TrickyTrayAPI.DTOs.CreateGiftDTO",
         "IsRequired": true
       }
     ],
@@ -180,7 +180,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "TrickyTrayAPI.Models.Gift",
+        "Type": "TrickyTrayAPI.DTOs.GetGiftDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -199,13 +199,13 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
+        "Name": "gift",
+        "Type": "TrickyTrayAPI.DTOs.UpdateGiftDTO",
         "IsRequired": true
       },
       {
-        "Name": "gift",
-        "Type": "TrickyTrayAPI.Models.Gift",
+        "Name": "id",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

@@ -1,32 +1,29 @@
-﻿namespace TrickyTrayAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+
+namespace TrickyTrayAPI.Models
 {
-    public enum TypeGift
-    {
-        Regular,
-        Premium
-    }
-public class Gift
+
+    public class Gift
     {
         public int Id { get; set; }
-        public string Name { get; set; }
 
-        public string Description { get; set; }
+        [MaxLength(100), Required]
+        public string? Name { get; set; }
+        [MaxLength(200), Required]
+        public string? Description { get; set; }
 
-        public TypeGift TypeGift { get; set; } = TypeGift.Premium;
-
-
+        [Required]
         public int DonorId { get; set; }
-        public Donor Donor { get; set; }
+        public Donor? Donor { get; set; }
 
+        [Required]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
-        public int WinnerId { get; set; }
-
-        public User Winner { get; set; }
-
+        [AllowNull]
+        public int? WinnerId { get; set; }
+        public User? Winner { get; set; }
         public ICollection<User> Users { get; set; } = new List<User>();
-
-
     }
 }

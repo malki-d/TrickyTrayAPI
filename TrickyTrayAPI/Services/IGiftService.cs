@@ -1,17 +1,14 @@
-﻿using TrickyTrayAPI.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using TrickyTrayAPI.DTOs;
 
 namespace TrickyTrayAPI.Services
 {
     public interface IGiftService
     {
-        Task<Gift> AddAsync(Gift gift);
+        Task<GetGiftDTO> AddAsync(CreateGiftDTO gift);
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
-        Task<IEnumerable<Gift>> GetAllAsync();
-        Task<Gift?> GetByIdAsync(int id);
-        Task<Gift> UpdateAsync(Gift gift);
+        Task<IEnumerable<GetGiftDTO>> GetAllAsync();
+        Task<GetGiftDTO?> GetByIdAsync(int id);
+        Task<GetGiftDTO> UpdateAsync(UpdateGiftDTO gift, int id);
     }
 }
-
-
