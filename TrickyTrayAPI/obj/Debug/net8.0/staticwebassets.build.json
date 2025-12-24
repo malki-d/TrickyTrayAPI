@@ -1,1 +1,11 @@
-{"Version":1,"Hash":"CNwxjFndT7WOkIG7QjV69pv9YVt1cBFSxwOiv4cCtZU=","Source":"TrickyTrayAPI","BasePath":"_content/TrickyTrayAPI","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "98/s2uGD7spjJj9bUGKtDf4XaRH2dzlNrFribVNLbyk=",
+  "Source": "TrickyTrayAPI",
+  "BasePath": "_content/TrickyTrayAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

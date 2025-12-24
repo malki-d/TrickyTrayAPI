@@ -31,9 +31,10 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=srv2\\pupils;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
+
 builder.Services.AddScoped<IGiftService, GiftService>();
 builder.Services.AddScoped<IGiftRepository, GiftRepository>();
 var app = builder.Build();

@@ -17,6 +17,6 @@
 
         public TypeCostumer TypeCostumer { get; set; } = TypeCostumer.User;
 
-
+        public ICollection<CartItem> CartItems { get; set; }
     }
 }

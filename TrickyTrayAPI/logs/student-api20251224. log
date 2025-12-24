@@ -1,0 +1,1256 @@
+2025-12-24 16:52:28.316 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 16:52:28.413 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 16:52:28.600 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 16:52:28.603 +02:00 [INF] Hosting environment: Development
+2025-12-24 16:52:28.606 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 16:52:28.988 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 16:52:28.988 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 16:52:29.027 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 52.1242ms
+2025-12-24 16:52:29.222 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 248.4743ms
+2025-12-24 16:52:29.284 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 16:52:29.501 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 217.7339ms
+2025-12-24 16:54:37.147 +02:00 [INF] Executed DbCommand (238ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+CREATE DATABASE [DemoToTest_1];
+2025-12-24 16:54:37.296 +02:00 [INF] Executed DbCommand (105ms) [Parameters=[], CommandType='"Text"', CommandTimeout='60']
+IF SERVERPROPERTY('EngineEdition') <> 5
+BEGIN
+    ALTER DATABASE [DemoToTest_1] SET READ_COMMITTED_SNAPSHOT ON;
+END;
+2025-12-24 16:54:37.311 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 16:54:37.316 +02:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-24 16:54:37.337 +02:00 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-12-24 16:54:37.388 +02:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-12-24 16:54:37.396 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 16:54:37.399 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-24 16:54:37.411 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-24 16:54:37.420 +02:00 [INF] Applying migration '20251221113435_InitialCreate'.
+2025-12-24 16:54:37.446 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Categories] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Categories] PRIMARY KEY ([Id])
+);
+2025-12-24 16:54:37.451 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Donors] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NULL,
+    [Email] nvarchar(max) NULL,
+    [PhoneNumber] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Donors] PRIMARY KEY ([Id])
+);
+2025-12-24 16:54:37.454 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [CartItems] (
+    [Id] int NOT NULL IDENTITY,
+    [Quantity] int NOT NULL,
+    [GiftId] int NOT NULL,
+    [CartId] int NOT NULL,
+    CONSTRAINT [PK_CartItems] PRIMARY KEY ([Id])
+);
+2025-12-24 16:54:37.458 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Carts] (
+    [Id] int NOT NULL IDENTITY,
+    [CostumerId] int NOT NULL,
+    CONSTRAINT [PK_Carts] PRIMARY KEY ([Id])
+);
+2025-12-24 16:54:37.461 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Costumers] (
+    [Id] int NOT NULL IDENTITY,
+    [LastName] nvarchar(max) NOT NULL,
+    [FirstName] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NULL,
+    [PhoneNumber] nvarchar(max) NOT NULL,
+    [TypeCostumer] int NOT NULL,
+    [GiftId] int NULL,
+    CONSTRAINT [PK_Costumers] PRIMARY KEY ([Id])
+);
+2025-12-24 16:54:37.466 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Gifts] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [Description] nvarchar(max) NOT NULL,
+    [TypeGift] int NOT NULL,
+    [DonorId] int NOT NULL,
+    [CategoryId] int NOT NULL,
+    [WinnerId] int NOT NULL,
+    CONSTRAINT [PK_Gifts] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Gifts_Categories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [Categories] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Gifts_Costumers_WinnerId] FOREIGN KEY ([WinnerId]) REFERENCES [Costumers] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_Gifts_Donors_DonorId] FOREIGN KEY ([DonorId]) REFERENCES [Donors] ([Id]) ON DELETE CASCADE
+);
+2025-12-24 16:54:37.471 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Purchases] (
+    [Id] int NOT NULL IDENTITY,
+    [CostumerId] int NOT NULL,
+    [Price] int NOT NULL,
+    [Date] datetime2 NOT NULL,
+    CONSTRAINT [PK_Purchases] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Purchases_Costumers_CostumerId] FOREIGN KEY ([CostumerId]) REFERENCES [Costumers] ([Id]) ON DELETE CASCADE
+);
+2025-12-24 16:54:37.476 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [PurchaseItems] (
+    [Id] int NOT NULL IDENTITY,
+    [GiftId] int NOT NULL,
+    [IsWinner] bit NOT NULL,
+    [CostumerId] int NOT NULL,
+    [PurchaseId] int NULL,
+    CONSTRAINT [PK_PurchaseItems] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_PurchaseItems_Costumers_CostumerId] FOREIGN KEY ([CostumerId]) REFERENCES [Costumers] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_PurchaseItems_Gifts_GiftId] FOREIGN KEY ([GiftId]) REFERENCES [Gifts] ([Id]),
+    CONSTRAINT [FK_PurchaseItems_Purchases_PurchaseId] FOREIGN KEY ([PurchaseId]) REFERENCES [Purchases] ([Id])
+);
+2025-12-24 16:54:37.481 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CartItems_CartId] ON [CartItems] ([CartId]);
+2025-12-24 16:54:37.484 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_CartItems_GiftId] ON [CartItems] ([GiftId]);
+2025-12-24 16:54:37.487 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Carts_CostumerId] ON [Carts] ([CostumerId]);
+2025-12-24 16:54:37.490 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Costumers_GiftId] ON [Costumers] ([GiftId]);
+2025-12-24 16:54:37.493 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Gifts_CategoryId] ON [Gifts] ([CategoryId]);
+2025-12-24 16:54:37.496 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Gifts_DonorId] ON [Gifts] ([DonorId]);
+2025-12-24 16:54:37.499 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Gifts_WinnerId] ON [Gifts] ([WinnerId]);
+2025-12-24 16:54:37.502 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PurchaseItems_CostumerId] ON [PurchaseItems] ([CostumerId]);
+2025-12-24 16:54:37.505 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PurchaseItems_GiftId] ON [PurchaseItems] ([GiftId]);
+2025-12-24 16:54:37.508 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_PurchaseItems_PurchaseId] ON [PurchaseItems] ([PurchaseId]);
+2025-12-24 16:54:37.510 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Purchases_CostumerId] ON [Purchases] ([CostumerId]);
+2025-12-24 16:54:37.517 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [CartItems] ADD CONSTRAINT [FK_CartItems_Carts_CartId] FOREIGN KEY ([CartId]) REFERENCES [Carts] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:37.556 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [CartItems] ADD CONSTRAINT [FK_CartItems_Gifts_GiftId] FOREIGN KEY ([GiftId]) REFERENCES [Gifts] ([Id]);
+2025-12-24 16:54:37.560 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Carts] ADD CONSTRAINT [FK_Carts_Costumers_CostumerId] FOREIGN KEY ([CostumerId]) REFERENCES [Costumers] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:37.564 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Costumers] ADD CONSTRAINT [FK_Costumers_Gifts_GiftId] FOREIGN KEY ([GiftId]) REFERENCES [Gifts] ([Id]);
+2025-12-24 16:54:37.570 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251221113435_InitialCreate', N'9.0.11');
+2025-12-24 16:54:37.572 +02:00 [INF] Applying migration '20251223155253_InitialCreated'.
+2025-12-24 16:54:37.595 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Carts] DROP CONSTRAINT [FK_Carts_Costumers_CostumerId];
+2025-12-24 16:54:37.601 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Gifts] DROP CONSTRAINT [FK_Gifts_Costumers_WinnerId];
+2025-12-24 16:54:37.604 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [PurchaseItems] DROP CONSTRAINT [FK_PurchaseItems_Costumers_CostumerId];
+2025-12-24 16:54:37.607 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Purchases] DROP CONSTRAINT [FK_Purchases_Costumers_CostumerId];
+2025-12-24 16:54:37.612 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP TABLE [Costumers];
+2025-12-24 16:54:38.036 +02:00 [INF] Executed DbCommand (421ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[Purchases].[CostumerId]', N'UserId', 'COLUMN';
+2025-12-24 16:54:38.042 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[Purchases].[IX_Purchases_CostumerId]', N'IX_Purchases_UserId', 'INDEX';
+2025-12-24 16:54:38.046 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[PurchaseItems].[CostumerId]', N'UserId', 'COLUMN';
+2025-12-24 16:54:38.048 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[PurchaseItems].[IX_PurchaseItems_CostumerId]', N'IX_PurchaseItems_UserId', 'INDEX';
+2025-12-24 16:54:38.051 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[Carts].[CostumerId]', N'UserId', 'COLUMN';
+2025-12-24 16:54:38.054 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[Carts].[IX_Carts_CostumerId]', N'IX_Carts_UserId', 'INDEX';
+2025-12-24 16:54:38.095 +02:00 [INF] Executed DbCommand (40ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var sysname;
+SELECT @var = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Donors]') AND [c].[name] = N'Name');
+IF @var IS NOT NULL EXEC(N'ALTER TABLE [Donors] DROP CONSTRAINT [' + @var + '];');
+ALTER TABLE [Donors] ALTER COLUMN [Name] nvarchar(100) NULL;
+2025-12-24 16:54:38.123 +02:00 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var1 sysname;
+SELECT @var1 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Donors]') AND [c].[name] = N'Email');
+IF @var1 IS NOT NULL EXEC(N'ALTER TABLE [Donors] DROP CONSTRAINT [' + @var1 + '];');
+UPDATE [Donors] SET [Email] = N'' WHERE [Email] IS NULL;
+ALTER TABLE [Donors] ALTER COLUMN [Email] nvarchar(max) NOT NULL;
+ALTER TABLE [Donors] ADD DEFAULT N'' FOR [Email];
+2025-12-24 16:54:38.129 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE [Users] (
+    [Id] int NOT NULL IDENTITY,
+    [LastName] nvarchar(max) NOT NULL,
+    [FirstName] nvarchar(max) NOT NULL,
+    [Email] nvarchar(max) NULL,
+    [PhoneNumber] nvarchar(max) NOT NULL,
+    [TypeCostumer] int NOT NULL,
+    [GiftId] int NULL,
+    CONSTRAINT [PK_Users] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Users_Gifts_GiftId] FOREIGN KEY ([GiftId]) REFERENCES [Gifts] ([Id])
+);
+2025-12-24 16:54:38.132 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX [IX_Users_GiftId] ON [Users] ([GiftId]);
+2025-12-24 16:54:38.135 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Carts] ADD CONSTRAINT [FK_Carts_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:38.138 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Gifts] ADD CONSTRAINT [FK_Gifts_Users_WinnerId] FOREIGN KEY ([WinnerId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:38.144 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [PurchaseItems] ADD CONSTRAINT [FK_PurchaseItems_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:38.147 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Purchases] ADD CONSTRAINT [FK_Purchases_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE;
+2025-12-24 16:54:38.149 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251223155253_InitialCreated', N'9.0.11');
+2025-12-24 16:54:38.151 +02:00 [INF] Applying migration '20251223184055_InitialCreate5'.
+2025-12-24 16:54:38.167 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Gifts] DROP CONSTRAINT [FK_Gifts_Users_WinnerId];
+2025-12-24 16:54:38.193 +02:00 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var2 sysname;
+SELECT @var2 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Gifts]') AND [c].[name] = N'TypeGift');
+IF @var2 IS NOT NULL EXEC(N'ALTER TABLE [Gifts] DROP CONSTRAINT [' + @var2 + '];');
+ALTER TABLE [Gifts] DROP COLUMN [TypeGift];
+2025-12-24 16:54:38.254 +02:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var3 sysname;
+SELECT @var3 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Gifts]') AND [c].[name] = N'WinnerId');
+IF @var3 IS NOT NULL EXEC(N'ALTER TABLE [Gifts] DROP CONSTRAINT [' + @var3 + '];');
+ALTER TABLE [Gifts] ALTER COLUMN [WinnerId] int NULL;
+2025-12-24 16:54:38.280 +02:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var4 sysname;
+SELECT @var4 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Gifts]') AND [c].[name] = N'Name');
+IF @var4 IS NOT NULL EXEC(N'ALTER TABLE [Gifts] DROP CONSTRAINT [' + @var4 + '];');
+ALTER TABLE [Gifts] ALTER COLUMN [Name] nvarchar(100) NOT NULL;
+2025-12-24 16:54:38.308 +02:00 [INF] Executed DbCommand (23ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @var5 sysname;
+SELECT @var5 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Gifts]') AND [c].[name] = N'Description');
+IF @var5 IS NOT NULL EXEC(N'ALTER TABLE [Gifts] DROP CONSTRAINT [' + @var5 + '];');
+ALTER TABLE [Gifts] ALTER COLUMN [Description] nvarchar(200) NOT NULL;
+2025-12-24 16:54:38.314 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Gifts] ADD CONSTRAINT [FK_Gifts_Users_WinnerId] FOREIGN KEY ([WinnerId]) REFERENCES [Users] ([Id]);
+2025-12-24 16:54:38.317 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251223184055_InitialCreate5', N'9.0.11');
+2025-12-24 16:54:38.318 +02:00 [INF] Applying migration '20251224145417_init1'.
+2025-12-24 16:54:38.326 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251224145417_init1', N'9.0.11');
+2025-12-24 16:54:38.332 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-12-24 16:55:51.511 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 16:55:51.579 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 16:55:51.726 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 16:55:51.730 +02:00 [INF] Hosting environment: Development
+2025-12-24 16:55:51.731 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 16:55:51.951 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 16:55:51.951 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 16:55:51.989 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 46.8001ms
+2025-12-24 16:55:52.044 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 102.4905ms
+2025-12-24 16:55:52.099 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 16:55:52.309 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 210.7289ms
+2025-12-24 16:55:55.304 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Donors - null null
+2025-12-24 16:55:55.322 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI)'
+2025-12-24 16:55:55.369 +02:00 [INF] Route matched with {action = "GetAll", controller = "Donors"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetDonorDTO]]] GetAll() on controller TrickyTrayAPI.Controllers.DonorsController (TrickyTrayAPI).
+2025-12-24 16:55:57.809 +02:00 [INF] Executed DbCommand (73ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber]
+FROM [Donors] AS [d]
+2025-12-24 16:55:57.864 +02:00 [INF] get donors
+2025-12-24 16:55:57.895 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Donor, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetDonorDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 16:55:57.911 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI) in 2533.6479ms
+2025-12-24 16:55:57.914 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI)'
+2025-12-24 16:55:57.926 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Donors - 200 null application/json; charset=utf-8 2622.3961ms
+2025-12-24 16:56:06.328 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift - null null
+2025-12-24 16:56:06.342 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 16:56:06.356 +02:00 [INF] Route matched with {action = "GetAll", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetAll() on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 16:56:06.652 +02:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+2025-12-24 16:56:06.658 +02:00 [INF] get gifts
+2025-12-24 16:56:06.664 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 16:56:06.669 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI) in 302.3856ms
+2025-12-24 16:56:06.674 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 16:56:06.677 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 348.613ms
+2025-12-24 16:56:12.000 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 84
+2025-12-24 16:56:12.016 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:56:12.038 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 16:56:12.546 +02:00 [INF] Executed DbCommand (51ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 16:56:12.631 +02:00 [ERR] An exception occurred in the database while saving changes for context type 'WebApi.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-12-24 16:56:12.842 +02:00 [ERR] cant create gift
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+2025-12-24 16:56:13.042 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 993.2818ms
+2025-12-24 16:56:13.046 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:56:13.054 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+   at TrickyTrayAPI.Controllers.GiftController.Create(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Controllers\GiftController.cs:line 45
+   at lambda_method74(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-24 16:56:13.096 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 500 null text/plain; charset=utf-8 1096.0355ms
+2025-12-24 16:57:10.026 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 84
+2025-12-24 16:57:10.038 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:57:10.040 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 16:57:10.071 +02:00 [INF] Executed DbCommand (20ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 16:57:10.086 +02:00 [ERR] An exception occurred in the database while saving changes for context type 'WebApi.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-12-24 16:57:10.209 +02:00 [ERR] cant create gift
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+2025-12-24 16:57:10.318 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 276.3009ms
+2025-12-24 16:57:10.322 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:57:10.331 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+   at TrickyTrayAPI.Controllers.GiftController.Create(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Controllers\GiftController.cs:line 45
+   at lambda_method74(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-24 16:57:10.362 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 500 null text/plain; charset=utf-8 335.8061ms
+2025-12-24 16:57:11.650 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 84
+2025-12-24 16:57:11.658 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:57:11.661 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 16:57:11.669 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 16:57:11.683 +02:00 [ERR] An exception occurred in the database while saving changes for context type 'WebApi.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-12-24 16:57:11.818 +02:00 [ERR] cant create gift
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+2025-12-24 16:57:12.000 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 336.0911ms
+2025-12-24 16:57:12.010 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 16:57:12.017 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The INSERT statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:251da4b3-9509-492b-a28f-0c24ddea974d
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetAsync(Int32 startCommandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 37
+   at TrickyTrayAPI.Services.GiftService.AddAsync(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 62
+   at TrickyTrayAPI.Controllers.GiftController.Create(CreateGiftDTO gift) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Controllers\GiftController.cs:line 45
+   at lambda_method74(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-24 16:57:12.043 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 500 null text/plain; charset=utf-8 392.8908ms
+2025-12-24 17:01:08.958 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 85
+2025-12-24 17:01:09.019 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:01:09.021 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:01:09.036 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 17:01:09.113 +02:00 [INF] create gift 4
+2025-12-24 17:05:30.726 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:05:30.799 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:05:30.945 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:05:30.947 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:05:30.950 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:05:31.584 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:05:31.584 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:05:31.635 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 61.8169ms
+2025-12-24 17:05:31.688 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 116.5712ms
+2025-12-24 17:05:31.737 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:05:31.956 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 219.8885ms
+2025-12-24 17:05:49.391 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 84
+2025-12-24 17:05:49.410 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:05:49.464 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:05:51.755 +02:00 [INF] Executed DbCommand (89ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 17:05:52.434 +02:00 [INF] Executed DbCommand (21ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:05:52.521 +02:00 [INF] create gift 5
+2025-12-24 17:05:52.538 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetGiftDTO'.
+2025-12-24 17:05:52.554 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 3058.7498ms
+2025-12-24 17:05:52.559 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:05:52.574 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 3183.1908ms
+2025-12-24 17:06:08.798 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 93
+2025-12-24 17:06:08.809 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:06:08.812 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:06:08.913 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 17:06:08.928 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:06:08.947 +02:00 [INF] create gift 6
+2025-12-24 17:06:08.952 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetGiftDTO'.
+2025-12-24 17:06:08.962 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 145.8561ms
+2025-12-24 17:06:08.966 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:06:08.967 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 169.2302ms
+2025-12-24 17:06:18.195 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift - null null
+2025-12-24 17:06:18.215 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 17:06:18.223 +02:00 [INF] Route matched with {action = "GetAll", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetAll() on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:06:18.298 +02:00 [INF] Executed DbCommand (8ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+2025-12-24 17:06:18.305 +02:00 [INF] get gifts
+2025-12-24 17:06:18.307 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 17:06:18.312 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI) in 85.8897ms
+2025-12-24 17:06:18.314 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 17:06:18.316 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 120.7568ms
+2025-12-24 17:06:52.789 +02:00 [INF] Request starting HTTP/2 POST https://localhost:7260/api/Gift - application/json 86
+2025-12-24 17:06:52.794 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:06:52.796 +02:00 [INF] Route matched with {action = "Create", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Create(TrickyTrayAPI.DTOs.CreateGiftDTO) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:06:52.810 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (DbType = Int32), @p3='?' (Size = 100), @p4='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [Gifts] ([CategoryId], [Description], [DonorId], [Name], [WinnerId])
+OUTPUT INSERTED.[Id]
+VALUES (@p0, @p1, @p2, @p3, @p4);
+2025-12-24 17:06:52.822 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:06:52.827 +02:00 [INF] create gift 7
+2025-12-24 17:06:52.828 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetGiftDTO'.
+2025-12-24 17:06:52.830 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI) in 30.7139ms
+2025-12-24 17:06:52.833 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Create (TrickyTrayAPI)'
+2025-12-24 17:06:52.834 +02:00 [INF] Request finished HTTP/2 POST https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 46.0365ms
+2025-12-24 17:06:57.349 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift - null null
+2025-12-24 17:06:57.357 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 17:06:57.360 +02:00 [INF] Route matched with {action = "GetAll", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetAll() on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:06:57.374 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+2025-12-24 17:06:57.379 +02:00 [INF] get gifts
+2025-12-24 17:06:57.381 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 17:06:57.382 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI) in 17.8082ms
+2025-12-24 17:06:57.391 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
+2025-12-24 17:06:57.393 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 43.8729ms
+2025-12-24 17:07:09.113 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/3 - null null
+2025-12-24 17:07:09.119 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetById (TrickyTrayAPI)'
+2025-12-24 17:07:09.150 +02:00 [INF] Route matched with {action = "GetById", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.DTOs.GetGiftDTO]] GetById(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:07:09.186 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:07:09.194 +02:00 [INF] get gift by id 3
+2025-12-24 17:07:42.615 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:07:42.686 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:07:42.879 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:07:42.882 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:07:42.887 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:07:43.280 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:07:43.280 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:07:43.337 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 76.1352ms
+2025-12-24 17:07:43.398 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 138.9344ms
+2025-12-24 17:07:43.453 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:07:43.692 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 239.4017ms
+2025-12-24 17:07:52.465 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/2 - null null
+2025-12-24 17:07:52.491 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetById (TrickyTrayAPI)'
+2025-12-24 17:07:52.559 +02:00 [INF] Route matched with {action = "GetById", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.DTOs.GetGiftDTO]] GetById(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:07:55.123 +02:00 [INF] Executed DbCommand (77ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:07:55.174 +02:00 [INF] get gift by id 2
+2025-12-24 17:08:30.964 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:08:31.048 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:08:31.209 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:08:31.210 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:08:31.212 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:08:31.710 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:08:31.710 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:08:31.748 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 44.3466ms
+2025-12-24 17:08:31.812 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 114.9658ms
+2025-12-24 17:08:31.868 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:08:32.109 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 242.2389ms
+2025-12-24 17:08:41.827 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/4 - null null
+2025-12-24 17:08:41.855 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetById (TrickyTrayAPI)'
+2025-12-24 17:08:41.903 +02:00 [INF] Route matched with {action = "GetById", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.DTOs.GetGiftDTO]] GetById(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:08:44.554 +02:00 [INF] Executed DbCommand (95ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:08:44.727 +02:00 [INF] get gift by id 4
+2025-12-24 17:08:44.767 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetGiftDTO'.
+2025-12-24 17:08:44.786 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetById (TrickyTrayAPI) in 2873.9482ms
+2025-12-24 17:08:44.790 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetById (TrickyTrayAPI)'
+2025-12-24 17:08:44.800 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/4 - 200 null application/json; charset=utf-8 2973.5546ms
+2025-12-24 17:08:52.944 +02:00 [INF] Request starting HTTP/2 PUT https://localhost:7260/api/Gift/4 - application/json 68
+2025-12-24 17:08:52.956 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:08:52.978 +02:00 [INF] Route matched with {action = "Update", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Update(TrickyTrayAPI.DTOs.UpdateGiftDTO, Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:08:53.131 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Gifts] AS [g]
+        WHERE [g].[Id] = @__id_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-12-24 17:08:53.138 +02:00 [INF] check Exists gift 4
+2025-12-24 17:08:53.147 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:08:53.282 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[@p3='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Gifts] SET [CategoryId] = @p0, [Description] = @p1, [Name] = @p2
+OUTPUT 1
+WHERE [Id] = @p3;
+2025-12-24 17:08:53.379 +02:00 [ERR] An exception occurred in the database while saving changes for context type 'WebApi.Data.AppDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetWithRowsAffectedOnlyAsync(Int32 commandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:ef5358a1-6c29-40ec-93fd-ff44aa85e4ea
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetWithRowsAffectedOnlyAsync(Int32 commandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:ef5358a1-6c29-40ec-93fd-ff44aa85e4ea
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-12-24 17:08:53.513 +02:00 [ERR] cant update gift 4
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetWithRowsAffectedOnlyAsync(Int32 commandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:ef5358a1-6c29-40ec-93fd-ff44aa85e4ea
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.UpdateAsync(UpdateGiftDTO gift, Int32 id) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 49
+   at TrickyTrayAPI.Services.GiftService.UpdateAsync(UpdateGiftDTO gift, Int32 id) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 80
+2025-12-24 17:08:53.685 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI) in 651.2957ms
+2025-12-24 17:08:53.689 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:08:53.697 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): The UPDATE statement conflicted with the FOREIGN KEY constraint "FK_Gifts_Categories_CategoryId". The conflict occurred in database "DemoToTest_1", table "dbo.Categories", column 'Id'.
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.ReadAsyncExecute(Task task, Object state)
+   at Microsoft.Data.SqlClient.SqlDataReader.InvokeAsyncCall[T](SqlDataReaderBaseAsyncCallContext`1 context)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSetWithRowsAffectedOnlyAsync(Int32 commandIndex, RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+ClientConnectionId:ef5358a1-6c29-40ec-93fd-ff44aa85e4ea
+Error Number:547,State:0,Class:16
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeAsync(RelationalDataReader reader, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at TrickyTrayAPI.Repositories.GiftRepository.UpdateAsync(UpdateGiftDTO gift, Int32 id) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Repositories\GiftRepository.cs:line 49
+   at TrickyTrayAPI.Services.GiftService.UpdateAsync(UpdateGiftDTO gift, Int32 id) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Services\GiftService.cs:line 80
+   at TrickyTrayAPI.Controllers.GiftController.Update(UpdateGiftDTO gift, Int32 id) in C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\Controllers\GiftController.cs:line 57
+   at lambda_method172(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-24 17:08:53.731 +02:00 [INF] Request finished HTTP/2 PUT https://localhost:7260/api/Gift/4 - 500 null text/plain; charset=utf-8 787.2812ms
+2025-12-24 17:09:11.983 +02:00 [INF] Request starting HTTP/2 DELETE https://localhost:7260/api/Gift/4 - null null
+2025-12-24 17:09:11.991 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Delete (TrickyTrayAPI)'
+2025-12-24 17:09:11.998 +02:00 [INF] Route matched with {action = "Delete", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult] Delete(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:09:12.134 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId]
+FROM [Gifts] AS [g]
+WHERE [g].[Id] = @__p_0
+2025-12-24 17:09:12.171 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[@p0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+DELETE FROM [Gifts]
+OUTPUT 1
+WHERE [Id] = @p0;
+2025-12-24 17:09:12.187 +02:00 [INF] delete gift 4
+2025-12-24 17:09:12.194 +02:00 [INF] Executing StatusCodeResult, setting HTTP status code 204
+2025-12-24 17:09:12.197 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Delete (TrickyTrayAPI) in 196.0615ms
+2025-12-24 17:09:12.198 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Delete (TrickyTrayAPI)'
+2025-12-24 17:09:12.200 +02:00 [INF] Request finished HTTP/2 DELETE https://localhost:7260/api/Gift/4 - 204 null null 217.1806ms
+2025-12-24 17:10:01.026 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:10:01.095 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:10:01.255 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:10:01.257 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:10:01.259 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:10:01.614 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:10:01.614 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:10:01.653 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 51.3082ms
+2025-12-24 17:10:01.710 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 108.9821ms
+2025-12-24 17:10:01.769 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:10:02.041 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 272.3976ms
+2025-12-24 17:10:18.576 +02:00 [INF] Request starting HTTP/2 PUT https://localhost:7260/api/Gift/4 - application/json 68
+2025-12-24 17:10:18.606 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:10:18.661 +02:00 [INF] Route matched with {action = "Update", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Update(TrickyTrayAPI.DTOs.UpdateGiftDTO, Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:10:21.139 +02:00 [INF] Executed DbCommand (87ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Gifts] AS [g]
+        WHERE [g].[Id] = @__id_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-12-24 17:10:21.182 +02:00 [INF] check Exists gift 4
+2025-12-24 17:10:21.199 +02:00 [INF] Executing ObjectResult, writing value of type 'Microsoft.AspNetCore.Mvc.ProblemDetails'.
+2025-12-24 17:10:21.253 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI) in 2581.5772ms
+2025-12-24 17:10:21.257 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:10:21.276 +02:00 [INF] Request finished HTTP/2 PUT https://localhost:7260/api/Gift/4 - 404 null application/problem+json; charset=utf-8 2699.6405ms
+2025-12-24 17:10:41.357 +02:00 [INF] Request starting HTTP/2 PUT https://localhost:7260/api/Gift/6 - application/json 68
+2025-12-24 17:10:41.371 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:10:41.373 +02:00 [INF] Route matched with {action = "Update", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Models.Gift]] Update(TrickyTrayAPI.DTOs.UpdateGiftDTO, Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 17:10:41.424 +02:00 [INF] Executed DbCommand (16ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT CASE
+    WHEN EXISTS (
+        SELECT 1
+        FROM [Gifts] AS [g]
+        WHERE [g].[Id] = @__id_0) THEN CAST(1 AS bit)
+    ELSE CAST(0 AS bit)
+END
+2025-12-24 17:10:41.433 +02:00 [INF] check Exists gift 6
+2025-12-24 17:10:41.675 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:10:41.943 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[@p3='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?' (Size = 200), @p2='?' (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Gifts] SET [CategoryId] = @p0, [Description] = @p1, [Name] = @p2
+OUTPUT 1
+WHERE [Id] = @p3;
+2025-12-24 17:10:41.989 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[Id] = @__id_0
+2025-12-24 17:10:41.996 +02:00 [INF] update gift 6
+2025-12-24 17:10:42.001 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetGiftDTO'.
+2025-12-24 17:10:42.009 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI) in 632.1486ms
+2025-12-24 17:10:42.013 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.Update (TrickyTrayAPI)'
+2025-12-24 17:10:42.015 +02:00 [INF] Request finished HTTP/2 PUT https://localhost:7260/api/Gift/6 - 200 null application/json; charset=utf-8 659.5222ms
+2025-12-24 17:47:10.225 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:47:10.297 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:47:10.458 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:47:10.463 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:47:10.465 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:47:10.886 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:47:10.886 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:47:10.935 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 59.0496ms
+2025-12-24 17:47:11.006 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 131.0947ms
+2025-12-24 17:47:11.062 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:47:11.260 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 198.4242ms
+2025-12-24 17:51:59.861 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 17:51:59.932 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 17:52:00.124 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 17:52:00.127 +02:00 [INF] Hosting environment: Development
+2025-12-24 17:52:00.128 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 17:52:00.381 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 17:52:00.381 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 17:52:00.455 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 84.11ms
+2025-12-24 17:52:00.513 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 145.534ms
+2025-12-24 17:52:00.574 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 17:52:00.800 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 226.4553ms
+2025-12-24 17:52:06.308 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Cart/3 - null null
+2025-12-24 17:52:06.323 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.CartController.GetCart (TrickyTrayAPI)'
+2025-12-24 17:52:06.362 +02:00 [INF] Route matched with {action = "GetCart", controller = "Cart"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.Repositories.CartDto] GetCart(Int32) on controller TrickyTrayAPI.Controllers.CartController (TrickyTrayAPI).
+2025-12-24 17:52:06.377 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.CartController.GetCart (TrickyTrayAPI) in 4.9404ms
+2025-12-24 17:52:06.381 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.CartController.GetCart (TrickyTrayAPI)'
+2025-12-24 17:52:06.386 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Unable to resolve service for type 'TrickyTrayAPI.Services.CartService' while attempting to activate 'TrickyTrayAPI.Controllers.CartController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method3(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-12-24 17:52:06.435 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Cart/3 - 500 null text/plain; charset=utf-8 127.4753ms
+2025-12-24 18:06:16.410 +02:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 18:06:16.446 +02:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-24 18:06:16.463 +02:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-12-24 18:06:16.515 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-12-24 18:06:16.524 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 18:06:16.528 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-24 18:06:16.535 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-24 18:06:16.544 +02:00 [INF] Applying migration '20251224160559_init2'.
+2025-12-24 18:06:16.565 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [CartItems] DROP CONSTRAINT [FK_CartItems_Carts_CartId];
+2025-12-24 18:06:16.574 +02:00 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DROP TABLE [Carts];
+2025-12-24 18:06:16.876 +02:00 [INF] Executed DbCommand (298ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[CartItems].[CartId]', N'UserId', 'COLUMN';
+2025-12-24 18:06:16.879 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+EXEC sp_rename N'[CartItems].[IX_CartItems_CartId]', N'IX_CartItems_UserId', 'INDEX';
+2025-12-24 18:06:16.883 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [CartItems] ADD CONSTRAINT [FK_CartItems_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE;
+2025-12-24 18:06:16.885 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251224160559_init2', N'9.0.11');
+2025-12-24 18:06:16.889 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result

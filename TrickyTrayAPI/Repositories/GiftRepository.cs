@@ -35,7 +35,7 @@ namespace TrickyTrayAPI.Repositories
             var g = new Gift { Name = gift.Name, Description = gift.Description, DonorId = gift.DonorId, CategoryId = gift.CategoryId };
             _context.Gifts.Add(g);
             await _context.SaveChangesAsync();
-            return g;
+            return await GetByIdAsync(g.Id);
         }
 
         public async Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id)
@@ -47,7 +47,7 @@ namespace TrickyTrayAPI.Repositories
             g.Description = gift.Description;
           
             await _context.SaveChangesAsync();
-            return g;
+            return await GetByIdAsync(g.Id);
         }
 
         public async Task<bool> DeleteAsync(int id)
