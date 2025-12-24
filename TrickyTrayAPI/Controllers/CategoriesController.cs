@@ -39,9 +39,9 @@ namespace TrickyTrayAPI.Controllers
 
         // POST: api/Categories
         [HttpPost]
-        public async Task<ActionResult<Category>> PostCategory(Category category)
+        public async Task<ActionResult<Category>> PostCategory(string name)
         {
-            var created = await _service.AddAsync(category);
+            var created = await _service.AddAsync(name);
             return CreatedAtAction(nameof(GetCategory), new { id = created.Id }, created);
         }
 

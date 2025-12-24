@@ -29,9 +29,10 @@ namespace TrickyTrayAPI.Repositories
         }
 
         // Add new category
-        public async Task<Category> AddAsync(Category category)
+        public async Task<Category> AddAsync(string name)
         {
-            _context.Categories.Add(category);
+            var category = new Category { Name = name };
+             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
             return category;
         }

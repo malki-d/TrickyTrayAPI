@@ -55,11 +55,11 @@ namespace TrickyTrayAPI.Services
             }
         }
 
-        public async Task<Category?> AddAsync(Category category)
+        public async Task<Category?> AddAsync(String name)
         {
             try
             {
-                var added = await _repository.AddAsync(category);
+                var added = await _repository.AddAsync(name);
                 _logger.LogInformation("Successfully added category with id {CategoryId}", added.Id);
                 return added;
             }

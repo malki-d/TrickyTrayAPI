@@ -68,5 +68,11 @@ namespace TrickyTrayAPI.Controllers
 
             return NoContent();
         }
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> Search([FromQuery] string? giftName, [FromQuery] string? donorName, [FromQuery] int? purchaserCount)
+        {
+            var results = await _giftservice.SearchAsync(giftName, donorName, purchaserCount);
+            return Ok(results);
+        }
     }
 }
