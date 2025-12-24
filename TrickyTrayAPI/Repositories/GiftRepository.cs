@@ -15,11 +15,6 @@ namespace TrickyTrayAPI.Repositories
         {
             _context = context;
         }
-        /// <summary>
-        /// /gfdgfdgdfgfdgdfgfdgfdgf
-        /// </summary>
-        /// <param name="gift"></param>
-        /// <returns></returns>
         public async Task<IEnumerable<Gift>> GetAllAsync()
         {
             return await _context.Gifts.Include(x=>x.Category).Include(x => x.Donor).Include(x => x.Winner).ToListAsync();
@@ -32,10 +27,13 @@ namespace TrickyTrayAPI.Repositories
        
         public async Task<Gift> AddAsync(CreateGiftDTO gift)
         {
+
             var g = new Gift { Name = gift.Name, Description = gift.Description, DonorId = gift.DonorId, CategoryId = gift.CategoryId };
             _context.Gifts.Add(g);
             await _context.SaveChangesAsync();
-            return g;
+            return await _context.Gifts
+        .Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner)
+        .FirstAsync(x => x.Id == g.Id);
         }
 
         public async Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id)
