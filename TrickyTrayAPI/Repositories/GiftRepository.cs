@@ -90,5 +90,29 @@ namespace TrickyTrayAPI.Repositories
 
             return await query.ToListAsync();
         }
+        public async Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory)
+        {
+            var query = _context.Gifts.Include(g => g.Donor)
+                .Include(g => g.Users).
+                Include(x => x.Category).AsQueryable();
+
+            if (sortByName && sortByCategory)
+                query = query.OrderBy(g => g.Category.Name).ThenBy(g => g.Name);
+            else if (sortByCategory)
+                query = query.OrderBy(g => g.Category.Name);
+            else if (sortByName)
+                query = query.OrderBy(g => g.Name);
+
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<Gift>> GetByCategoryAsync(int categoryId)
+        {
+            return await _context.Gifts
+                .Include(g => g.Category)
+                .Include(g => g.Donor)
+                .Include(g => g.Winner)
+                .Where(g => g.CategoryId == categoryId)
+                .ToListAsync();
+        }
     }
 }

@@ -2931,3 +2931,177 @@ LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
 2025-12-24 18:53:14.410 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI) in 3560.8682ms
 2025-12-24 18:53:14.416 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetAll (TrickyTrayAPI)'
 2025-12-24 18:53:14.435 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift - 200 null application/json; charset=utf-8 3704.5321ms
+2025-12-24 19:08:41.985 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:08:42.034 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:08:42.039 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:08:42.041 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:08:42.045 +02:00 [INF] Content root path: C:\Users\user1\Documents\פרויקט angular-api\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:08:42.713 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/index.html - null null
+2025-12-24 19:08:43.174 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/index.html - 200 null text/html;charset=utf-8 468.5339ms
+2025-12-24 19:08:43.233 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:08:43.233 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:08:43.258 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 25.2715ms
+2025-12-24 19:08:43.307 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 73.9439ms
+2025-12-24 19:08:43.360 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:08:43.665 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 305.4448ms
+2025-12-24 19:08:53.922 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=true&sortByCategory=false - null null
+2025-12-24 19:08:53.969 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:08:54.022 +02:00 [INF] Route matched with {action = "GetSorted", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetSorted(Boolean, Boolean) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:08:54.447 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:08:57.144 +02:00 [INF] Executed DbCommand (79ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId]
+FROM [Gifts] AS [g]
+ORDER BY [g].[Name]
+2025-12-24 19:08:57.355 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 2897.151ms.
+2025-12-24 19:08:57.378 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:09:45.793 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:09:45.839 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:09:45.846 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:09:45.848 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:09:45.850 +02:00 [INF] Content root path: C:\Users\user1\Documents\פרויקט angular-api\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:09:46.219 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/index.html - null null
+2025-12-24 19:09:46.572 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/index.html - 200 null text/html;charset=utf-8 358.7943ms
+2025-12-24 19:09:46.624 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:09:46.624 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:09:46.654 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 31.1998ms
+2025-12-24 19:09:46.699 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 75.8845ms
+2025-12-24 19:09:46.741 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:09:46.996 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 255.4703ms
+2025-12-24 19:09:55.981 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=true&sortByCategory=false - null null
+2025-12-24 19:09:56.011 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:09:56.096 +02:00 [INF] Route matched with {action = "GetSorted", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetSorted(Boolean, Boolean) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:09:56.548 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:09:59.544 +02:00 [INF] Executed DbCommand (78ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [c].[Id], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer], [c].[Name]
+FROM [Gifts] AS [g]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[Id] = [u].[GiftId]
+ORDER BY [g].[Name], [g].[Id], [d].[Id], [c].[Id]
+2025-12-24 19:09:59.809 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 3250.567ms.
+2025-12-24 19:09:59.831 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:09:59.892 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) in 3785.2038ms
+2025-12-24 19:09:59.895 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:09:59.909 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=true&sortByCategory=false - 200 null application/json; charset=utf-8 3928.1241ms
+2025-12-24 19:10:09.640 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=false&sortByCategory=true - null null
+2025-12-24 19:10:09.663 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:10:09.668 +02:00 [INF] Route matched with {action = "GetSorted", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetSorted(Boolean, Boolean) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:10:09.715 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:10:09.891 +02:00 [INF] Executed DbCommand (54ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [c].[Id], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer], [c].[Name]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[Id] = [u].[GiftId]
+ORDER BY [c].[Name], [g].[Id], [c].[Id], [d].[Id]
+2025-12-24 19:10:09.904 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 186.5648ms.
+2025-12-24 19:10:09.910 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:10:09.914 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) in 242.3698ms
+2025-12-24 19:10:09.920 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:10:09.924 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=false&sortByCategory=true - 200 null application/json; charset=utf-8 284.3267ms
+2025-12-24 19:10:49.930 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:10:49.978 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:10:49.984 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:10:49.986 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:10:49.989 +02:00 [INF] Content root path: C:\Users\user1\Documents\פרויקט angular-api\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:10:50.486 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/index.html - null null
+2025-12-24 19:10:50.812 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/index.html - 200 null text/html;charset=utf-8 333.4439ms
+2025-12-24 19:10:50.818 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:10:50.840 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:10:50.847 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 29.4621ms
+2025-12-24 19:10:50.915 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 74.5521ms
+2025-12-24 19:10:50.964 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:10:51.098 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 135.0979ms
+2025-12-24 19:11:00.797 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=false&sortByCategory=true - null null
+2025-12-24 19:11:00.837 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:11:00.899 +02:00 [INF] Route matched with {action = "GetSorted", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetSorted(Boolean, Boolean) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:11:01.310 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:11:04.196 +02:00 [INF] Executed DbCommand (88ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [c].[Id], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer], [c].[Name]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[Id] = [u].[GiftId]
+ORDER BY [c].[Name], [g].[Id], [c].[Id], [d].[Id]
+2025-12-24 19:11:04.470 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 3150.7815ms.
+2025-12-24 19:11:04.491 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:11:04.552 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI) in 3640.9605ms
+2025-12-24 19:11:04.562 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetSorted (TrickyTrayAPI)'
+2025-12-24 19:11:04.575 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/sorted?sortByName=false&sortByCategory=true - 200 null application/json; charset=utf-8 3778.7234ms
+2025-12-24 19:15:10.488 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:15:10.527 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:15:10.530 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:15:10.531 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:15:10.533 +02:00 [INF] Content root path: C:\Users\user1\Documents\פרויקט angular-api\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:15:10.915 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/index.html - null null
+2025-12-24 19:15:11.315 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/index.html - 200 null text/html;charset=utf-8 410.5929ms
+2025-12-24 19:15:11.326 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:15:11.338 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 12.3715ms
+2025-12-24 19:15:11.344 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:15:11.412 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 68.195ms
+2025-12-24 19:15:11.473 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:15:11.696 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 223.8037ms
+2025-12-24 19:15:22.076 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/by-category/2 - null null
+2025-12-24 19:15:22.110 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:22.173 +02:00 [INF] Route matched with {action = "GetByCategory", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetByCategory(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:15:22.604 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:15:25.480 +02:00 [INF] Executed DbCommand (105ms) [Parameters=[@__categoryId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[CategoryId] = @__categoryId_0
+2025-12-24 19:15:25.769 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 3148.9607ms.
+2025-12-24 19:15:25.797 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:15:25.855 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) in 3670.0057ms
+2025-12-24 19:15:25.860 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:25.875 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/by-category/2 - 200 null application/json; charset=utf-8 3799.8634ms
+2025-12-24 19:15:31.703 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/by-category/1 - null null
+2025-12-24 19:15:31.720 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:31.725 +02:00 [INF] Route matched with {action = "GetByCategory", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetByCategory(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:15:31.770 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:15:31.822 +02:00 [INF] Executed DbCommand (10ms) [Parameters=[@__categoryId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[CategoryId] = @__categoryId_0
+2025-12-24 19:15:31.829 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 56.6205ms.
+2025-12-24 19:15:31.833 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:15:31.837 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) in 106.5964ms
+2025-12-24 19:15:31.841 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:31.843 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/by-category/1 - 200 null application/json; charset=utf-8 140.5757ms
+2025-12-24 19:15:37.000 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/by-category/2 - null null
+2025-12-24 19:15:37.009 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:37.012 +02:00 [INF] Route matched with {action = "GetByCategory", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetByCategory(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:15:37.074 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:15:37.216 +02:00 [INF] Executed DbCommand (11ms) [Parameters=[@__categoryId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[CategoryId] = @__categoryId_0
+2025-12-24 19:15:37.221 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 143.2598ms.
+2025-12-24 19:15:37.224 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:15:37.227 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) in 188.8755ms
+2025-12-24 19:15:37.230 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:37.232 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/by-category/2 - 200 null application/json; charset=utf-8 232.0661ms
+2025-12-24 19:15:40.546 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Gift/by-category/1 - null null
+2025-12-24 19:15:40.566 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:40.573 +02:00 [INF] Route matched with {action = "GetByCategory", controller = "Gift"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetGiftDTO]]] GetByCategory(Int32) on controller TrickyTrayAPI.Controllers.GiftController (TrickyTrayAPI).
+2025-12-24 19:15:40.612 +02:00 [INF] Executing action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) - Validation state: "Valid"
+2025-12-24 19:15:40.629 +02:00 [INF] Executed DbCommand (11ms) [Parameters=[@__categoryId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [c].[Id], [c].[Name], [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber], [u].[Id], [u].[Email], [u].[FirstName], [u].[GiftId], [u].[LastName], [u].[PhoneNumber], [u].[TypeCostumer]
+FROM [Gifts] AS [g]
+INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+INNER JOIN [Donors] AS [d] ON [g].[DonorId] = [d].[Id]
+LEFT JOIN [Users] AS [u] ON [g].[WinnerId] = [u].[Id]
+WHERE [g].[CategoryId] = @__categoryId_0
+2025-12-24 19:15:40.636 +02:00 [INF] Executed action method TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 20.7091ms.
+2025-12-24 19:15:40.639 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Gift, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetGiftDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:15:40.641 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI) in 62.754ms
+2025-12-24 19:15:40.644 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
+2025-12-24 19:15:40.645 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/by-category/1 - 200 null application/json; charset=utf-8 99.3117ms

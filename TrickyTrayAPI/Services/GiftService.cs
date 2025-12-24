@@ -28,7 +28,7 @@ namespace TrickyTrayAPI.Services
                 var donors = await _giftrepository.GetAllAsync();
                 _logger.LogInformation("get gifts");
 
-                return donors.Select(x => new GetGiftDTO() { Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name,ImgUrl=x.ImgUrl });
+                return donors.Select(x => new GetGiftDTO() { Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
 
             }
             catch (Exception ex)
@@ -45,7 +45,7 @@ namespace TrickyTrayAPI.Services
                 var gift = await _giftrepository.GetByIdAsync(id);
                 _logger.LogInformation("get gift by id " + id);
 
-                return new GetGiftDTO { Name = gift.Name, Description = gift.Description, Category = gift.Category.Name, DonorName = gift.Donor.Name , ImgUrl = gift.ImgUrl };
+                return new GetGiftDTO { Name = gift.Name, Description = gift.Description, Category = gift.Category.Name, DonorName = gift.Donor.Name, ImgUrl = gift.ImgUrl };
 
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace TrickyTrayAPI.Services
 
                 var updateGift = await _giftrepository.UpdateAsync(gift, id);
                 _logger.LogInformation("update gift " + id);
-                return new GetGiftDTO { Name = updateGift.Name, Description = updateGift.Description, Category = updateGift.Category.Name, DonorName = updateGift.Donor.Name , ImgUrl = updateGift.ImgUrl };
+                return new GetGiftDTO { Name = updateGift.Name, Description = updateGift.Description, Category = updateGift.Category.Name, DonorName = updateGift.Donor.Name, ImgUrl = updateGift.ImgUrl };
 
             }
             catch (Exception ex)
@@ -136,7 +136,32 @@ namespace TrickyTrayAPI.Services
                 DonorName = g.Donor.Name,
                 Description = g.Description,
                 Category = g.Category.Name,
-                ImgUrl= g.ImgUrl
+                ImgUrl = g.ImgUrl
+            });
+        }
+        public async Task<IEnumerable<GetGiftDTO>> GetSortedAsync(bool sortByName, bool sortByCategory)
+        {
+            var gifts = await _giftrepository.GetSortedAsync(sortByName, sortByCategory);
+            return gifts.Select(g => new GetGiftDTO
+            {
+                Name = g.Name,
+                DonorName = g.Donor.Name,
+                Description = g.Description,
+                Category = g.Category.Name,
+                ImgUrl = g.ImgUrl
+            });
+        }
+        public async Task<IEnumerable<GetGiftDTO>> GetByCategoryAsync(int categoryId)
+        {
+            var gifts = await _giftrepository.GetByCategoryAsync(categoryId);
+            return gifts.Select(g => new GetGiftDTO
+            {
+                Name = g.Name,
+                DonorName = g.Donor.Name,
+                Description = g.Description,
+                Category = g.Category.Name,
+                ImgUrl = g.ImgUrl
+                // הוסף שדות נוספים לפי הצורך
             });
         }
     }
