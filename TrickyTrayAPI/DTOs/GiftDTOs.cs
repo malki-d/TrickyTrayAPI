@@ -8,6 +8,7 @@ namespace TrickyTrayAPI.DTOs
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public string ImgUrl { get; set; }
         public string Category { get; set; }
         public string DonorName { get; set; }
 
@@ -18,6 +19,8 @@ namespace TrickyTrayAPI.DTOs
         public string? Name { get; set; }
         [MaxLength(200), Required]
         public string? Description { get; set; }
+        [MaxLength(200), Required]
+        public string? ImgUrl { get; set; }
         [Required]
         public int DonorId { get; set; }
         [Required]
@@ -33,6 +36,7 @@ namespace TrickyTrayAPI.DTOs
         [Required, MaxLength(200)]
 
         public string Description { get; set; }
+        public string? ImgUrl { get; set; }
 
         [Required]
         public int CategoryId { get; set; }

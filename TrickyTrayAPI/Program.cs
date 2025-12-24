@@ -28,15 +28,18 @@ builder.Services.AddSwaggerGen();
 //    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+   // options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 
 builder.Services.AddScoped<IGiftService, GiftService>();
 builder.Services.AddScoped<IGiftRepository, GiftRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
 var app = builder.Build();

@@ -4,7 +4,7 @@ namespace TrickyTrayAPI.Repositories
 {
     public interface ICategoryRepository
     {
-        Task<Category> AddAsync(Category category);
+        Task<Category> AddAsync(string name);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category?> GetByIdAsync(int id);
