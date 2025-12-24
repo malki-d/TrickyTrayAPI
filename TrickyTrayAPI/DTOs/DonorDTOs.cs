@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TrickyTrayAPI.Models;
 
 namespace TrickyTrayAPI.DTOs
 {
@@ -16,4 +17,10 @@ namespace TrickyTrayAPI.DTOs
         public string? Name { get; set; }
         public string? Email { get; set; }
     }
+    public class GetDonorWithGiftsDTO
+    {
+        public string Name { get; set; }
+        public ICollection<GetGiftDTO> Gifts { get; set; } = new List<GetGiftDTO>();
+    }
+
 }

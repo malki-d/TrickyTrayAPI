@@ -124,5 +124,40 @@ namespace TrickyTrayAPI.Services
                 throw;
             }
         }
+        public async Task<GetDonorWithGiftsDTO?> GetDonorWithGiftsAsync(int donorId)
+        {
+            try
+            {
+                _logger.LogInformation("Getting donor with gifts for donorId {DonorId}", donorId);
+                var donor = await _donorrepository.GetDonorWithGiftsByIdAsync(donorId);
+                if (donor == null)
+                {
+                    _logger.LogWarning("Donor with id {DonorId} not found", donorId);
+                    return null;
+                }
+
+                return new GetDonorWithGiftsDTO
+                {
+                    Name = donor.Name ?? string.Empty,
+                    Gifts = (ICollection<GetGiftDTO>)donor.Gifts.Select(g => new GetGiftDTO() { Description = g.Description, Category = g.Category.Name, Name = g.Name }).ToList()
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting donor with gifts for donorId {DonorId}", donorId);
+                throw;
+            }
+        }
+        public async Task<IEnumerable<GetDonorWithGiftsDTO>> FilterDonorsAsync(string? name, string? email, string? giftName)
+        {
+            var donors = await _donorrepository.FilterDonorsAsync(name, email, giftName);
+
+            return donors.Select(d => new GetDonorWithGiftsDTO
+            {
+                Name = d.Name,
+                Gifts = (ICollection<GetGiftDTO>)d.Gifts.Select(g => new GetGiftDTO() { Description = g.Description,Category=g.Category.Name,Name=g.Name }).ToList()
+            });
+        }
+
     }
 }

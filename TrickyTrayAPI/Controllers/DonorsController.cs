@@ -67,6 +67,31 @@ namespace TrickyTrayAPI.Controllers
 
             return NoContent();
         }
+       
+
+        [HttpGet("{donorId}/with-gifts")]
+        public async Task<ActionResult<GetDonorWithGiftsDTO>> GetDonorWithGifts(int donorId)
+        {
+            var dto = await _donorservice.GetDonorWithGiftsAsync(donorId);
+
+            if (dto == null)
+                return NotFound();
+
+            return Ok(dto);
+        }
+        [HttpGet("filter")]
+        public async Task<ActionResult<IEnumerable<GetDonorWithGiftsDTO>>> FilterDonors(
+    [FromQuery] string? name,
+    [FromQuery] string? email,
+    [FromQuery] string? giftName)
+        {
+
+            var result = await _donorservice.FilterDonorsAsync(name, email, giftName);
+
+            return Ok(result);
+        }
+
+
     }
 }
 

@@ -62,5 +62,28 @@ namespace TrickyTrayAPI.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+        // סינון לפי שם (חיפוש חלקי)
+        public IEnumerable<Donor> GetDonorsByName(string name)
+        {
+            return _context.Set<Donor>()
+                .Where(d => d.Name != null && d.Name.Contains(name))
+                .ToList();
+        }
+
+        // סינון לפי מייל
+        public IEnumerable<Donor> GetDonorsByEmail(string email)
+        {
+            return _context.Set<Donor>()
+                .Where(d => d.Email != null && d.Email.Equals(email))
+                .ToList();
+        }
+
+        // סינון לפי שם מתנה
+        public IEnumerable<Donor> GetDonorsByGift(string giftName)
+        {
+            return _context.Set<Donor>()
+                .Where(d => d.Gifts.Any(g => g.Name != null && g.Name.Contains(giftName)))
+                .ToList();
+        }
     }
 }

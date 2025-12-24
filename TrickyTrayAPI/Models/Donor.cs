@@ -11,5 +11,7 @@ namespace TrickyTrayAPI.Models
         public string? Email { get; set; }
         [Phone]
         public string PhoneNumber { get; set; }
+        public ICollection<Gift> Gifts { get; set; } = new List<Gift>();
+
     }
 }

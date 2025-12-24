@@ -247,7 +247,7 @@ namespace TrickyTrayAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TrickyTrayAPI.Models.Donor", "Donor")
-                        .WithMany()
+                        .WithMany("Gifts")
                         .HasForeignKey("DonorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -302,6 +302,11 @@ namespace TrickyTrayAPI.Migrations
                     b.HasOne("TrickyTrayAPI.Models.Gift", null)
                         .WithMany("Users")
                         .HasForeignKey("GiftId");
+                });
+
+            modelBuilder.Entity("TrickyTrayAPI.Models.Donor", b =>
+                {
+                    b.Navigation("Gifts");
                 });
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Gift", b =>

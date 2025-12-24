@@ -11,5 +11,8 @@ namespace TrickyTrayAPI.Repositories
         Task<IEnumerable<Donor>> GetAllDonors();
         Task<Donor?> GetDonorById(int id);
         Task<Donor> UpdateAsync(Donor donor);
+
+        Task<Donor?> GetDonorWithGiftsByIdAsync(int donorId);
+        Task<IEnumerable<Donor>> FilterDonorsAsync(string? name, string? email, string? giftName);
     }
 }
