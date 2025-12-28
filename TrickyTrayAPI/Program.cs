@@ -44,6 +44,12 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+
+builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
+builder.Services.AddScoped<ICartItemService, CartItemService>();
+
+builder.Services.AddScoped<IPurchaseItemRepository, PurchaseItemRepository>();
+builder.Services.AddScoped<IPurchaseItemService, PurchaseItemService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

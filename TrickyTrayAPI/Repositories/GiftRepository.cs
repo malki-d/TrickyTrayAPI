@@ -98,12 +98,6 @@ namespace TrickyTrayAPI.Repositories
                 .Include(g => g.Users).
                 Include(x => x.Category).AsQueryable();
 
-            if (sortByName && sortByCategory)
-                query = query.OrderBy(g => g.Category.Name).ThenBy(g => g.Name);
-            else if (sortByCategory)
-                query = query.OrderBy(g => g.Category.Name);
-            else if (sortByName)
-                query = query.OrderBy(g => g.Name);
 
             return await query.ToListAsync();
         }
@@ -138,6 +132,3 @@ namespace TrickyTrayAPI.Repositories
         }
     }
 }
-
-           
-       
