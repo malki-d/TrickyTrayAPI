@@ -3,6 +3,7 @@ using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Services;
 using WebApi.Data;
+using System.Linq;
 
 namespace TrickyTrayAPI.Repositories
 {
@@ -149,5 +150,28 @@ namespace TrickyTrayAPI.Repositories
                 WinnerEmail = g.Winner != null ? g.Winner.Email : string.Empty
             });
         }
+        public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
+        {
+            IQueryable<Gift> query = _context.Gifts
+           .Include(g => g.Users).Include(g => g.Category).Include(g => g.Donor);
+
+
+            switch (sortBy?.ToLower())
+            {
+                case "purchases":
+                    query = query.OrderByDescending(g => g.Users.Count);
+                    break;
+
+                default:
+                    query = query.OrderBy(g => g.Name);
+                    break;
+            }
+
+            return await query.ToListAsync();
+
+        }
     }
 }
+
+           
+       

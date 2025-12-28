@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add Serilog configuration
 Log.Logger = new LoggerConfiguration()
 .WriteTo.Console()
-.WriteTo.File("logs/student-api. log", rollingInterval: RollingInterval.Day)
+.WriteTo.File("logs/student-api.log", rollingInterval: RollingInterval.Day)
 .CreateLogger();
 
 // Add Serilog
@@ -31,6 +31,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
+
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
 

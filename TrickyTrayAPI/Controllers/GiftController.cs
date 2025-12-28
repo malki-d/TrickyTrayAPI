@@ -113,5 +113,13 @@ namespace TrickyTrayAPI.Controllers
             var csv = await _giftservice.ExportWinnersReportCsvAsync();
             return File(csv, "text/csv", "winners-report.csv");
         }
+
+        [HttpGet("by-purchases/{sortBy}")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> GetSortedGiftsAsync(string sortBy)
+        {
+            var gifts = await _giftservice.GetSortedGiftsAsync(sortBy);
+            return Ok(gifts);
+        }
+
     }
 }

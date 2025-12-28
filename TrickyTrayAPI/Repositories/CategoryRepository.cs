@@ -15,6 +15,8 @@ namespace TrickyTrayAPI.Repositories
         {
             _context = context;
         }
+        
+
 
         // Get all categories
         public async Task<IEnumerable<Category>> GetAllAsync()

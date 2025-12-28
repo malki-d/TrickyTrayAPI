@@ -223,6 +223,24 @@ namespace TrickyTrayAPI.Services
             }
         }
 
+        public async Task<IEnumerable<GetGiftDTO>> GetSortedGiftsAsync(string sortBy)
+        {
+            try
+            {
+                var donors = await _giftrepository.GetSortedGiftsAsync(sortBy);
+                _logger.LogInformation("get GetSortedGiftsAsync");
+
+                return donors.Select(x => new GetGiftDTO() { Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.Message, "cant GetSortedGiftsAsync");
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync()
         {
             return await _giftrepository.GetGiftWinnersReportAsync();
@@ -268,6 +286,7 @@ namespace TrickyTrayAPI.Services
             sb.AppendLine("</Table>\n</Worksheet>\n</Workbook>");
             return Encoding.UTF8.GetBytes(sb.ToString());
         }
+
 
     }
 }

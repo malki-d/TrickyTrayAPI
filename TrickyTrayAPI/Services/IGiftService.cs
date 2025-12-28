@@ -22,5 +22,7 @@ namespace TrickyTrayAPI.Services
          //Task RandomWinner(int giftId);
 
 
+        Task<IEnumerable<GetGiftDTO>> GetSortedGiftsAsync(string sortBy);
+
     }
 }

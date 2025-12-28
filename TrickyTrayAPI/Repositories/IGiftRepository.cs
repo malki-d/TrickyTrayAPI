@@ -16,5 +16,8 @@ namespace TrickyTrayAPI.Repositories
         Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id);
         Task<bool> UpdateWinnerAsync(int giftId, int winnerId);
         Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync();
+
+        Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy);
+
     }
 }
