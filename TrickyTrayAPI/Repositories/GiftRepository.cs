@@ -10,12 +10,12 @@ namespace TrickyTrayAPI.Repositories
     public class GiftRepository : IGiftRepository
     {
         private readonly AppDbContext _context;
-        private readonly ILogger<GiftService> _logger;
+        private readonly ILogger<GiftRepository> _logger;
 
-
-        public GiftRepository(AppDbContext context)
+        public GiftRepository(AppDbContext context, ILogger<GiftRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         public async Task<IEnumerable<Gift>> GetAllAsync()
         {
@@ -24,7 +24,7 @@ namespace TrickyTrayAPI.Repositories
 
         public async Task<Gift?> GetByIdAsync(int id)
         {
-            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x=>x.Users).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Gift> AddAsync(CreateGiftDTO gift)
@@ -46,6 +46,24 @@ namespace TrickyTrayAPI.Repositories
             g.ImgUrl = gift.ImgUrl;
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
+        }
+        public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId)
+        {
+            var g = await GetByIdAsync(giftId);
+            if(g == null)
+            {
+                _logger.LogInformation("cannot find gift " + giftId);
+                return false;
+            }
+            // if there's already a winner, do not overwrite
+            if (g.WinnerId.HasValue)
+            {
+                _logger.LogInformation("gift " + giftId + " already has a winner");
+                return false;
+            }
+            g.WinnerId = winnerId;
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -109,6 +127,22 @@ namespace TrickyTrayAPI.Repositories
                 .Include(g => g.Winner)
                 .Where(g => g.CategoryId == categoryId)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync()
+        {
+            var gifts = await _context.Gifts
+                .Include(g => g.Winner)
+                .ToListAsync();
+
+            return gifts.Select(g => new GiftWinnerReportDTO
+            {
+                GiftId = g.Id,
+                GiftName = g.Name ?? string.Empty,
+                WinnerId = g.WinnerId,
+                WinnerName = g.Winner != null ? (g.Winner.FirstName + " " + g.Winner.LastName) : string.Empty,
+                WinnerEmail = g.Winner != null ? g.Winner.Email : string.Empty
+            });
         }
         public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
         {

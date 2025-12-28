@@ -1,0 +1,66 @@
+## Visual Studio Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio Visual State File
+*.user
+*.userosscache
+*.sln.docstates
+
+## Visual Studio 2015/2017/2019/2022 cache directories
+.vs/
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## Roslyn cache directories
+*.osscache
+*.prototools.cache
+
+## ReSharper and Rider (JetBrains)
+_ReSharper*/
+*.[Rr]e[Ss]harper.user
+*.dot[Ss]ettings.user
+.idea/
+.rider/
+
+## NuGet Packages
+*.nupkg
+# The packages folder can be ignored because NuGet restore will download them
+**/packages/*
+!**/packages/build/
+
+## Publish output
+publish/
+*.publish.htm
+*.azurepublish.xml
+
+## Local settings and secrets (CRITICAL)
+# Do not commit secrets or local environment configurations
+appsettings.Development.json
+appsettings.Local.json
+*.secrets.json
+.env
+
+## Infrastructure and Tools
+.terraform/
+.vagrant/
+.dockerignore
+
+## OS generated files
+.DS_Store
+Thumbs.db

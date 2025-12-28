@@ -1,4 +1,5 @@
 ﻿using TrickyTrayAPI.Models;
+using TrickyTrayAPI.DTOs;
 
 namespace TrickyTrayAPI.Repositories
 {
@@ -9,5 +10,6 @@ namespace TrickyTrayAPI.Repositories
         Task<IEnumerable<Purchase>> GetAllAsync();
         Task<Purchase?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(Purchase purchase);
+        Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
     }
 }

@@ -13,6 +13,28 @@ namespace TrickyTrayAPI.DTOs
         public string DonorName { get; set; }
 
     }
+    public class GetGiftWithWinnerDTO
+    {
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string ImgUrl { get; set; }
+        public string Category { get; set; }
+        public string WinnerName { get; set; }
+        [EmailAddress]
+        public string WinnerEmail { get; set; }
+
+
+    }
+
+    public class GiftWinnerReportDTO
+    {
+        public int GiftId { get; set; }
+        public string GiftName { get; set; }
+        public int? WinnerId { get; set; }
+        public string WinnerName { get; set; }
+        public string WinnerEmail { get; set; }
+    }
+
     public class CreateGiftDTO
     {
         [MaxLength(100), Required]

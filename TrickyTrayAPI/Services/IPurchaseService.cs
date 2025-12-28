@@ -9,5 +9,6 @@ namespace TrickyTrayAPI.Services
         Task<IEnumerable<GetPurchaseDTO>> GetAllAsync();
         Task<GetPurchaseDTO?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(int id, CreatePurchaseDTO dto);
+        Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
     }
 }
