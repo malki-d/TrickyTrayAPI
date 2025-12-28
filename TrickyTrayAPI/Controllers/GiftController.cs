@@ -92,5 +92,6 @@ namespace TrickyTrayAPI.Controllers
             var gifts = await _giftservice.GetSortedGiftsAsync(sortBy);
             return Ok(gifts);
         }
+
     }
 }

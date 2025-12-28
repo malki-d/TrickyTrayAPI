@@ -119,7 +119,7 @@ namespace TrickyTrayAPI.Repositories
         public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
         {
             IQueryable<Gift> query = _context.Gifts
-           .Include(g => g.Users).Include(g=>g.Category).Include(g => g.Donor);
+           .Include(g => g.Users).Include(g => g.Category).Include(g => g.Donor);
 
 
             switch (sortBy?.ToLower())
@@ -136,6 +136,8 @@ namespace TrickyTrayAPI.Repositories
             return await query.ToListAsync();
 
         }
-
     }
 }
+
+           
+       
