@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrickyTrayAPI.Models; // Adjust namespace as needed
 using WebApi.Data; // Adjust if your AppDbContext is in a different namespace
+using TrickyTrayAPI.DTOs;
 
 namespace TrickyTrayAPI.Repositories
 {
@@ -63,6 +64,13 @@ namespace TrickyTrayAPI.Repositories
             _context.Purchases.Remove(purchase);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        // Get total revenue
+        public async Task<PurchaseRevenueDTO> GetTotalRevenueAsync()
+        {
+            var total = await _context.Purchases.SumAsync(p => (int?)p.Price) ?? 0;
+            return new PurchaseRevenueDTO { TotalRevenue = total, AsOf = DateTime.UtcNow };
         }
     }
 

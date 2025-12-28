@@ -6,6 +6,8 @@ using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Repositories;
 using WebApi.Data;
+using System.IO;
+using System.Text;
 
 namespace TrickyTrayAPI.Services
 {
@@ -164,5 +166,108 @@ namespace TrickyTrayAPI.Services
                 // הוסף שדות נוספים לפי הצורך
             });
         }
+        public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
+        {
+            var gifts = await _giftrepository.GetAllAsync();
+            foreach(var g in gifts)
+            {
+                await RandomWinnerAsync(g.Id);
+            }
+            var gifts2 = await _giftrepository.GetAllAsync();
+            return gifts2.Select(g => new GetGiftWithWinnerDTO
+            {
+                Name = g.Name,
+                WinnerName = g.Winner != null ? g.Winner.FirstName + " " + g.Winner.LastName : string.Empty,
+                WinnerEmail = g.Winner != null ? g.Winner.Email : string.Empty,
+                Description = g.Description,
+                Category = g.Category.Name,
+                ImgUrl = g.ImgUrl
+                // הוסף שדות נוספים לפי הצורך
+            });
+        }
+        public async Task RandomWinnerAsync(int giftId)
+        {
+            try
+            {
+                var gift = await _giftrepository.GetByIdAsync(giftId);
+                if (gift == null)
+                {
+                    _logger.LogInformation("gift not found " + giftId);
+                    return;
+                }
+                var users = gift.Users?.ToList();
+                if (users == null || users.Count == 0)
+                {
+                    _logger.LogInformation("no users for gift " + giftId);
+                    return;
+                }
+                var random = new Random();
+                int index = random.Next(users.Count);
+                var winner = users[index];
+                var updated = await _giftrepository.UpdateWinnerAsync(giftId, winner.Id);
+                var logLine = $"{DateTime.UtcNow:u} - GiftId:{giftId} WinnerId:{winner.Id} WinnerEmail:{winner.Email} WinnerName:{winner.FirstName} {winner.LastName}";
+                var logPath = Path.Combine(Directory.GetCurrentDirectory(), "logs");
+                Directory.CreateDirectory(logPath);
+                var file = Path.Combine(logPath, "winners.log");
+                await File.AppendAllTextAsync(file, logLine + Environment.NewLine);
+                if (updated)
+                    _logger.LogInformation("random winner assigned to gift " + giftId + " user " + winner.Id);
+                else
+                    _logger.LogInformation("random winner NOT assigned to gift " + giftId + " user " + winner.Id);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "cant assign random winner to gift " + giftId);
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync()
+        {
+            return await _giftrepository.GetGiftWinnersReportAsync();
+        }
+
+        public async Task<byte[]> ExportWinnersReportCsvAsync()
+        {
+            var report = await _giftrepository.GetGiftWinnersReportAsync();
+            var sb = new StringBuilder();
+            sb.AppendLine("GiftId,GiftName,WinnerId,WinnerName,WinnerEmail");
+            foreach (var r in report)
+            {
+                var line = $"{r.GiftId},\"{r.GiftName.Replace("\"", "\"\"")}\",{r.WinnerId ?? 0},\"{(r.WinnerName ?? string.Empty).Replace("\"", "\"\"")}\",\"{(r.WinnerEmail ?? string.Empty).Replace("\"", "\"\"")}\"";
+                sb.AppendLine(line);
+            }
+            return Encoding.UTF8.GetBytes(sb.ToString());
+        }
+
+        public async Task<byte[]> ExportWinnersReportExcelAsync()
+        {
+            var report = await _giftrepository.GetGiftWinnersReportAsync();
+            // Create a minimal SpreadsheetML (XML) for Excel compatibility
+            var sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\"?>");
+            sb.AppendLine("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\">\n<Worksheet ss:Name=\"Winners\">\n<Table>");
+            sb.AppendLine("<Row>");
+            sb.AppendLine("<Cell><Data>GiftId</Data></Cell>");
+            sb.AppendLine("<Cell><Data>GiftName</Data></Cell>");
+            sb.AppendLine("<Cell><Data>WinnerId</Data></Cell>");
+            sb.AppendLine("<Cell><Data>WinnerName</Data></Cell>");
+            sb.AppendLine("<Cell><Data>WinnerEmail</Data></Cell>");
+            sb.AppendLine("</Row>");
+            foreach (var r in report)
+            {
+                sb.AppendLine("<Row>");
+                sb.AppendLine($"<Cell><Data>{r.GiftId}</Data></Cell>");
+                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.GiftName ?? string.Empty)}</Data></Cell>");
+                sb.AppendLine($"<Cell><Data>{r.WinnerId ?? 0}</Data></Cell>");
+                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerName ?? string.Empty)}</Data></Cell>");
+                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerEmail ?? string.Empty)}</Data></Cell>");
+                sb.AppendLine("</Row>");
+            }
+            sb.AppendLine("</Table>\n</Worksheet>\n</Workbook>");
+            return Encoding.UTF8.GetBytes(sb.ToString());
+        }
+
     }
 }

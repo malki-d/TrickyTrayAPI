@@ -86,5 +86,32 @@ namespace TrickyTrayAPI.Controllers
             var gifts = await _giftservice.GetByCategoryAsync(categoryId);
             return Ok(gifts);
         }
+        [HttpGet("random")]
+        public async Task<ActionResult<IEnumerable<GetGiftWithWinnerDTO>>> RandomWinners()
+        {
+            var gifts = await _giftservice.RandomWinners();
+            return Ok(gifts);
+        }
+
+        [HttpGet("winners-report")]
+        public async Task<ActionResult<IEnumerable<GiftWinnerReportDTO>>> GetWinnersReport()
+        {
+            var report = await _giftservice.GetGiftWinnersReportAsync();
+            return Ok(report);
+        }
+
+        [HttpGet("winners-report/export")]
+        public async Task<IActionResult> ExportWinnersReport([FromQuery] string format = "csv")
+        {
+            if (string.Equals(format, "excel", StringComparison.OrdinalIgnoreCase))
+            {
+                var bytes = await _giftservice.ExportWinnersReportExcelAsync();
+                return File(bytes, "application/vnd.ms-excel", "winners-report.xls");
+            }
+
+            // default csv
+            var csv = await _giftservice.ExportWinnersReportCsvAsync();
+            return File(csv, "text/csv", "winners-report.csv");
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace TrickyTrayAPI.Models
         [Required]
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
-
+        
         [AllowNull]
         public int? WinnerId { get; set; }
         public User? Winner { get; set; }

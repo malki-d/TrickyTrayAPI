@@ -147,5 +147,20 @@ namespace TrickyTrayAPI.Services
                 throw;
             }
         }
+
+        public async Task<PurchaseRevenueDTO> GetTotalRevenueAsync()
+        {
+            try
+            {
+                var revenue = await _repository.GetTotalRevenueAsync();
+                _logger.LogInformation("Retrieved total revenue");
+                return revenue;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving total revenue");
+                throw;
+            }
+        }
     }
 }

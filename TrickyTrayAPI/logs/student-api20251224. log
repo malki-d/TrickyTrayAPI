@@ -3668,3 +3668,100 @@ WHERE [g].[CategoryId] = @__categoryId_0
 2025-12-24 19:15:40.644 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.GiftController.GetByCategory (TrickyTrayAPI)'
 2025-12-24 19:15:40.645 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Gift/by-category/1 - 200 null application/json; charset=utf-8 99.3117ms
 >>>>>>> 3f6e407b5abfa66b091ec4b017372bffbd1fd44c
+2025-12-24 19:39:59.357 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:39:59.421 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:39:59.604 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:39:59.606 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:39:59.609 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:40:10.910 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:40:10.975 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:40:11.194 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:40:11.203 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:40:11.207 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:40:18.079 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:40:18.079 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:40:18.116 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 47.8345ms
+2025-12-24 19:40:18.493 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 426.3039ms
+2025-12-24 19:40:18.552 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:40:18.828 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 276.0343ms
+2025-12-24 19:40:52.453 +02:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 19:40:52.491 +02:00 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-12-24 19:40:52.505 +02:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_getapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session', @LockMode = 'Exclusive';
+SELECT @result
+2025-12-24 19:40:52.551 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+IF OBJECT_ID(N'[__EFMigrationsHistory]') IS NULL
+BEGIN
+    CREATE TABLE [__EFMigrationsHistory] (
+        [MigrationId] nvarchar(150) NOT NULL,
+        [ProductVersion] nvarchar(32) NOT NULL,
+        CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY ([MigrationId])
+    );
+END;
+2025-12-24 19:40:52.558 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT 1
+2025-12-24 19:40:52.561 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT OBJECT_ID(N'[__EFMigrationsHistory]');
+2025-12-24 19:40:52.565 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [MigrationId], [ProductVersion]
+FROM [__EFMigrationsHistory]
+ORDER BY [MigrationId];
+2025-12-24 19:40:52.574 +02:00 [INF] Applying migration '20251224165129_initialCreate6'.
+2025-12-24 19:40:52.600 +02:00 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE [Gifts] ADD [ImgUrl] nvarchar(200) NOT NULL DEFAULT N'';
+2025-12-24 19:40:52.603 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251224165129_initialCreate6', N'9.0.11');
+2025-12-24 19:40:52.604 +02:00 [INF] Applying migration '20251224174043_init4'.
+2025-12-24 19:40:52.610 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251224174043_init4', N'9.0.11');
+2025-12-24 19:40:52.625 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+DECLARE @result int;
+EXEC @result = sp_releaseapplock @Resource = '__EFMigrationsLock', @LockOwner = 'Session';
+SELECT @result
+2025-12-24 19:41:06.781 +02:00 [INF] Now listening on: https://localhost:7260
+2025-12-24 19:41:06.840 +02:00 [INF] Now listening on: http://localhost:5273
+2025-12-24 19:41:07.025 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-24 19:41:07.028 +02:00 [INF] Hosting environment: Development
+2025-12-24 19:41:07.030 +02:00 [INF] Content root path: C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI
+2025-12-24 19:41:08.820 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_vs/browserLink - null null
+2025-12-24 19:41:08.820 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - null null
+2025-12-24 19:41:08.885 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_framework/aspnetcore-browser-refresh.js - 200 13762 application/javascript; charset=utf-8 76.2068ms
+2025-12-24 19:41:08.945 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/_vs/browserLink - 200 null text/javascript; charset=UTF-8 137.6786ms
+2025-12-24 19:41:09.009 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - null null
+2025-12-24 19:41:09.235 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 226.4581ms
+2025-12-24 19:41:18.434 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Donors - null null
+2025-12-24 19:41:18.460 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI)'
+2025-12-24 19:41:18.516 +02:00 [INF] Route matched with {action = "GetAll", controller = "Donors"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[System.Collections.Generic.IEnumerable`1[TrickyTrayAPI.DTOs.GetDonorDTO]]] GetAll() on controller TrickyTrayAPI.Controllers.DonorsController (TrickyTrayAPI).
+2025-12-24 19:41:21.198 +02:00 [INF] Executed DbCommand (62ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber]
+FROM [Donors] AS [d]
+2025-12-24 19:41:21.382 +02:00 [INF] get donors
+2025-12-24 19:41:21.397 +02:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SelectListIterator`2[[TrickyTrayAPI.Models.Donor, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[TrickyTrayAPI.DTOs.GetDonorDTO, TrickyTrayAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-12-24 19:41:21.414 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI) in 2885.5479ms
+2025-12-24 19:41:21.443 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetAll (TrickyTrayAPI)'
+2025-12-24 19:41:21.466 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Donors - 200 null application/json; charset=utf-8 3031.8314ms
+2025-12-24 19:41:30.853 +02:00 [INF] Request starting HTTP/2 GET https://localhost:7260/api/Donors/1/with-gifts - null null
+2025-12-24 19:41:30.868 +02:00 [INF] Executing endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetDonorWithGifts (TrickyTrayAPI)'
+2025-12-24 19:41:30.890 +02:00 [INF] Route matched with {action = "GetDonorWithGifts", controller = "Donors"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.ActionResult`1[TrickyTrayAPI.DTOs.GetDonorWithGiftsDTO]] GetDonorWithGifts(Int32) on controller TrickyTrayAPI.Controllers.DonorsController (TrickyTrayAPI).
+2025-12-24 19:41:30.935 +02:00 [INF] Getting donor with gifts for donorId 1
+2025-12-24 19:41:31.448 +02:00 [INF] Executed DbCommand (101ms) [Parameters=[@__donorId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT [d0].[Id], [d0].[Email], [d0].[Name], [d0].[PhoneNumber], [s].[Id], [s].[CategoryId], [s].[Description], [s].[DonorId], [s].[ImgUrl], [s].[Name], [s].[WinnerId], [s].[Id0], [s].[Name0]
+FROM (
+    SELECT TOP(1) [d].[Id], [d].[Email], [d].[Name], [d].[PhoneNumber]
+    FROM [Donors] AS [d]
+    WHERE [d].[Id] = @__donorId_0
+) AS [d0]
+LEFT JOIN (
+    SELECT [g].[Id], [g].[CategoryId], [g].[Description], [g].[DonorId], [g].[ImgUrl], [g].[Name], [g].[WinnerId], [c].[Id] AS [Id0], [c].[Name] AS [Name0]
+    FROM [Gifts] AS [g]
+    INNER JOIN [Categories] AS [c] ON [g].[CategoryId] = [c].[Id]
+) AS [s] ON [d0].[Id] = [s].[DonorId]
+ORDER BY [d0].[Id], [s].[Id]
+2025-12-24 19:41:31.555 +02:00 [INF] Executing OkObjectResult, writing value of type 'TrickyTrayAPI.DTOs.GetDonorWithGiftsDTO'.
+2025-12-24 19:41:31.564 +02:00 [INF] Executed action TrickyTrayAPI.Controllers.DonorsController.GetDonorWithGifts (TrickyTrayAPI) in 668.7989ms
+2025-12-24 19:41:31.566 +02:00 [INF] Executed endpoint 'TrickyTrayAPI.Controllers.DonorsController.GetDonorWithGifts (TrickyTrayAPI)'
+2025-12-24 19:41:31.568 +02:00 [INF] Request finished HTTP/2 GET https://localhost:7260/api/Donors/1/with-gifts - 200 null application/json; charset=utf-8 716.7051ms

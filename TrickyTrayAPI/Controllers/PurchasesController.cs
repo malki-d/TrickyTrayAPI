@@ -69,5 +69,13 @@ namespace TrickyTrayAPI.Controllers
             }
             return NoContent();
         }
+
+        // GET: api/Purchases/revenue
+        [HttpGet("revenue")]
+        public async Task<ActionResult<PurchaseRevenueDTO>> GetTotalRevenue()
+        {
+            var revenue = await _service.GetTotalRevenueAsync();
+            return Ok(revenue);
+        }
     }
 }

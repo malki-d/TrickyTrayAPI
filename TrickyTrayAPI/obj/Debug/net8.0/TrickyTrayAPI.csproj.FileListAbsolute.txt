@@ -572,11 +572,6 @@ C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\TrickyTrayAPI.sourcelink.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets\msbuild.TrickyTrayAPI.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets\msbuild.build.TrickyTrayAPI.props
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.TrickyTrayAPI.props
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.TrickyTrayAPI.props
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\scopedcss\bundle\TrickyTrayAPI.styles.css
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\TrickyTr.826D2C78.Up2Date
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\TrickyTrayAPI.dll
@@ -584,3 +579,11 @@ C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\TrickyTrayAPI.pdb
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\TrickyTrayAPI.genruntimeconfig.cache
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\ref\TrickyTrayAPI.dll
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\bin\Debug\net8.0\TrickyTrayAPI.staticwebassets.endpoints.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

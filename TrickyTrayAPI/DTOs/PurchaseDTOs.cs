@@ -21,5 +21,11 @@ namespace TrickyTrayAPI.DTOs
         public int Price { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
     }
+
+    public class PurchaseRevenueDTO
+    {
+        public int TotalRevenue { get; set; }
+        public DateTime AsOf { get; set; }
+    }
 }  
 

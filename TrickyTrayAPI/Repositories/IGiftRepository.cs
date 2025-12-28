@@ -14,5 +14,7 @@ namespace TrickyTrayAPI.Repositories
         Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory);
         Task<IEnumerable<Gift>> SearchAsync(string? giftName, string? donorName, int? purchaserCount);
         Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id);
+        Task<bool> UpdateWinnerAsync(int giftId, int winnerId);
+        Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync();
     }
 }
