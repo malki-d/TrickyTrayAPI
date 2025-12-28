@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApi.Data;
 
@@ -11,9 +12,11 @@ using WebApi.Data;
 namespace TrickyTrayAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251224165129_initialCreate6")]
+    partial class initialCreate6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,7 +255,7 @@ namespace TrickyTrayAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TrickyTrayAPI.Models.Donor", "Donor")
-                        .WithMany("Gifts")
+                        .WithMany()
                         .HasForeignKey("DonorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -307,11 +310,6 @@ namespace TrickyTrayAPI.Migrations
                     b.HasOne("TrickyTrayAPI.Models.Gift", null)
                         .WithMany("Users")
                         .HasForeignKey("GiftId");
-                });
-
-            modelBuilder.Entity("TrickyTrayAPI.Models.Donor", b =>
-                {
-                    b.Navigation("Gifts");
                 });
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Gift", b =>

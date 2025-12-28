@@ -3,6 +3,7 @@ using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Services;
 using WebApi.Data;
+using System.Linq;
 
 namespace TrickyTrayAPI.Repositories
 {
@@ -11,20 +12,21 @@ namespace TrickyTrayAPI.Repositories
         private readonly AppDbContext _context;
         private readonly ILogger<GiftService> _logger;
 
+
         public GiftRepository(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IEnumerable<Gift>> GetAllAsync()
         {
-            return await _context.Gifts.Include(x=>x.Category).Include(x => x.Donor).Include(x => x.Winner).ToListAsync();
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).ToListAsync();
         }
 
         public async Task<Gift?> GetByIdAsync(int id)
         {
-            return await _context.Gifts.Include(x=>x.Category).Include(x => x.Donor).Include(x => x.Winner).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).FirstOrDefaultAsync(p => p.Id == id);
         }
-       
+
         public async Task<Gift> AddAsync(CreateGiftDTO gift)
         {
 
@@ -41,7 +43,7 @@ namespace TrickyTrayAPI.Repositories
             g.Name = gift.Name;
             g.CategoryId = gift.CategoryId;
             g.Description = gift.Description;
-          
+            g.ImgUrl = gift.ImgUrl;
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
         }
@@ -55,7 +57,7 @@ namespace TrickyTrayAPI.Repositories
                 return false;
 
             }
-            if (product == null )
+            if (product == null)
             {
                 _logger.LogInformation("cand find product " + id);
                 return false;
@@ -71,6 +73,69 @@ namespace TrickyTrayAPI.Repositories
             return await _context.Gifts.AnyAsync(p => p.Id == id);
         }
 
+        public async Task<IEnumerable<Gift>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
+        {
+            var query = _context.Gifts
+                .Include(g => g.Donor)
+                .Include(g => g.Users).
+                Include(x => x.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(giftName))
+                query = query.Where(g => g.Name.Contains(giftName));
+
+            if (!string.IsNullOrEmpty(donorName))
+                query = query.Where(g => g.Donor.Name.Contains(donorName));
+
+            if (purchaserCount.HasValue)
+                query = query.Where(g => g.Users.Count == purchaserCount.Value);
+
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory)
+        {
+            var query = _context.Gifts.Include(g => g.Donor)
+                .Include(g => g.Users).
+                Include(x => x.Category).AsQueryable();
+
+            if (sortByName && sortByCategory)
+                query = query.OrderBy(g => g.Category.Name).ThenBy(g => g.Name);
+            else if (sortByCategory)
+                query = query.OrderBy(g => g.Category.Name);
+            else if (sortByName)
+                query = query.OrderBy(g => g.Name);
+
+            return await query.ToListAsync();
+        }
+        public async Task<IEnumerable<Gift>> GetByCategoryAsync(int categoryId)
+        {
+            return await _context.Gifts
+                .Include(g => g.Category)
+                .Include(g => g.Donor)
+                .Include(g => g.Winner)
+                .Where(g => g.CategoryId == categoryId)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
+        {
+            IQueryable<Gift> query = _context.Gifts
+           .Include(g => g.Users).Include(g=>g.Category).Include(g => g.Donor);
+
+
+            switch (sortBy?.ToLower())
+            {
+                case "purchases":
+                    query = query.OrderByDescending(g => g.Users.Count);
+                    break;
+
+                default:
+                    query = query.OrderBy(g => g.Name);
+                    break;
+            }
+
+            return await query.ToListAsync();
+
+        }
 
     }
 }

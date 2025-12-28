@@ -11,6 +11,10 @@ namespace TrickyTrayAPI.Models
         [MaxLength(100), Required]
         public string? Name { get; set; }
         [MaxLength(200), Required]
+
+        public string ImgUrl { get; set; }
+        [MaxLength(200), Required]
+
         public string? Description { get; set; }
 
         [Required]

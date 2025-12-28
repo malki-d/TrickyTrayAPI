@@ -68,5 +68,29 @@ namespace TrickyTrayAPI.Controllers
 
             return NoContent();
         }
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> Search([FromQuery] string? giftName, [FromQuery] string? donorName, [FromQuery] int? purchaserCount)
+        {
+            var results = await _giftservice.SearchAsync(giftName, donorName, purchaserCount);
+            return Ok(results);
+        }
+        [HttpGet("sorted")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> GetSorted([FromQuery] bool sortByName = false, [FromQuery] bool sortByCategory = false)
+        {
+            var gifts = await _giftservice.GetSortedAsync(sortByName, sortByCategory);
+            return Ok(gifts);
+        }
+        [HttpGet("by-category/{categoryId}")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> GetByCategory(int categoryId)
+        {
+            var gifts = await _giftservice.GetByCategoryAsync(categoryId);
+            return Ok(gifts);
+        }
+        [HttpGet("by-purchases/{sortBy}")]
+        public async Task<ActionResult<IEnumerable<GetGiftDTO>>> GetSortedGiftsAsync(string sortBy)
+        {
+            var gifts = await _giftservice.GetSortedGiftsAsync(sortBy);
+            return Ok(gifts);
+        }
     }
 }
