@@ -9,7 +9,8 @@ public class UserCreateDTO
     [Required(ErrorMessage = "שם פרטי הוא שדה חובה")]
     [StringLength(50, MinimumLength = 2, ErrorMessage = "שם פרטי חייב להיות בין 2 ל-50 תווים")]
     public string FirstName { get; set; }
-    [Required,MaxLength(200)]
+    [Required(ErrorMessage = "שם משפחה הוא שדה חובה")]
+    [StringLength(50, MinimumLength = 2, ErrorMessage = "שם משפחה חייב להיות בין 2 ל-50 תווים")]
     public string LastName { get; set; }
 
     [Required]
