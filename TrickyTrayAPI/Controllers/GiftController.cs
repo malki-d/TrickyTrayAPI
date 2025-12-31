@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
@@ -38,14 +39,14 @@ namespace TrickyTrayAPI.Controllers
             return Ok(gift);
         }
 
-
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Gift>> Create(CreateGiftDTO gift)
         {
             var createdGift = await _giftservice.AddAsync(gift);
             return Ok(createdGift);
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult<Gift>> Update(UpdateGiftDTO gift,int id)
         {
@@ -57,7 +58,7 @@ namespace TrickyTrayAPI.Controllers
             var updatedProduct = await _giftservice.UpdateAsync(gift,id);
             return Ok(updatedProduct);
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -86,6 +87,7 @@ namespace TrickyTrayAPI.Controllers
             var gifts = await _giftservice.GetByCategoryAsync(categoryId);
             return Ok(gifts);
         }
+        [Authorize]
         [HttpGet("random")]
         public async Task<ActionResult<IEnumerable<GetGiftWithWinnerDTO>>> RandomWinners()
         {
@@ -99,7 +101,7 @@ namespace TrickyTrayAPI.Controllers
             var report = await _giftservice.GetGiftWinnersReportAsync();
             return Ok(report);
         }
-
+        [Authorize]
         [HttpGet("winners-report/export")]
         public async Task<IActionResult> ExportWinnersReport([FromQuery] string format = "csv")
         {

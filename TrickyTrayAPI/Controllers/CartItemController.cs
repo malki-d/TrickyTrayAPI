@@ -2,9 +2,11 @@
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Services;
 using TrickyTrayAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrickyTrayAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CartItemsController : ControllerBase

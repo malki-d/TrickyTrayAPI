@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
@@ -6,6 +7,7 @@ using TrickyTrayAPI.Services;
 
 namespace TrickyTrayAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class DonorsController : ControllerBase

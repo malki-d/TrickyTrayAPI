@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrickyTrayAPI.DTOs;
@@ -6,6 +7,7 @@ using TrickyTrayAPI.Services;
 
 namespace TrickyTrayAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PurchasesController : ControllerBase

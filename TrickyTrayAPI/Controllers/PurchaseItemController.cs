@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrickyTrayAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PurchaseItemController : ControllerBase
