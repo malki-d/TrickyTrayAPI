@@ -11,12 +11,11 @@ namespace TrickyTrayAPI.Repositories
         Task<IEnumerable<Gift>> GetAllAsync();
         Task<IEnumerable<Gift>> GetByCategoryAsync(int categoryId);
         Task<Gift?> GetByIdAsync(int id);
+        Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync();
         Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory);
+        Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy);
         Task<IEnumerable<Gift>> SearchAsync(string? giftName, string? donorName, int? purchaserCount);
         Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id);
         Task<bool> UpdateWinnerAsync(int giftId, int winnerId, bool forceUpdate = false);
-        Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync();
-
-        Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy);
     }
 }

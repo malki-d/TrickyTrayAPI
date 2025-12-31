@@ -24,7 +24,7 @@ namespace TrickyTrayAPI.Repositories
 
         public async Task<Gift?> GetByIdAsync(int id)
         {
-            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x=>x.Users).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.Users).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Gift> AddAsync(CreateGiftDTO gift)
@@ -50,7 +50,7 @@ namespace TrickyTrayAPI.Repositories
         public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId, bool forceUpdate = false)
         {
             var g = await GetByIdAsync(giftId);
-            if(g == null)
+            if (g == null)
             {
                 _logger.LogInformation("cannot find gift " + giftId);
                 return false;
@@ -116,12 +116,6 @@ namespace TrickyTrayAPI.Repositories
                 .Include(g => g.Users).
                 Include(x => x.Category).AsQueryable();
 
-            if (sortByName && sortByCategory)
-                query = query.OrderBy(g => g.Category.Name).ThenBy(g => g.Name);
-            else if (sortByCategory)
-                query = query.OrderBy(g => g.Category.Name);
-            else if (sortByName)
-                query = query.OrderBy(g => g.Name);
 
             return await query.ToListAsync();
         }
@@ -171,9 +165,6 @@ namespace TrickyTrayAPI.Repositories
 
         }
 
-        
+
     }
 }
-
-           
-       
