@@ -36,7 +36,7 @@ namespace TrickyTrayAPI.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message, "cant get gifts");
-                throw;
+                return null;
             }
         }
 
@@ -109,7 +109,8 @@ namespace TrickyTrayAPI.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "cant delete gift " + id);
-                throw;
+                return false;
+                ;
             }
 
         }
@@ -126,7 +127,8 @@ namespace TrickyTrayAPI.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "cant check Exists gift " + id);
-                throw;
+                return false;
+                
             }
         }
         public async Task<IEnumerable<GetGiftDTO>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
@@ -181,7 +183,7 @@ namespace TrickyTrayAPI.Services
             {
 
                 _logger.LogError(ex.Message, "cant GetSortedGiftsAsync");
-                throw;
+                return null;
             }
         }
 
