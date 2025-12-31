@@ -166,62 +166,6 @@ namespace TrickyTrayAPI.Services
                 // הוסף שדות נוספים לפי הצורך
             });
         }
-        public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
-        {
-            var gifts = await _giftrepository.GetAllAsync();
-            foreach(var g in gifts)
-            {
-                await RandomWinnerAsync(g.Id);
-            }
-            var gifts2 = await _giftrepository.GetAllAsync();
-            return gifts2.Select(g => new GetGiftWithWinnerDTO
-            {
-                Name = g.Name,
-                WinnerName = g.Winner != null ? g.Winner.FirstName + " " + g.Winner.LastName : string.Empty,
-                WinnerEmail = g.Winner != null ? g.Winner.Email : string.Empty,
-                Description = g.Description,
-                Category = g.Category.Name,
-                ImgUrl = g.ImgUrl
-                // הוסף שדות נוספים לפי הצורך
-            });
-        }
-        public async Task RandomWinnerAsync(int giftId)
-        {
-            try
-            {
-                var gift = await _giftrepository.GetByIdAsync(giftId);
-                if (gift == null)
-                {
-                    _logger.LogInformation("gift not found " + giftId);
-                    return;
-                }
-                var users = gift.Users?.ToList();
-                if (users == null || users.Count == 0)
-                {
-                    _logger.LogInformation("no users for gift " + giftId);
-                    return;
-                }
-                var random = new Random();
-                int index = random.Next(users.Count);
-                var winner = users[index];
-                var updated = await _giftrepository.UpdateWinnerAsync(giftId, winner.Id);
-                var logLine = $"{DateTime.UtcNow:u} - GiftId:{giftId} WinnerId:{winner.Id} WinnerEmail:{winner.Email} WinnerName:{winner.FirstName} {winner.LastName}";
-                var logPath = Path.Combine(Directory.GetCurrentDirectory(), "logs");
-                Directory.CreateDirectory(logPath);
-                var file = Path.Combine(logPath, "winners.log");
-                await File.AppendAllTextAsync(file, logLine + Environment.NewLine);
-                if (updated)
-                    _logger.LogInformation("random winner assigned to gift " + giftId + " user " + winner.Id);
-                else
-                    _logger.LogInformation("random winner NOT assigned to gift " + giftId + " user " + winner.Id);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "cant assign random winner to gift " + giftId);
-                throw;
-            }
-        }
 
         public async Task<IEnumerable<GetGiftDTO>> GetSortedGiftsAsync(string sortBy)
         {
@@ -287,6 +231,44 @@ namespace TrickyTrayAPI.Services
             return Encoding.UTF8.GetBytes(sb.ToString());
         }
 
+        public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
+        {
+            var gifts = await _giftrepository.GetAllAsync();
+            foreach (var gift in gifts)
+            {
+                await RandomWinnerAsync(gift.Id);
+            }
+            var gifts2 = await _giftrepository.GetAllAsync();
+            return gifts2.Select(g => new GetGiftWithWinnerDTO
+            {
+                Name = g.Name,
+                Description = g.Description,
+                Category = g.Category.Name,
+                ImgUrl = g.ImgUrl,
+                WinnerName = g.Winner != null ? g.Winner.FirstName + g.Winner.LastName : "No Winner",
+                WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
+            });
+        }
 
+        public async Task<bool> RandomWinnerAsync(int giftId)
+        {
+            Random rnd = new Random();
+            var gifts = await _giftrepository.GetByIdAsync(giftId);
+            if (gifts == null)
+            {
+                _logger.LogInformation("cannot find gift " + giftId);
+                return false;
+            }
+            var users = gifts.Users.ToList();
+            if (users.Count == 0)
+            {
+                _logger.LogInformation("no users for gift " + giftId);
+                return false;
+            }
+            var winnerIndex = rnd.Next(users.Count);
+            var winnerId = users[winnerIndex].Id;
+            return await _giftrepository.UpdateWinnerAsync(giftId, winnerId, true);
+
+        }
     }
 }

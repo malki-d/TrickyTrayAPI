@@ -47,7 +47,7 @@ namespace TrickyTrayAPI.Repositories
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
         }
-        public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId)
+        public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId, bool forceUpdate = false)
         {
             var g = await GetByIdAsync(giftId);
             if(g == null)
@@ -55,8 +55,8 @@ namespace TrickyTrayAPI.Repositories
                 _logger.LogInformation("cannot find gift " + giftId);
                 return false;
             }
-            // if there's already a winner, do not overwrite
-            if (g.WinnerId.HasValue)
+            // if there's already a winner, do not overwrite (unless forceUpdate is true)
+            if (!forceUpdate && g.WinnerId.HasValue)
             {
                 _logger.LogInformation("gift " + giftId + " already has a winner");
                 return false;
@@ -170,6 +170,8 @@ namespace TrickyTrayAPI.Repositories
             return await query.ToListAsync();
 
         }
+
+        
     }
 }
 
