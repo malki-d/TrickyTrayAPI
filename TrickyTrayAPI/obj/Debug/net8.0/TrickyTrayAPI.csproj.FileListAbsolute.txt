@@ -1,4 +1,3 @@
-C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\bin\Debug\net8.0\appsettings.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\bin\Debug\net8.0\TrickyTrayAPI.staticwebassets.endpoints.json
 C:\Users\דיסלדורף\Desktop\יד\pp\TrickyTrayAPI\TrickyTrayAPI\bin\Debug\net8.0\TrickyTrayAPI.exe

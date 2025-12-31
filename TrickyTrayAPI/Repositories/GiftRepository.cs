@@ -30,7 +30,7 @@ namespace TrickyTrayAPI.Repositories
         public async Task<Gift> AddAsync(CreateGiftDTO gift)
         {
 
-            var g = new Gift { Name = gift.Name, Description = gift.Description, DonorId = gift.DonorId, CategoryId = gift.CategoryId };
+            var g = new Gift { Name = gift.Name, Description = gift.Description, DonorId = gift.DonorId, CategoryId = gift.CategoryId,ImgUrl=gift.ImgUrl };
             _context.Gifts.Add(g);
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
