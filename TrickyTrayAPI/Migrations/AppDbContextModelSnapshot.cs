@@ -189,6 +189,29 @@ namespace TrickyTrayAPI.Migrations
                     b.ToTable("PurchaseItems");
                 });
 
+            modelBuilder.Entity("TrickyTrayAPI.Models.TicketPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketPrices");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Price = 1
+                        });
+                });
+
             modelBuilder.Entity("TrickyTrayAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")

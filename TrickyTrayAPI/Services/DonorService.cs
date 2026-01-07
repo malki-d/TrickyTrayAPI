@@ -72,19 +72,19 @@ namespace TrickyTrayAPI.Services
 
         }
 
-        public async Task<Donor> UpdateAsync(Donor donor)
+        public async Task<GetDonorDTO> UpdateAsync(int id, CreateDonorDTO donor)
         {
             try
             {
 
-                var updateDonor = await _donorrepository.UpdateAsync(donor);
-                _logger.LogInformation("update donor " + donor.Id);
-                return updateDonor;
+                var updateDonor = await _donorrepository.UpdateAsync(id,donor);
+                _logger.LogInformation("update donor " + id);
+                return new GetDonorDTO() { Email= updateDonor.Email, Name= updateDonor.Name };
 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "cant update donor " + donor.Id);
+                _logger.LogError(ex, "cant update donor " + id);
                 throw;
             }
 

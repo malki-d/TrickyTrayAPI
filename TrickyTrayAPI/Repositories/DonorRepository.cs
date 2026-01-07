@@ -33,11 +33,14 @@ namespace TrickyTrayAPI.Repositories
             return item;
         }
 
-        public async Task<Donor> UpdateAsync(Donor donor)
+        public async Task<Donor> UpdateAsync(int id, CreateDonorDTO donor)
         {
-            _context.Donors.Update(donor);
+            var donorex= await _context.Donors.FirstOrDefaultAsync(p => p.Id == id);
+            donorex.Email=donor.Email;
+            donorex.PhoneNumber=donor.PhoneNumber;
+            donor.Name=donor.Name;
             await _context.SaveChangesAsync();
-            return donor;
+            return donorex;
         }
 
         public async Task<bool> DeleteDonor(int id)
