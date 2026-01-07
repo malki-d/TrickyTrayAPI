@@ -1,15 +1,12 @@
-﻿using TrickyTrayAPI.Models;
-using TrickyTrayAPI.DTOs;
+﻿using TrickyTrayAPI.DTOs;
+using TrickyTrayAPI.Models;
 
-namespace TrickyTrayAPI.Repositories
+public interface IPurchaseRepository
 {
-    public interface IPurchaseRepository
-    {
-        Task<Purchase> AddAsync(Purchase purchase);
-        Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<Purchase>> GetAllAsync();
-        Task<Purchase?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(Purchase purchase);
-        Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
-    }
+    Task AddPurchaseAsync(Purchase purchase);
+    Task ClearUserCartAsync(int userId);
+    Task<IEnumerable<Purchase>> GetAllAsync();
+    Task<List<CartItem>> GetCartItemsByUserIdAsync(int userId);
+    Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
+    Task SaveAsync();
 }

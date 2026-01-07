@@ -1,83 +1,55 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 using TrickyTrayAPI.DTOs;
-using TrickyTrayAPI.Services;
+using TrickyTrayAPI.Models;
 
-namespace TrickyTrayAPI.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class PurchaseController : ControllerBase
 {
-    [Authorize]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PurchasesController : ControllerBase
+    private readonly IPurchaseService _purchaseService;
+
+    public PurchaseController(IPurchaseService purchaseService)
     {
-        private readonly IPurchaseService _service;
+        _purchaseService = purchaseService;
+    }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetPurchases()
+    {
+        var purchases = await _purchaseService.GetAllAsync();
+        return Ok(purchases);
+    }
+    [HttpGet("revenue")]
+    public async Task<ActionResult<PurchaseRevenueDTO>> GetTotalRevenue()
+    {
+        var revenue = await _purchaseService.GetTotalRevenueAsync();
+        return Ok(revenue);
+    }
 
-        public PurchasesController(IPurchaseService service)
+    [HttpPost("checkout/{userId}")]
+    public async Task<IActionResult> Checkout(int userId)
+    {
+        try
         {
-            _service = service;
-        }
-
-        // GET: api/Purchases
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetPurchases()
-        {
-            var purchases = await _service.GetAllAsync();
-            return Ok(purchases);
-        }
-
-        // GET: api/Purchases/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GetPurchaseDTO>> GetPurchase(int id)
-        {
-            var purchase = await _service.GetByIdAsync(id);
-            if (purchase == null)
+            if (userId <= 0)
             {
-                return NotFound();
+                return BadRequest("Invalid User ID");
             }
-            return Ok(purchase);
-        }
 
-        // POST: api/Purchases
-        [HttpPost]
-        public async Task<ActionResult<GetPurchaseDTO>> PostPurchase(CreatePurchaseDTO dto)
-        {
-            var created = await _service.AddAsync(dto);
-            // If you have an Id property in GetPurchaseDTO, you can use it in CreatedAtAction
-            return Ok(created);
-        }
+            // העברת ה-ID לשכבת הסרוויס
+            var purchase = await _purchaseService.ProcessPurchaseAsync(userId);
 
-        // PUT: api/Purchases/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPurchase(int id, CreatePurchaseDTO dto)
-        {
-            var updated = await _service.UpdateAsync(id, dto);
-            if (!updated)
+            return Ok(new
             {
-                return NotFound();
-            }
-            return NoContent();
+                Message = "Purchase successful",
+                PurchaseId = purchase.Id,
+                UserId = purchase.UserId,
+                TotalTickets = purchase.PurchaseItems.Count, // סך הכרטיסים שנוצרו
+                TotalPrice = purchase.Price
+            });
         }
-
-        // DELETE: api/Purchases/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePurchase(int id)
+        catch (Exception ex)
         {
-            var deleted = await _service.DeleteAsync(id);
-            if (!deleted)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
-
-        // GET: api/Purchases/revenue
-        [HttpGet("revenue")]
-        public async Task<ActionResult<PurchaseRevenueDTO>> GetTotalRevenue()
-        {
-            var revenue = await _service.GetTotalRevenueAsync();
-            return Ok(revenue);
+            return BadRequest(new { Error = ex.Message });
         }
     }
 }

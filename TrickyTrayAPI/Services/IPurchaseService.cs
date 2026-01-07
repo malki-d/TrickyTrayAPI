@@ -1,14 +1,9 @@
 ﻿using TrickyTrayAPI.DTOs;
+using TrickyTrayAPI.Models;
 
-namespace TrickyTrayAPI.Services
+public interface IPurchaseService
 {
-    public interface IPurchaseService
-    {
-        Task<GetPurchaseDTO> AddAsync(CreatePurchaseDTO dto);
-        Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<UserResponseDTO>> GetAllAsync();
-        Task<GetPurchaseDTO?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(int id, CreatePurchaseDTO dto);
-        Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
-    }
+    Task<IEnumerable<UserResponseDTO>> GetAllAsync();
+    Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
+    Task<Purchase> ProcessPurchaseAsync(int userId);
 }
