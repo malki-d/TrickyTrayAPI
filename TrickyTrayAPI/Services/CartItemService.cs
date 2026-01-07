@@ -7,12 +7,15 @@ namespace TrickyTrayAPI.Services
     public class CartItemService : ICartItemService
     {
         private readonly ICartItemRepository _repository;
+        private readonly IGiftRepository _repositorygift;
+
         private readonly ILogger<CartItemService> _logger;
 
-        public CartItemService(ICartItemRepository repository, ILogger<CartItemService> logger)
+        public CartItemService(ICartItemRepository repository, ILogger<CartItemService> logger, IGiftRepository repositorygift)
         {
             _repository = repository;
             _logger = logger;
+            _repositorygift = repositorygift;
         }
 
         public async Task<IEnumerable<GetCartItemDTO>> GetAllAsync()
@@ -65,6 +68,13 @@ namespace TrickyTrayAPI.Services
         {
             try
             {
+                var iswinner = await _repositorygift.GetByIdAsync(dto.GiftId);
+                if(iswinner.WinnerId!=0)
+                {
+                    _logger.LogError("this gift was random " + dto.GiftId);
+                    return null;
+                }
+                    
                 var created = await _repository.AddAsync(dto);
                 _logger.LogInformation("Created cart item with id {Id}", created.Id);
                 return created;
