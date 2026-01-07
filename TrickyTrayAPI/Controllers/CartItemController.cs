@@ -37,7 +37,10 @@ namespace TrickyTrayAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<GetCartItemDTO>> Create([FromBody] CreateCartItemDTO dto)
         {
+            
             var created = await _service.CreateAsync(dto);
+            if (created == null)
+                return BadRequest("this gift was random");
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
