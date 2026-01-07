@@ -21,7 +21,7 @@ namespace TrickyTrayAPI.Controllers
 
         // GET: api/Purchases
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetPurchaseDTO>>> GetPurchases()
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetPurchases()
         {
             var purchases = await _service.GetAllAsync();
             return Ok(purchases);

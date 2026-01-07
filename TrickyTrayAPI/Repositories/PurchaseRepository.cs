@@ -20,7 +20,7 @@ namespace TrickyTrayAPI.Repositories
         // Get all purchases
         public async Task<IEnumerable<Purchase>> GetAllAsync()
         {
-            return await _context.Purchases.ToListAsync();
+            return await _context.Purchases.Include(x=>x.User).ToListAsync();
         }
 
         // Get purchase by id

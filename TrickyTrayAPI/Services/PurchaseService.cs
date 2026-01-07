@@ -20,17 +20,17 @@ namespace TrickyTrayAPI.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<GetPurchaseDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
         {
             try
             {
                 var purchases = await _repository.GetAllAsync();
-                var result = purchases.Select(p => new GetPurchaseDTO
+                var result = purchases.Select(p => new UserResponseDTO
                 {
-                    Date = p.Date,
-                    UserId = p.UserId,
-                    Price = p.Price
-                    // Map other properties as needed
+                    FirstName=p.User.FirstName,
+                    LastName=p.User.LastName,
+                    Email =p.User.Email,
+                    Phone=p.User.PhoneNumber,                    
                 });
                 _logger.LogInformation("Successfully retrieved all purchases");
                 return result;
