@@ -7,17 +7,21 @@ using TrickyTrayAPI.Services;
 
 namespace TrickyTrayAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class DonorsController : ControllerBase
     {
+
         private readonly IDonorService _donorservice;
 
         public DonorsController(IDonorService donorservice)
         {
             _donorservice = donorservice;
         }
+        //פונקציה שמביאה כמה תורמים יש לי בסך הכל
+
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetDonorDTO>>> GetAll()
@@ -46,16 +50,13 @@ namespace TrickyTrayAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Donor>> Update(int id, Donor donor)
+        public async Task<ActionResult<GetDonorDTO>> Update(int id, CreateDonorDTO donor)
         {
-            if (id != donor.Id)
-                return BadRequest();
-
             var exists = await _donorservice.ExistsAsync(id);
             if (!exists)
                 return NotFound();
 
-            var updatedDonor = await _donorservice.UpdateAsync(donor);
+            var updatedDonor = await _donorservice.UpdateAsync(id,donor);
             return Ok(updatedDonor);
         }
 

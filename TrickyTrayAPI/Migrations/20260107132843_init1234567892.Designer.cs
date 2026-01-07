@@ -12,8 +12,8 @@ using WebApi.Data;
 namespace TrickyTrayAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251224160559_init2")]
-    partial class init2
+    [Migration("20260107132843_init1234567892")]
+    partial class init1234567892
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,8 @@ namespace TrickyTrayAPI.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -111,6 +112,11 @@ namespace TrickyTrayAPI.Migrations
 
                     b.Property<int>("DonorId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ImgUrl")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -186,6 +192,22 @@ namespace TrickyTrayAPI.Migrations
                     b.ToTable("PurchaseItems");
                 });
 
+            modelBuilder.Entity("TrickyTrayAPI.Models.TicketPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TicketPrices");
+                });
+
             modelBuilder.Entity("TrickyTrayAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -195,16 +217,23 @@ namespace TrickyTrayAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int?>("GiftId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -250,7 +279,7 @@ namespace TrickyTrayAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TrickyTrayAPI.Models.Donor", "Donor")
-                        .WithMany()
+                        .WithMany("Gifts")
                         .HasForeignKey("DonorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -305,6 +334,11 @@ namespace TrickyTrayAPI.Migrations
                     b.HasOne("TrickyTrayAPI.Models.Gift", null)
                         .WithMany("Users")
                         .HasForeignKey("GiftId");
+                });
+
+            modelBuilder.Entity("TrickyTrayAPI.Models.Donor", b =>
+                {
+                    b.Navigation("Gifts");
                 });
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Gift", b =>
