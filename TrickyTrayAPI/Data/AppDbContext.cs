@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Purchase> Purchases { get; set; }
+    public DbSet<TicketPrice> TicketPrices { get; set; }
 
     public DbSet<PurchaseItem> PurchaseItems { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +28,11 @@ public class AppDbContext : DbContext
        .WithMany()
        .HasForeignKey(p => p.GiftId)
        .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<TicketPrice>().HasData(
+        new TicketPrice { Id = 1, Price = 1 }
+        );
+
     }
+
 
 }
