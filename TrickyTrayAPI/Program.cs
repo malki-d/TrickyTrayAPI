@@ -8,10 +8,22 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
-// Add services to the container.
 
 Log.Information("Starting Store API application");
 var builder = WebApplication.CreateBuilder(args);
+
+// --- 1. הגדרת CORS ---
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200") // הכתובת של אנגולר
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials(); // מאפשר שליחת עוגיות/טוקנים אם צריך
+        });
+});
 
 // Add Serilog configuration
 Log.Logger = new LoggerConfiguration()
@@ -19,8 +31,8 @@ Log.Logger = new LoggerConfiguration()
 .WriteTo.File("logs/student-api.log", rollingInterval: RollingInterval.Day)
 .CreateLogger();
 
-// Add Serilog
 builder.Host.UseSerilog();
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("JWT SecretKey is not configured");
 
@@ -58,19 +70,11 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
-builder.Services.AddAuthorization();
 
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer("Server=localhost,1433;Database=DemoToTest;User Id=SA;Password=Str0ng@Passw0rd123;TrustServerCertificate=True;"));
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
-builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -98,32 +102,26 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-NRV805A;Database=DemoToTest_3;Trusted_Connection=True;TrustServerCertificate=True;"));
 
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest;Trusted_Connection=True;TrustServerCertificate=True;"));
+
+// Dependency Injection
 builder.Services.AddScoped<IDonorService, DonorService>();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
-
 builder.Services.AddScoped<IGiftService, GiftService>();
 builder.Services.AddScoped<IGiftRepository, GiftRepository>();
-
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IPurchaseService, PurchaseService>();
-
 builder.Services.AddScoped<ICartItemRepository, CartItemRepository>();
 builder.Services.AddScoped<ICartItemService, CartItemService>();
-
 builder.Services.AddScoped<IPurchaseItemRepository, PurchaseItemRepository>();
 builder.Services.AddScoped<IPurchaseItemService, PurchaseItemService>();
-
-
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
 builder.Services.AddScoped<ITicketPriceService, TicketPriceService>();
 
 var app = builder.Build();
@@ -135,9 +133,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// --- 2. הפעלת ה-CORS (חייב להיות לפני Authentication) ---
+app.UseCors("AngularPolicy");
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
