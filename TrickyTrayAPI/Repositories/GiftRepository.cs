@@ -27,10 +27,19 @@ namespace TrickyTrayAPI.Repositories
             return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.Users).FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<Gift> AddAsync(CreateGiftDTO gift)
+        // שנה את המתודה הזו ב-GiftRepository.cs
+        public async Task<Gift> AddAsync(CreateGiftDTO giftDto, string imageUrl)
         {
+            // יצירת הישות עם הנתיב שנשלח מה-Service
+            var g = new Gift
+            {
+                Name = giftDto.Name,
+                Description = giftDto.Description,
+                DonorId = giftDto.DonorId,
+                CategoryId = giftDto.CategoryId,
+                ImgUrl = imageUrl // השמת הנתיב הסופי
+            };
 
-            var g = new Gift { Name = gift.Name, Description = gift.Description, DonorId = gift.DonorId, CategoryId = gift.CategoryId, ImgUrl = gift.ImgUrl };
             _context.Gifts.Add(g);
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);

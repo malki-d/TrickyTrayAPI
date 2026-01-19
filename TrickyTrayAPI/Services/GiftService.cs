@@ -62,41 +62,99 @@ namespace TrickyTrayAPI.Services
 
         }
 
-        public async Task<GetGiftDTO> AddAsync(CreateGiftDTO gift)
+        public async Task<GetGiftDTO> AddAsync(CreateGiftDTO giftDto)
         {
             try
             {
-                var newGift = await _giftrepository.AddAsync(gift);
-                _logger.LogInformation("create gift " + newGift.Id);
-                return new GetGiftDTO { Name = newGift.Name, Description = newGift.Description, Category = newGift.Category.Name, DonorName = newGift.Donor.Name, ImgUrl = newGift.ImgUrl };
+                // 1. יצירת שם ייחודי לקובץ ושמירתו
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(giftDto.ImageFile.FileName);
+                string wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                string filePath = Path.Combine(wwwrootPath, "images", fileName);
 
+                // וודא שהתיקייה קיימת
+                if (!Directory.Exists(Path.Combine(wwwrootPath, "images")))
+                    Directory.CreateDirectory(Path.Combine(wwwrootPath, "images"));
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await giftDto.ImageFile.CopyToAsync(stream);
+                }
+
+                // 2. שליחה ל-Repository עם הנתיב היחסי
+                string relativePath = "/images/" + fileName;
+                var newGift = await _giftrepository.AddAsync(giftDto, relativePath);
+
+                _logger.LogInformation("Gift created with image: " + newGift.Id);
+
+                return new GetGiftDTO
+                {
+                    Name = newGift.Name,
+                    Description = newGift.Description,
+                    Category = newGift.Category.Name,
+                    DonorName = newGift.Donor.Name,
+                    ImgUrl = newGift.ImgUrl
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "cant create gift");
+                _logger.LogError(ex, "Failed to add gift with image");
                 throw;
             }
-
         }
 
-        public async Task<GetGiftDTO> UpdateAsync(UpdateGiftDTO gift, int id)
+        public async Task<GetGiftDTO> UpdateAsync(UpdateGiftDTO giftDto, int id)
         {
             try
             {
+                // 1. שליפת הנתונים הקיימים כדי לדעת מה היה נתיב התמונה הישנה
+                var existingGift = await _giftrepository.GetByIdAsync(id);
+                if (existingGift == null) throw new Exception("Gift not found");
 
-                var updateGift = await _giftrepository.UpdateAsync(gift, id);
-                _logger.LogInformation("update gift " + id);
-                return new GetGiftDTO { Name = updateGift.Name, Description = updateGift.Description, Category = updateGift.Category.Name, DonorName = updateGift.Donor.Name, ImgUrl = updateGift.ImgUrl };
+                string finalImgUrl = existingGift.ImgUrl;
 
+                // 2. בדיקה אם המשתמש העלה קובץ תמונה חדש
+                if (giftDto.ImageFile != null)
+                {
+                    // שמירת הקובץ החדש
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(giftDto.ImageFile.FileName);
+                    string wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                    string filePath = Path.Combine(wwwrootPath, "images", fileName);
+
+                    if (!Directory.Exists(Path.Combine(wwwrootPath, "images")))
+                        Directory.CreateDirectory(Path.Combine(wwwrootPath, "images"));
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await giftDto.ImageFile.CopyToAsync(stream);
+                    }
+
+                    // מחיקת הקובץ הישן מהשרת (אופציונלי אך מומלץ)
+                    string oldFilePath = Path.Combine(wwwrootPath, existingGift.ImgUrl.TrimStart('/'));
+                    if (File.Exists(oldFilePath)) File.Delete(oldFilePath);
+
+                    finalImgUrl = "/images/" + fileName;
+                }
+
+                // 3. עדכון ה-DTO עם הנתיב הנכון (החדש או הקיים)
+                giftDto.ImgUrl = finalImgUrl;
+
+                var updateGift = await _giftrepository.UpdateAsync(giftDto, id);
+
+                return new GetGiftDTO
+                {
+                    Name = updateGift.Name,
+                    Description = updateGift.Description,
+                    Category = updateGift.Category.Name,
+                    DonorName = updateGift.Donor.Name,
+                    ImgUrl = updateGift.ImgUrl
+                };
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "cant update gift " + id);
                 throw;
             }
-
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
             try

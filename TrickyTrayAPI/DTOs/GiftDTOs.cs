@@ -41,23 +41,27 @@ namespace TrickyTrayAPI.DTOs
         public string? Name { get; set; }
         [MaxLength(200), Required]
         public string? Description { get; set; }
-        [MaxLength(200), Required]
-        public string? ImgUrl { get; set; }
+
+        // זה השדה שיקבל את הקובץ מה-Form
+        [Required]
+        public IFormFile ImageFile { get; set; }
+
         [Required]
         public int DonorId { get; set; }
         [Required]
-
         public int CategoryId { get; set; }
-
     }
     public class UpdateGiftDTO
     {
-    
         [Required, MaxLength(200)]
         public string Name { get; set; }
-        [Required, MaxLength(200)]
 
+        [Required, MaxLength(200)]
         public string Description { get; set; }
+
+        // הוסיפי את השדה הזה כדי לקבל קובץ
+        public IFormFile? ImageFile { get; set; }
+
         public string? ImgUrl { get; set; }
 
         [Required]

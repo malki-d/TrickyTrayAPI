@@ -39,8 +39,11 @@ namespace TrickyTrayAPI.Controllers
         {
             
             var created = await _service.CreateAsync(dto);
+
             if (created == null)
-                return BadRequest("this gift was random");
+                return BadRequest("this gift was random, you cant buy this...");
+
+
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 

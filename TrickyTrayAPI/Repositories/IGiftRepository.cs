@@ -5,7 +5,7 @@ namespace TrickyTrayAPI.Repositories
 {
     public interface IGiftRepository
     {
-        Task<Gift> AddAsync(CreateGiftDTO gift);
+        Task<Gift> AddAsync(CreateGiftDTO giftDto, string imageUrl);
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task<IEnumerable<Gift>> GetAllAsync();
