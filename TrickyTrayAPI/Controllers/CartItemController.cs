@@ -44,7 +44,7 @@ namespace TrickyTrayAPI.Controllers
                 return BadRequest("this gift was random, you cant buy this...");
 
 
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id },new GetCartItemDTO() { UserName=created.User.FirstName,GiftName=created.Gift.Name,Quantity=created.Quantity});
         }
 
         [HttpPut("{id}")]
