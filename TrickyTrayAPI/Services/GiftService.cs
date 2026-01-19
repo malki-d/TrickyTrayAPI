@@ -15,12 +15,16 @@ namespace TrickyTrayAPI.Services
 
     {
         private readonly IGiftRepository _giftrepository;
+        private readonly ICartItemRepository _cartitemRepository;
+
         private readonly ILogger<GiftService> _logger;
 
-        public GiftService(IGiftRepository giftrepository, ILogger<GiftService> logger)
+        public GiftService(ICartItemRepository _cartitemRepository, IGiftRepository giftrepository, ILogger<GiftService> logger)
         {
             _giftrepository = giftrepository;
             _logger = logger;
+            _cartitemRepository = _cartitemRepository;
+
         }
 
         public async Task<IEnumerable<GetGiftDTO>> GetAllAsync()
@@ -293,21 +297,35 @@ namespace TrickyTrayAPI.Services
 
         public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
         {
-            var gifts = await _giftrepository.GetAllAsync();
-            foreach (var gift in gifts)
+            try
             {
-                await RandomWinnerAsync(gift.Id);
+                var gifts = await _giftrepository.GetAllAsync();
+                foreach (var gift in gifts)
+                {
+                    await RandomWinnerAsync(gift.Id);
+                }
+                var gifts2 = await _giftrepository.GetAllAsync();
+                var cartitems = await _cartitemRepository.GetAllAsync();
+                foreach (var cartitem in cartitems)
+                {
+                   await _cartitemRepository.DeleteAsync(cartitem.Id);
+                }
+                return gifts2.Select(g => new GetGiftWithWinnerDTO
+                {
+                    Name = g.Name,
+                    Description = g.Description,
+                    Category = g.Category.Name,
+                    ImgUrl = g.ImgUrl,
+                    WinnerName = g.Winner != null ? g.Winner.FirstName + g.Winner.LastName : "No Winner",
+                    WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
+                });
+              
+
+
             }
-            var gifts2 = await _giftrepository.GetAllAsync();
-            return gifts2.Select(g => new GetGiftWithWinnerDTO
-            {
-                Name = g.Name,
-                Description = g.Description,
-                Category = g.Category.Name,
-                ImgUrl = g.ImgUrl,
-                WinnerName = g.Winner != null ? g.Winner.FirstName + g.Winner.LastName : "No Winner",
-                WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
-            });
+            catch (Exception ex) {
+                throw;
+            }
         }
 
         public async Task<bool> RandomWinnerAsync(int giftId)

@@ -67,8 +67,7 @@ public class PurchaseService : IPurchaseService
         foreach (var item in cartItems)
         {
             // נניח של-Gift יש שדה Price (הוספתי את זה כהנחה לחישוב המחיר)
-            // int itemPrice = item.Gift.Price; 
-            // totalPrice += itemPrice * item.Quantity;
+             totalPrice += 10 * item.Quantity;
 
             // יצירת רשומות נפרדות לפי הכמות (Quantity)
             for (int i = 0; i < item.Quantity; i++)
