@@ -69,7 +69,11 @@ namespace TrickyTrayAPI.Services
             try
             {
                 var iswinner = await _repositorygift.GetByIdAsync(dto.GiftId);
+<<<<<<< HEAD
                 if(iswinner?.WinnerId!=0)
+=======
+                if(iswinner.WinnerId!=null)
+>>>>>>> 8716dd8a02474c2157f28d9794a061796e206b39
                 {
                     _logger.LogError("this gift was random " + dto.GiftId);
                     return null;
