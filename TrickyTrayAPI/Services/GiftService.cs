@@ -34,7 +34,7 @@ namespace TrickyTrayAPI.Services
                 var donors = await _giftrepository.GetAllAsync();
                 _logger.LogInformation("get gifts");
 
-                return donors.Select(x => new GetGiftDTO() { Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
+                return donors.Select(x => new GetGiftDTO() { Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
 
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace TrickyTrayAPI.Services
                 var gift = await _giftrepository.GetByIdAsync(id);
                 _logger.LogInformation("get gift by id " + id);
 
-                return new GetGiftDTO { Name = gift.Name, Description = gift.Description, Category = gift.Category.Name, DonorName = gift.Donor.Name, ImgUrl = gift.ImgUrl };
+                return new GetGiftDTO { Id = gift.Id, Name = gift.Name, Description = gift.Description, Category = gift.Category.Name, DonorName = gift.Donor.Name, ImgUrl = gift.ImgUrl };
 
             }
             catch (Exception ex)
@@ -88,6 +88,7 @@ namespace TrickyTrayAPI.Services
 
                 return new GetGiftDTO
                 {
+                    Id = newGift.Id,
                     Name = newGift.Name,
                     Description = newGift.Description,
                     Category = newGift.Category.Name,
@@ -142,6 +143,7 @@ namespace TrickyTrayAPI.Services
 
                 return new GetGiftDTO
                 {
+                    Id = updateGift.Id,
                     Name = updateGift.Name,
                     Description = updateGift.Description,
                     Category = updateGift.Category.Name,
@@ -190,7 +192,7 @@ namespace TrickyTrayAPI.Services
             {
                 _logger.LogError(ex, "cant check Exists gift " + id);
                 return false;
-                
+
             }
         }
         public async Task<IEnumerable<GetGiftDTO>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
@@ -198,6 +200,7 @@ namespace TrickyTrayAPI.Services
             var gifts = await _giftrepository.SearchAsync(giftName, donorName, purchaserCount);
             return gifts.Select(g => new GetGiftDTO
             {
+                Id = g.Id,
                 Name = g.Name,
                 DonorName = g.Donor.Name,
                 Description = g.Description,
@@ -210,6 +213,7 @@ namespace TrickyTrayAPI.Services
             var gifts = await _giftrepository.GetSortedAsync(sortByName, sortByCategory);
             return gifts.Select(g => new GetGiftDTO
             {
+                Id = g.Id,
                 Name = g.Name,
                 DonorName = g.Donor.Name,
                 Description = g.Description,
@@ -222,6 +226,7 @@ namespace TrickyTrayAPI.Services
             var gifts = await _giftrepository.GetByCategoryAsync(categoryId);
             return gifts.Select(g => new GetGiftDTO
             {
+                Id = g.Id,
                 Name = g.Name,
                 DonorName = g.Donor.Name,
                 Description = g.Description,
@@ -238,7 +243,7 @@ namespace TrickyTrayAPI.Services
                 var donors = await _giftrepository.GetSortedGiftsAsync(sortBy);
                 _logger.LogInformation("get GetSortedGiftsAsync");
 
-                return donors.Select(x => new GetGiftDTO() { Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
+                return donors.Select(x => new GetGiftDTO() { Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
 
             }
             catch (Exception ex)
@@ -308,7 +313,7 @@ namespace TrickyTrayAPI.Services
                 var cartitems = await _cartitemRepository.GetAllAsync();
                 foreach (var cartitem in cartitems)
                 {
-                   await _cartitemRepository.DeleteAsync(cartitem.Id);
+                    await _cartitemRepository.DeleteAsync(cartitem.Id);
                 }
                 return gifts2.Select(g => new GetGiftWithWinnerDTO
                 {
@@ -319,11 +324,12 @@ namespace TrickyTrayAPI.Services
                     WinnerName = g.Winner != null ? g.Winner.FirstName + g.Winner.LastName : "No Winner",
                     WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
                 });
-              
+
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw;
             }
         }
