@@ -38,7 +38,26 @@ namespace TrickyTrayAPI.Services
                 throw;
             }
         }
+        public async Task<IEnumerable<GetCartItemWithGiftDTO>> GetAllUserCartAsync(int id)
+        {
+            try
+            {
+                var cartItems = await _repository.GetAllUserCartAsync(id);
+                _logger.LogInformation("Fetched all cart items");
 
+                return cartItems.Select(x => new GetCartItemWithGiftDTO
+                {
+                    Id = x.Id,
+                    Gift = new GetGiftDTO() { Id=x.Gift.Id, Category=x.Gift.Category.Name,Description=x.Gift.Description,DonorName="",ImgUrl=x.Gift.ImgUrl,Name=x.Gift.Name},
+                    Quantity = x.Quantity,
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get cart items");
+                throw;
+            }
+        }
         public async Task<GetCartItemDTO?> GetByIdAsync(int id)
         {
             try
@@ -69,16 +88,13 @@ namespace TrickyTrayAPI.Services
             try
             {
                 var iswinner = await _repositorygift.GetByIdAsync(dto.GiftId);
-<<<<<<< HEAD
-                if(iswinner?.WinnerId!=0)
-=======
-                if(iswinner.WinnerId!=null)
->>>>>>> 8716dd8a02474c2157f28d9794a061796e206b39
+
+                if (iswinner?.WinnerId != null)
                 {
                     _logger.LogError("this gift was random " + dto.GiftId);
                     return null;
                 }
-                    
+
                 var created = await _repository.AddAsync(dto);
                 _logger.LogInformation("Created cart item with id {Id}", created.Id);
                 return created;

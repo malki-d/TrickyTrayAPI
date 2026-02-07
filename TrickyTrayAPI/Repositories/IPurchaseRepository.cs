@@ -9,4 +9,6 @@ public interface IPurchaseRepository
     Task<List<CartItem>> GetCartItemsByUserIdAsync(int userId);
     Task<PurchaseRevenueDTO> GetTotalRevenueAsync();
     Task SaveAsync();
+    Task<IEnumerable<Purchase>> GetAllAsyncByUserId(int Id);
+
 }

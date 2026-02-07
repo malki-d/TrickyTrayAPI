@@ -33,7 +33,38 @@ public class PurchaseService : IPurchaseService
         {
             _logger.LogError(ex, "Error getting all purchases");
             throw;
+     
         }
+    }
+    public async Task<IEnumerable<UserPurchaseDto>> GetUserPurchasesLogic(int userId)
+    {
+        // 1. שליפת הנתונים מה-DAL
+        var purchases = await _purchaseRepository.GetAllAsyncByUserId(userId);
+
+        // 2. המרה ועיבוד לוגי (Mapping & Logic)
+        var result = purchases.Select(p => new UserPurchaseDto
+        {
+            PurchaseId = p.Id,
+            Date = p.Date,
+            TotalPrice = p.Price,
+            // סופר כמה שורות יש סה"כ ב-PurchaseItems עבור הקניה הזו
+            TotalTickets = p.PurchaseItems.Count,
+
+            // כאן הקסם קורה: קיבוץ לפי מתנה כדי לקבל "כמות"
+            Items = p.PurchaseItems
+                .GroupBy(pi => pi.GiftId) // מקבצים לפי מזהה המתנה
+                .Select(g => new PurchasedGiftItemDto
+                {
+                    GiftId = g.Key,
+                    // לוקחים את השם והתמונה מהפריט הראשון בקבוצה (הם זהים לכולם)
+                    GiftName = g.First().Gift.Name,
+                    ImgUrl = g.First().Gift.ImgUrl,
+                    // הכמות היא מספר הפריטים בקבוצה הזו
+                    Quantity = g.Count()
+                }).ToList()
+        }).ToList();
+
+        return result;
     }
     public async Task<PurchaseRevenueDTO> GetTotalRevenueAsync()
     {
@@ -67,7 +98,7 @@ public class PurchaseService : IPurchaseService
         foreach (var item in cartItems)
         {
             // נניח של-Gift יש שדה Price (הוספתי את זה כהנחה לחישוב המחיר)
-             totalPrice += 10 * item.Quantity;
+             totalPrice += 40 * item.Quantity;
 
             // יצירת רשומות נפרדות לפי הכמות (Quantity)
             for (int i = 0; i < item.Quantity; i++)

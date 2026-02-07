@@ -19,16 +19,32 @@ namespace TrickyTrayAPI.Services
             _donorrepository = donorrepository;
             _logger = logger;
         }
+        private string shirshur(IEnumerable<Gift> gifts)
+        {
+            if (gifts == null || !gifts.Any())
+                return string.Empty;
 
-        public async Task<IEnumerable<GetDonorDTO>> GetAllDonors()
+            return string.Join(", ", gifts.Select(g => g.Name));
+        }
+        public async Task<IEnumerable<GetDonorWithGiftsDTO>> GetAllDonors()
         {
             try
             {
                 var donors = await _donorrepository.GetAllDonors();
                 _logger.LogInformation("get donors");
 
-                return donors.Select(x => new GetDonorDTO() { Email = x.Email, Name = x.Name, });
+                return donors.Select(donor =>
+                 new GetDonorWithGiftsDTO
+                 {
+                     Id = donor.Id,
+                     PhoneNumber = donor.PhoneNumber,
+                     Email = donor.Email,
+                     Name = donor.Name ?? string.Empty,
+                     Gifts = (ICollection<GetGiftDTO>)donor.Gifts.Select(g => new GetGiftDTO() { Description = g.Description, Category = g.Category.Name, Name = g.Name }).ToList(),
+                     GiftsString = shirshur(donor.Gifts)
 
+
+                 });
             }
             catch (Exception ex)
             {
@@ -135,11 +151,16 @@ namespace TrickyTrayAPI.Services
                     _logger.LogWarning("Donor with id {DonorId} not found", donorId);
                     return null;
                 }
-
+             
                 return new GetDonorWithGiftsDTO
                 {
+                    Id = donor.Id,
+                    PhoneNumber = donor.PhoneNumber,
+                    Email = donor.Email,
                     Name = donor.Name ?? string.Empty,
-                    Gifts = (ICollection<GetGiftDTO>)donor.Gifts.Select(g => new GetGiftDTO() { Description = g.Description, Category = g.Category.Name, Name = g.Name }).ToList()
+                    Gifts = (ICollection<GetGiftDTO>)donor.Gifts.Select(g => new GetGiftDTO() { Description = g.Description, Category = g.Category.Name, Name = g.Name }).ToList(),
+                    GiftsString = shirshur(donor.Gifts)
+
                 };
             }
             catch (Exception ex)

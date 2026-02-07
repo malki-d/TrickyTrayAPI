@@ -16,6 +16,15 @@ public class PurchaseRepository : IPurchaseRepository
     {
         return await _context.Purchases.Include(x => x.User).ToListAsync();
     }
+
+    public async Task<IEnumerable<Purchase>> GetAllAsyncByUserId(int userId)
+    {
+        return await _context.Purchases
+            .Where(x => x.UserId == userId)
+            .Include(x => x.PurchaseItems)      // טוען את רשימת הפריטים
+                .ThenInclude(pi => pi.Gift)     // טוען את פרטי המתנה לכל פריט!
+            .ToListAsync();
+    }
     public async Task<PurchaseRevenueDTO> GetTotalRevenueAsync()
     {
         var total = await _context.Purchases.SumAsync(p => (int?)p.Price) ?? 0;

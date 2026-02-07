@@ -18,10 +18,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AngularPolicy",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200") // הכתובת של אנגולר
+            policy.WithOrigins("http://localhost:4200") 
                   .AllowAnyHeader()
                   .AllowAnyMethod()
-                  .AllowCredentials(); // מאפשר שליחת עוגיות/טוקנים אם צריך
+                  .AllowCredentials(); 
 
         });
 });

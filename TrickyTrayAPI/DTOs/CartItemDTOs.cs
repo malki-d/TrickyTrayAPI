@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TrickyTrayAPI.Models;
 
 namespace TrickyTrayAPI.DTOs
 {
@@ -27,6 +28,15 @@ namespace TrickyTrayAPI.DTOs
         public int UserId { get; set; }
         [Required]
         public int GiftId { get; set; }
+
         public int Quantity { get; set; } = 1;
+    }
+
+    public class GetCartItemWithGiftDTO
+    {
+        public int Id { get; set; }
+
+        public GetGiftDTO Gift { get; set; }
+        public int Quantity { get; set; }
     }
 }

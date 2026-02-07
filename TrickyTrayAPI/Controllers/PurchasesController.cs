@@ -52,4 +52,29 @@ public class PurchaseController : ControllerBase
             return BadRequest(new { Error = ex.Message });
         }
     }
+    [HttpGet("ByUser/{userId}")]
+    public async Task<IActionResult> GetPurchasesByUserId(int userId)
+    {
+        // 1. בדיקת תקינות בסיסית (Validation)
+        if (userId <= 0)
+        {
+            return BadRequest("Invalid User ID provided.");
+        }
+
+        try
+        {
+            // 2. קריאה ל-BLL לקבלת הנתונים המעובדים
+            var purchases = await _purchaseService.GetUserPurchasesLogic(userId);
+
+            // 3. החזרת תשובה
+            // גם אם הרשימה ריקה, מחזירים 200 OK עם מערך ריק (סטנדרט מקובל)
+            return Ok(purchases);
+        }
+        catch (Exception ex)
+        {
+            // טיפול בשגיאות בלתי צפויות
+            return StatusCode(500, "Internal server error: " + ex.Message);
+        }
+    
+}
 }

@@ -19,8 +19,16 @@ namespace TrickyTrayAPI.DTOs
     }
     public class GetDonorWithGiftsDTO
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
+        [MaxLength(100)]
+        public string? Name { get; set; }
+        [EmailAddress,Required]
+        public string? Email { get; set; }
+        [Phone]
+        public string PhoneNumber { get; set; }
         public ICollection<GetGiftDTO> Gifts { get; set; } = new List<GetGiftDTO>();
+        public string GiftsString { get; set; } = "";
+
     }
 
 }

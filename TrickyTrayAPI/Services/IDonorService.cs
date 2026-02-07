@@ -8,7 +8,7 @@ namespace TrickyTrayAPI.Services
         Task<Donor> AddDonor(CreateDonorDTO donor);
         Task<bool> DeleteDonor(int id);
         Task<bool> ExistsAsync(int id);
-        Task<IEnumerable<GetDonorDTO>> GetAllDonors();
+        Task<IEnumerable<GetDonorWithGiftsDTO>> GetAllDonors();
         Task<GetDonorDTO?> GetDonorById(int id);
         Task<GetDonorDTO> UpdateAsync(int id, CreateDonorDTO donor);
         Task<GetDonorWithGiftsDTO?> GetDonorWithGiftsAsync(int donorId);

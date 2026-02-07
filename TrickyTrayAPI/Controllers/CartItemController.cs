@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TrickyTrayAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CartItemsController : ControllerBase
@@ -32,6 +32,12 @@ namespace TrickyTrayAPI.Controllers
             if (item == null)
                 return NotFound();
             return Ok(item);
+        }
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<IEnumerable<GetCartItemWithGiftDTO>>> GetByUserId(int id)
+        {
+            var items = await _service.GetAllUserCartAsync(id);
+            return Ok(items);
         }
 
         [HttpPost]

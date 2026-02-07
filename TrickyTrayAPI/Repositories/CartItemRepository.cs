@@ -35,7 +35,7 @@ namespace TrickyTrayAPI.Repositories
             {
                 // You may want to handle the case where the item already exists.
                 // For now, just return the existing item.
-                 isexist.Quantity+=cartitem.Quantity;
+                isexist.Quantity += cartitem.Quantity;
                 await _context.SaveChangesAsync();
 
                 return await _context.CartItems
@@ -43,16 +43,22 @@ namespace TrickyTrayAPI.Repositories
                     .Include(c => c.Gift)
                     .FirstOrDefaultAsync(c => c.Id == isexist.Id);
             }
-            
-                var newcartitem = new CartItem { UserId = cartitem.UserId, GiftId = cartitem.GiftId, Quantity = cartitem.Quantity };
-                _context.CartItems.Add(newcartitem);
-            
-                
+
+            var newcartitem = new CartItem { UserId = cartitem.UserId, GiftId = cartitem.GiftId, Quantity = cartitem.Quantity };
+            _context.CartItems.Add(newcartitem);
+
+
             await _context.SaveChangesAsync();
             return await _context.CartItems
                     .Include(c => c.User)
                     .Include(c => c.Gift)
                     .FirstOrDefaultAsync(c => c.Id == newcartitem.Id);
+        }
+        public async Task<IEnumerable<CartItem>> GetAllUserCartAsync(int id)
+        {
+            return await _context.CartItems.Include(c => c.User).Include(c => c.Gift).ThenInclude(c=>c.Category)
+                .Where(ci => ci.UserId == id)
+                .ToListAsync();
         }
         public async Task<bool> UpdateAsync(int id, UpdateCartItemDTO cartitem)
         {

@@ -16,8 +16,9 @@ namespace TrickyTrayAPI.Repositories
 
         public async Task<IEnumerable<Donor>> GetAllDonors()
         {
-            return await _context.Donors.ToListAsync();
+            return await _context.Donors.Include(x=>x.Gifts).ThenInclude(x=>x.Category).ToListAsync();
         }
+
 
         public async Task<Donor?> GetDonorById(int id)
         {
@@ -45,12 +46,28 @@ namespace TrickyTrayAPI.Repositories
 
         public async Task<bool> DeleteDonor(int id)
         {
-            var donor = await _context.Donors.FindAsync(id);
+            // שליפה אחת הכוללת את המתנות כדי למנוע כפילות
+            var donor = await _context.Donors
+                .Include(x => x.Gifts)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            // בדיקה אם התורם קיים בבסיס הנתונים
             if (donor == null)
+            {
                 return false;
+            }
+
+            // אם הכוונה היא למנוע מחיקה של תורם ללא מתנות:
+            if ( donor.Gifts.Count > 0)
+            {
+                // הערה: בדרך כלל כאן מחזירים false או זורקים הודעה מתאימה
+                // תלוי אם הדרישה העסקית היא לא למחוק תורם "ריק"
+                return false;
+            }
 
             _context.Donors.Remove(donor);
             await _context.SaveChangesAsync();
+
             return true;
         }
 
