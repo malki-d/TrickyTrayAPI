@@ -1,6 +1,7 @@
 ﻿using NuGet.Protocol.Core.Types;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
+using TrickyTrayAPI.Services;
 
 
 
@@ -10,32 +11,48 @@ public class PurchaseService : IPurchaseService
     private readonly ILogger<PurchaseService> _logger;
 
 
-    public PurchaseService(IPurchaseRepository purchaseRepository)
+    public PurchaseService(IPurchaseRepository purchaseRepositor, ILogger<PurchaseService> logger)
     {
-        _purchaseRepository = purchaseRepository;
+        _purchaseRepository = purchaseRepositor;
+        _logger = logger;
     }
-    public async Task<IEnumerable<UserResponseDTO>> GetAllAsync()
+    public async Task<IEnumerable<UserPurchaseDto>> GetAllAsync()
     {
         try
         {
+            // שליפת כל הרכישות כולל הנתונים הנלווים
             var purchases = await _purchaseRepository.GetAllAsync();
-            var result = purchases.Select(p => new UserResponseDTO
+
+            var result = purchases.Select(p => new UserPurchaseDto
             {
-                FirstName = p.User.FirstName,
-                LastName = p.User.LastName,
-                Email = p.User.Email,
-                Phone = p.User.PhoneNumber,
-            });
-            _logger.LogInformation("Successfully retrieved all purchases");
+                PurchaseId = p.Id,
+                Date = p.Date, // ודאי שבמודל Purchase קיים שדה Date
+                TotalPrice = p.Price,
+                TotalTickets = p.PurchaseItems != null ? p.PurchaseItems.Count : 0,
+                UserName=p.User.FirstName+" "+p.User.LastName,
+                Items = p.PurchaseItems?
+                    .GroupBy(pi => pi.GiftId)
+                    .Select(g => new PurchasedGiftItemDto
+                    {
+                        GiftId = g.Key,
+                        GiftName = g.First().Gift?.Name ?? "Unknown",
+                        ImgUrl = g.First().Gift?.ImgUrl ?? string.Empty,
+                        Quantity = g.Count()
+                    }).ToList() ?? new List<PurchasedGiftItemDto>()
+            }).ToList();
+
+            _logger.LogInformation("Successfully retrieved all purchases for admin");
             return result;
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting all purchases");
             throw;
-     
         }
     }
+
+
+
     public async Task<IEnumerable<UserPurchaseDto>> GetUserPurchasesLogic(int userId)
     {
         // 1. שליפת הנתונים מה-DAL
@@ -58,6 +75,7 @@ public class PurchaseService : IPurchaseService
                     GiftId = g.Key,
                     // לוקחים את השם והתמונה מהפריט הראשון בקבוצה (הם זהים לכולם)
                     GiftName = g.First().Gift.Name,
+
                     ImgUrl = g.First().Gift.ImgUrl,
                     // הכמות היא מספר הפריטים בקבוצה הזו
                     Quantity = g.Count()
@@ -98,7 +116,7 @@ public class PurchaseService : IPurchaseService
         foreach (var item in cartItems)
         {
             // נניח של-Gift יש שדה Price (הוספתי את זה כהנחה לחישוב המחיר)
-             totalPrice += 40 * item.Quantity;
+            totalPrice += 40 * item.Quantity;
 
             // יצירת רשומות נפרדות לפי הכמות (Quantity)
             for (int i = 0; i < item.Quantity; i++)

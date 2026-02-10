@@ -34,6 +34,8 @@ namespace TrickyTrayAPI.DTOs
         public int TotalPrice { get; set; } // המחיר הכולל של הקניה
         public int TotalTickets { get; set; } // סה"כ כרטיסים בקניה זו
         public List<PurchasedGiftItemDto> Items { get; set; } // פירוט המוצרים
+
+        public string UserName { get; set; } = "";
     }
 
     // DTO שמייצג פריט בתוך הקניה (מתנה וכמות הכרטיסים שלה)

@@ -20,7 +20,7 @@ namespace TrickyTrayAPI.Services
             {
                 var items = await _repository.GetAllAsync();
                 _logger.LogInformation("Retrieved all purchase items");
-                
+
                 return items.Select(pi => new GetPurchaseItemDTO
                 {
                     Id = pi.Id,
@@ -50,7 +50,7 @@ namespace TrickyTrayAPI.Services
                 }
 
                 _logger.LogInformation("Retrieved purchase item by id: {Id}", id);
-                
+
                 return new GetPurchaseItemDTO
                 {
                     Id = item.Id,
@@ -73,9 +73,9 @@ namespace TrickyTrayAPI.Services
             try
             {
                 var newItem = await _repository.AddAsync(purchaseItem);
-                _logger.LogInformation("Created purchase item: {Id} for Gift: {GiftId}, User: {UserId}", 
+                _logger.LogInformation("Created purchase item: {Id} for Gift: {GiftId}, User: {UserId}",
                     newItem.Id, newItem.GiftId, newItem.UserId);
-                
+
                 return new GetPurchaseItemDTO
                 {
                     Id = newItem.Id,
@@ -88,7 +88,7 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error creating purchase item for Gift: {GiftId}, User: {UserId}", 
+                _logger.LogError(ex, "Error creating purchase item for Gift: {GiftId}, User: {UserId}",
                     purchaseItem.GiftId, purchaseItem.UserId);
                 throw;
             }
@@ -106,7 +106,7 @@ namespace TrickyTrayAPI.Services
                 }
 
                 _logger.LogInformation("Updated purchase item: {Id}", id);
-                
+
                 return new GetPurchaseItemDTO
                 {
                     Id = updatedItem.Id,
@@ -167,7 +167,7 @@ namespace TrickyTrayAPI.Services
             {
                 var items = await _repository.GetPurchaseItemsForGiftAsync(giftId);
                 _logger.LogInformation("Retrieved purchase items for gift: {GiftId}", giftId);
-                
+
                 return items.Select(pi => new GetPurchaseItemDTO
                 {
                     Id = pi.Id,
@@ -191,7 +191,7 @@ namespace TrickyTrayAPI.Services
             {
                 var items = await _repository.GetPurchaseItemsForUserAsync(userId);
                 _logger.LogInformation("Retrieved purchase items for user: {UserId}", userId);
-                
+
                 return items.Select(pi => new GetPurchaseItemDTO
                 {
                     Id = pi.Id,

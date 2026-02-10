@@ -14,7 +14,11 @@ public class PurchaseRepository : IPurchaseRepository
     }
     public async Task<IEnumerable<Purchase>> GetAllAsync()
     {
-        return await _context.Purchases.Include(x => x.User).ToListAsync();
+        return await _context.Purchases
+            .Include(p => p.User)               // טוען את פרטי המשתמש (שם וכו')
+            .Include(p => p.PurchaseItems)      // טוען את רשימת הפריטים שנקנו
+                .ThenInclude(pi => pi.Gift)     // טוען את פרטי המתנה לכל פריט
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Purchase>> GetAllAsyncByUserId(int userId)
