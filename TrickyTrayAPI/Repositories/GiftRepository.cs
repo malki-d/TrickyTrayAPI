@@ -53,8 +53,46 @@ namespace TrickyTrayAPI.Repositories
             g.CategoryId = gift.CategoryId;
             g.Description = gift.Description;
             g.ImgUrl = gift.ImgUrl;
+            g.Users = gift.Users;
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
+        }
+        // בתוך GiftRepository.cs
+        public async Task<bool> RunAllRandomWinnersAsync()
+        {
+            // שליפת כל המתנות
+            var gifts = await _context.Gifts.ToListAsync();
+            var rnd = new Random();
+            bool changed = false;
+
+            foreach (var g in gifts)
+            {
+                // תכלס: אם כבר יש זוכה למתנה הזו, אנחנו מדלגים עליה ולא מגרילים שוב
+                if (g.WinnerId != null)
+                {
+                    continue;
+                }
+
+                // שליפת המשתמשים שרכשו את המתנה הספציפית הזו מתוך טבלת הרכישות
+                var purchaseItems = await _context.PurchaseItems
+                                        .Where(pi => pi.GiftId == g.Id)
+                                        .ToListAsync();
+
+                if (purchaseItems.Any())
+                {
+                    var winnerIndex = rnd.Next(purchaseItems.Count);
+                    // השמת ה-UserId של הזוכה המאושר
+                    g.WinnerId = purchaseItems[winnerIndex].UserId;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                await _context.SaveChangesAsync(); // שמירה רק אם היו שינויים
+            }
+
+            return true;
         }
         public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId, bool forceUpdate = false)
         {
@@ -94,7 +132,10 @@ namespace TrickyTrayAPI.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-
+        public void ClearTracker()
+        {
+            _context.ChangeTracker.Clear();
+        }
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Gifts.AnyAsync(p => p.Id == id);

@@ -19,11 +19,11 @@ namespace TrickyTrayAPI.Services
 
         private readonly ILogger<GiftService> _logger;
 
-        public GiftService(ICartItemRepository _cartitemRepository, IGiftRepository giftrepository, ILogger<GiftService> logger)
+        public GiftService(ICartItemRepository cartitemRepository, IGiftRepository giftrepository, ILogger<GiftService> logger)
         {
             _giftrepository = giftrepository;
             _logger = logger;
-            _cartitemRepository = _cartitemRepository;
+            _cartitemRepository = cartitemRepository;
 
         }
 
@@ -302,38 +302,33 @@ namespace TrickyTrayAPI.Services
 
         public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
         {
-            try
+            // 1. קודם כל מבצעים את ההגרלה במסד הנתונים
+            await _giftrepository.RunAllRandomWinnersAsync();
+
+            // 2. מנקים את ה-Tracker כדי לראות את השינויים בשליפה הבאה
+            _giftrepository.ClearTracker();
+
+            // 3. שולפים את המתנות עם הזוכים החדשים
+            var updatedGifts = await _giftrepository.GetAllAsync();
+
+            // 4. ורק עכשיו מוחקים את פריטי העגלה
+            var cartitems = await _cartitemRepository.GetAllAsync();
+            foreach (var item in cartitems)
             {
-                var gifts = await _giftrepository.GetAllAsync();
-                foreach (var gift in gifts)
-                {
-                    await RandomWinnerAsync(gift.Id);
-                }
-                var gifts2 = await _giftrepository.GetAllAsync();
-                var cartitems = await _cartitemRepository.GetAllAsync();
-                foreach (var cartitem in cartitems)
-                {
-                    await _cartitemRepository.DeleteAsync(cartitem.Id);
-                }
-                return gifts2.Select(g => new GetGiftWithWinnerDTO
-                {
-                    Name = g.Name,
-                    Description = g.Description,
-                    Category = g.Category.Name,
-                    ImgUrl = g.ImgUrl,
-                    WinnerName = g.Winner != null ? g.Winner.FirstName + g.Winner.LastName : "No Winner",
-                    WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
-                });
-
-
-
+                await _cartitemRepository.DeleteAsync(item.Id);
             }
-            catch (Exception ex)
+
+            // 5. מחזירים את התוצאה למשתמש
+            return updatedGifts.Select(g => new GetGiftWithWinnerDTO
             {
-                throw;
-            }
+                Name = g.Name,
+                Description = g.Description,
+                Category = g.Category?.Name,
+                ImgUrl = g.ImgUrl,
+                WinnerName = g.Winner != null ? $"{g.Winner.FirstName} {g.Winner.LastName}" : "No Winner",
+                WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
+            });
         }
-
         public async Task<bool> RandomWinnerAsync(int giftId)
         {
             Random rnd = new Random();

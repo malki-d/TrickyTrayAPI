@@ -59,6 +59,7 @@ namespace TrickyTrayAPI.DTOs
 
         [Required, MaxLength(200)]
         public string Description { get; set; }
+        public ICollection<User> Users { get; set; } = new List<User>();
 
         // הוסיפי את השדה הזה כדי לקבל קובץ
         public IFormFile? ImageFile { get; set; }

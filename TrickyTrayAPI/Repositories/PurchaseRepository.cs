@@ -37,7 +37,8 @@ public class PurchaseRepository : IPurchaseRepository
     public async Task<List<CartItem>> GetCartItemsByUserIdAsync(int userId)
     {
         return await _context.CartItems
-                             .Include(c => c.Gift) // חשוב כדי לדעת איזה מתנה זו
+                             .Include(c => c.Gift)
+                             .Include(x=>x.User)// חשוב כדי לדעת איזה מתנה זו
                              .Where(c => c.UserId == userId)
                              .ToListAsync();
     }

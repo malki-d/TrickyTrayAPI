@@ -1,6 +1,7 @@
 ﻿using NuGet.Protocol.Core.Types;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
+using TrickyTrayAPI.Repositories;
 using TrickyTrayAPI.Services;
 
 
@@ -8,13 +9,16 @@ using TrickyTrayAPI.Services;
 public class PurchaseService : IPurchaseService
 {
     private readonly IPurchaseRepository _purchaseRepository;
+    private readonly IGiftRepository _giftRepository;
+
     private readonly ILogger<PurchaseService> _logger;
 
 
-    public PurchaseService(IPurchaseRepository purchaseRepositor, ILogger<PurchaseService> logger)
+    public PurchaseService(IGiftRepository giftRepository,IPurchaseRepository purchaseRepositor, ILogger<PurchaseService> logger)
     {
         _purchaseRepository = purchaseRepositor;
         _logger = logger;
+        _giftRepository = giftRepository;
     }
     public async Task<IEnumerable<UserPurchaseDto>> GetAllAsync()
     {
@@ -108,7 +112,6 @@ public class PurchaseService : IPurchaseService
             // אם הרשימה ריקה זרוק שגיאה (או טפל בהתאם)
             if (!cartItems.Any()) throw new Exception("Cart is empty for user " + userId);
         }
-
         var purchaseItems = new List<PurchaseItem>();
         int totalPrice = 0;
 
@@ -117,7 +120,11 @@ public class PurchaseService : IPurchaseService
         {
             // נניח של-Gift יש שדה Price (הוספתי את זה כהנחה לחישוב המחיר)
             totalPrice += 40 * item.Quantity;
+            var gift =await _giftRepository.GetByIdAsync(item.GiftId);
+            gift.Users.Add(item.User);
 
+            await _giftRepository.UpdateAsync(new UpdateGiftDTO() { CategoryId=gift.CategoryId
+            ,Description=gift.Description,ImgUrl=gift.ImgUrl,Name = gift.Name,Users=gift.Users},gift.Id);
             // יצירת רשומות נפרדות לפי הכמות (Quantity)
             for (int i = 0; i < item.Quantity; i++)
             {
