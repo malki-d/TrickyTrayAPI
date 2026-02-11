@@ -11,6 +11,8 @@ namespace TrickyTrayAPI.DTOs
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string ImgUrl { get; set; }
+        public bool CanDelete { get; set; }=false;
+
         public string Category { get; set; }
         public string DonorName { get; set; }
         public string WinnerName { get;set; }
