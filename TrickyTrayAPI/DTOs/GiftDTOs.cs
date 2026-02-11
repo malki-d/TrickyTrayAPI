@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using TrickyTrayAPI.Models;
 
@@ -12,6 +13,11 @@ namespace TrickyTrayAPI.DTOs
         public string ImgUrl { get; set; }
         public string Category { get; set; }
         public string DonorName { get; set; }
+        public string WinnerName { get;set; }
+        public string WinnerEmail { get; set; }
+        public int DonorId { get; set; }
+        public int CategoryId { get; set; }
+
 
     }
     public class GetGiftWithWinnerDTO

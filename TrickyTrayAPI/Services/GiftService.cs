@@ -34,7 +34,7 @@ namespace TrickyTrayAPI.Services
                 var donors = await _giftrepository.GetAllAsync();
                 _logger.LogInformation("get gifts");
 
-                return donors.Select(x => new GetGiftDTO() { Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl });
+                return donors.Select(x => new GetGiftDTO() { Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl ,WinnerName=x.Winner?.FirstName+" "+ x.Winner?.LastName,WinnerEmail=x.Winner?.Email,CategoryId=x.CategoryId,DonorId=x.DonorId });
 
             }
             catch (Exception ex)
