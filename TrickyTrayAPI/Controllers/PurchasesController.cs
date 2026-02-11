@@ -13,10 +13,17 @@ public class PurchaseController : ControllerBase
         _purchaseService = purchaseService;
     }
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetPurchases()
+    public async Task<ActionResult<IEnumerable<GetPurchaseItemDTO>>> GetPurchases()
     {
-        var purchases = await _purchaseService.GetAllAsync();
-        return Ok(purchases);
+        try
+        {
+            var purchases = await _purchaseService.GetAllAsync();
+            return Ok(purchases);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "שגיאת שרת בעת שליפת כל הרכישות: " + ex.Message);
+        }
     }
     [HttpGet("revenue")]
     public async Task<ActionResult<PurchaseRevenueDTO>> GetTotalRevenue()
