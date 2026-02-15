@@ -31,10 +31,10 @@ namespace TrickyTrayAPI.Services
         {
             try
             {
-                var donors = await _giftrepository.GetAllAsync();
+                var gifts = await _giftrepository.GetAllAsync();
                 _logger.LogInformation("get gifts");
 
-                return donors.Select(x => new GetGiftDTO() { Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl ,WinnerName=x.Winner?.FirstName+" "+ x.Winner?.LastName,WinnerEmail=x.Winner?.Email,CategoryId=x.CategoryId,DonorId=x.DonorId,CanDelete=x.Users.Count==0});
+                return gifts.Select(x => new GetGiftDTO() { TicketsSold = x.purchaseItems.Count , Id = x.Id, Name = x.Name, Description = x.Description, Category = x.Category.Name, DonorName = x.Donor.Name, ImgUrl = x.ImgUrl ,WinnerName=x.Winner?.FirstName+" "+ x.Winner?.LastName,WinnerEmail=x.Winner?.Email,CategoryId=x.CategoryId,DonorId=x.DonorId,CanDelete=x.purchaseItems.Count==0});
 
             }
             catch (Exception ex)
@@ -149,6 +149,7 @@ namespace TrickyTrayAPI.Services
                     Category = updateGift.Category.Name,
                     DonorName = updateGift.Donor.Name,
                     ImgUrl = updateGift.ImgUrl
+                   
                 };
             }
             catch (Exception ex)
@@ -338,7 +339,7 @@ namespace TrickyTrayAPI.Services
                 _logger.LogInformation("cannot find gift " + giftId);
                 return false;
             }
-            var users = gifts.Users.ToList();
+            var users = gifts.purchaseItems.ToList();
             if (users.Count == 0)
             {
                 _logger.LogInformation("no users for gift " + giftId);

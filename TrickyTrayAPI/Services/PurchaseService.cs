@@ -104,53 +104,76 @@ public class PurchaseService : IPurchaseService
     }
     public async Task<Purchase> ProcessPurchaseAsync(int userId)
     {
-        // 1. קבלת פריטי העגלה לפי ה-userId שהתקבל
+        // 1. שליפת פריטי העגלה
         var cartItems = await _purchaseRepository.GetCartItemsByUserIdAsync(userId);
 
-        if (cartItems == null || !cartItems.Count.Equals(0)) // תיקון: בדיקה אם הרשימה ריקה
+        // בדיקה אם העגלה ריקה בצורה תקינה
+        if (cartItems == null || !cartItems.Any())
         {
-            // אם הרשימה ריקה זרוק שגיאה (או טפל בהתאם)
-            if (!cartItems.Any()) throw new Exception("Cart is empty for user " + userId);
+            _logger.LogWarning("User {UserId} tried to checkout with an empty cart.", userId);
+            throw new Exception("העגלה ריקה, לא ניתן לבצע רכישה.");
         }
+
         var purchaseItems = new List<PurchaseItem>();
         int totalPrice = 0;
+        const int TICKET_PRICE = 40; // הגדרה קבועה למחיר כרטיס
 
-        // 2. לוגיקת המרת CartItems ל-PurchaseItems
+        // 2. עיבוד פריטי העגלה והפיכתם לכרטיסים (PurchaseItems)
         foreach (var item in cartItems)
         {
-            // נניח של-Gift יש שדה Price (הוספתי את זה כהנחה לחישוב המחיר)
-            totalPrice += 40 * item.Quantity;
-            var gift =await _giftRepository.GetByIdAsync(item.GiftId);
-            gift.Users.Add(item.User);
+            // חישוב המחיר הכולל
+            totalPrice += TICKET_PRICE * item.Quantity;
 
-            await _giftRepository.UpdateAsync(new UpdateGiftDTO() { CategoryId=gift.CategoryId
-            ,Description=gift.Description,ImgUrl=gift.ImgUrl,Name = gift.Name,Users=gift.Users},gift.Id);
-            // יצירת רשומות נפרדות לפי הכמות (Quantity)
+            // שליפת המתנה כדי לעדכן את הקשרים שלה
+            var gift = await _giftRepository.GetByIdAsync(item.GiftId);
+
+            if (gift == null) continue;
+
+            // יצירת כרטיסים נפרדים לפי הכמות
             for (int i = 0; i < item.Quantity; i++)
             {
-                purchaseItems.Add(new PurchaseItem
+                var newTicket = new PurchaseItem
                 {
                     GiftId = item.GiftId,
-                    UserId = userId, // שימוש ב-userId שהתקבל
+                    UserId = userId,
                     IsWinner = false
-                });
+                    // שימי לב: אם הוספת PurchaseId במודל, EF ימלא אותו לבד כשישייך ל-Purchase
+                };
+
+                purchaseItems.Add(newTicket);
+
+                // עדכון רשימת הכרטיסים של המתנה (אופציונלי, תלוי אם את צריכה את זה לקוד בהמשך)
+                gift.purchaseItems.Add(newTicket);
             }
         }
 
-        // 3. בניית אובייקט הרכישה
+        // 3. יצירת אובייקט הרכישה המרכזי
         var purchase = new Purchase
         {
             UserId = userId,
             Date = DateTime.Now,
-            Price = totalPrice, // שים לב: זה יהיה 0 אם אין לך שדה מחיר ב-Gift
+            Price = totalPrice,
             PurchaseItems = purchaseItems
         };
 
-        // 4. שמירה וניקוי
-        await _purchaseRepository.AddPurchaseAsync(purchase);
-        await _purchaseRepository.ClearUserCartAsync(userId); // ניקוי העגלה של המשתמש הספציפי
-        await _purchaseRepository.SaveAsync();
+        try
+        {
+            // 4. שמירה וניקוי - הכל ב-Transaction אחד דרך ה-Repository
+            await _purchaseRepository.AddPurchaseAsync(purchase);
 
-        return purchase;
+            // ניקוי העגלה
+            await _purchaseRepository.ClearUserCartAsync(userId);
+
+            // פקודה אחת שסוגרת את כל השינויים (גם של המתנות וגם של הרכישה)
+            await _purchaseRepository.SaveAsync();
+
+            _logger.LogInformation("Purchase {PurchaseId} completed successfully for user {UserId}", purchase.Id, userId);
+            return purchase;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to process purchase for user {UserId}", userId);
+            throw new Exception("ארעה שגיאה בתהליך התשלום, אנא נסה שוב.");
+        }
     }
 }

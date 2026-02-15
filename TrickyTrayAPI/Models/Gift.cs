@@ -10,24 +10,29 @@ namespace TrickyTrayAPI.Models
 
         [MaxLength(100), Required]
         public string? Name { get; set; }
+        
         [MaxLength(200), Required]
-
         public string ImgUrl { get; set; }
+      
         [MaxLength(200), Required]
-
         public string? Description { get; set; }
 
         [Required]
         public int DonorId { get; set; }
+        
         public Donor? Donor { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
+       
         public Category? Category { get; set; }
         
         [AllowNull]
         public int? WinnerId { get; set; }
+       
         public User? Winner { get; set; }
-        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<PurchaseItem> purchaseItems { get; set; } = new List<PurchaseItem>();
+
+
     }
 }

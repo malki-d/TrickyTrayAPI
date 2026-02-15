@@ -19,7 +19,7 @@ namespace TrickyTrayAPI.DTOs
         public string WinnerEmail { get; set; }
         public int DonorId { get; set; }
         public int CategoryId { get; set; }
-
+        public int TicketsSold { get; set; }
 
     }
     public class GetGiftWithWinnerDTO
@@ -67,7 +67,6 @@ namespace TrickyTrayAPI.DTOs
 
         [Required, MaxLength(200)]
         public string Description { get; set; }
-        public ICollection<User> Users { get; set; } = new List<User>();
 
         // הוסיפי את השדה הזה כדי לקבל קובץ
         public IFormFile? ImageFile { get; set; }

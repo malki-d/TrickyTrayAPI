@@ -6,6 +6,7 @@ namespace TrickyTrayAPI.Models
     {
         public int Id { get; set; }
         [Required]
+        public int PurchaseId { get; set; }
         public int GiftId { get; set; }
         public Gift Gift{ get; set; }
         public bool IsWinner { get; set; }
