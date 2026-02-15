@@ -19,12 +19,12 @@ namespace TrickyTrayAPI.Repositories
         }
         public async Task<IEnumerable<Gift>> GetAllAsync()
         {
-            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).ToListAsync();
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.purchaseItems).ToListAsync();
         }
 
         public async Task<Gift?> GetByIdAsync(int id)
         {
-            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.Users).FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.purchaseItems).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         // שנה את המתודה הזו ב-GiftRepository.cs
@@ -47,16 +47,40 @@ namespace TrickyTrayAPI.Repositories
 
         public async Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id)
         {
-
             var g = await GetByIdAsync(id);
             g.Name = gift.Name;
             g.CategoryId = gift.CategoryId;
             g.Description = gift.Description;
             g.ImgUrl = gift.ImgUrl;
-            g.Users = gift.Users;
+            // לא נוגעים ב-g.Users כאן בכלל כדי לא לדרוס את כל המשתמשים
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
         }
+
+        // פעולה ייעודית להוספת משתמש למתנה (אם תרצה)
+  /*      public async Task AddUserToGiftAsync(int giftId, int userId)
+        {
+            var gift = await GetByIdAsync(giftId);
+            var user = await _context.Users.FindAsync(userId);
+            if (gift != null && user != null && !gift.Users.Any(u => u.Id == userId))
+            {
+                gift.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        // פעולה ייעודית להסרת משתמש ממתנה (אם תרצה)
+      /*  public async Task RemoveUserFromGiftAsync(int giftId, int userId)
+        {
+            var gift = await GetByIdAsync(giftId);
+            var user = await _context.Users.FindAsync(userId);
+            if (gift != null && user != null && gift.purchaseItems.Any(u => u.Id == userId))
+            {
+                gift.Users.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+      */
         // בתוך GiftRepository.cs
         public async Task<bool> RunAllRandomWinnersAsync()
         {
@@ -116,7 +140,7 @@ namespace TrickyTrayAPI.Repositories
         public async Task<bool> DeleteAsync(int id)
         {
             var product = await _context.Gifts.FindAsync(id);
-            if (product == null || product.Users.Count > 0)
+            if (product == null || product.purchaseItems.Count > 0)
             {
                 _logger.LogInformation("users buy thus gift cand delete " + id);
                 return false;
@@ -145,7 +169,7 @@ namespace TrickyTrayAPI.Repositories
         {
             var query = _context.Gifts
                 .Include(g => g.Donor)
-                .Include(g => g.Users).
+                .Include(g => g.purchaseItems).
                 Include(x => x.Category)
                 .AsQueryable();
 
@@ -156,14 +180,14 @@ namespace TrickyTrayAPI.Repositories
                 query = query.Where(g => g.Donor.Name.Contains(donorName));
 
             if (purchaserCount.HasValue)
-                query = query.Where(g => g.Users.Count == purchaserCount.Value);
+                query = query.Where(g => g.purchaseItems.Count == purchaserCount.Value);
 
             return await query.ToListAsync();
         }
         public async Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory)
         {
             var query = _context.Gifts.Include(g => g.Donor)
-                .Include(g => g.Users).
+                .Include(g => g.purchaseItems).
                 Include(x => x.Category).AsQueryable();
 
 
@@ -197,13 +221,13 @@ namespace TrickyTrayAPI.Repositories
         public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
         {
             IQueryable<Gift> query = _context.Gifts
-           .Include(g => g.Users).Include(g => g.Category).Include(g => g.Donor);
+           .Include(g => g.purchaseItems).Include(g => g.Category).Include(g => g.Donor);
 
 
             switch (sortBy?.ToLower())
             {
                 case "purchases":
-                    query = query.OrderByDescending(g => g.Users.Count);
+                    query = query.OrderByDescending(g => g.purchaseItems.Count);
                     break;
 
                 default:

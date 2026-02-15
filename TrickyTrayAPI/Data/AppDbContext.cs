@@ -31,7 +31,33 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<TicketPrice>().HasData(
         new TicketPrice { Id = 1, Price = 1 }
         );
+        // הגדרת הקשר בין Gift ל-PurchaseItem בצורה מפורשת
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Gift)
+            .WithMany(g => g.purchaseItems)
+            .HasForeignKey(pi => pi.GiftId)
+            .OnDelete(DeleteBehavior.Restrict); // מומלץ כדי למנוע שגיאות מחיקה בשרשרת
 
+        // הגדרת הקשר בין Gift ל-Winner
+        modelBuilder.Entity<Gift>()
+            .HasOne(g => g.Winner)
+            .WithMany() // למשתמש אין רשימת זכיות במודל הנוכחי, וזה בסדר
+            .HasForeignKey(g => g.WinnerId);
+
+        modelBuilder.Entity<PurchaseItem>()
+        .HasOne(pi => pi.User)
+        .WithMany()
+        .HasForeignKey(pi => pi.UserId)
+        .OnDelete(DeleteBehavior.Restrict); // <--- זה הפתרון!
+
+        // אם הוספת שדה PurchaseId ל-PurchaseItem כפי שהצעתי קודם:
+        modelBuilder.Entity<PurchaseItem>()
+            .HasOne(pi => pi.Gift)
+            .WithMany(g => g.purchaseItems)
+            .HasForeignKey(pi => pi.GiftId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        base.OnModelCreating(modelBuilder);
     }
 
 

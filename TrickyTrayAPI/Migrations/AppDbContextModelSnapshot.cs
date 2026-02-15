@@ -172,7 +172,7 @@ namespace TrickyTrayAPI.Migrations
                     b.Property<bool>("IsWinner")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PurchaseId")
+                    b.Property<int>("PurchaseId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -229,9 +229,6 @@ namespace TrickyTrayAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("GiftId")
-                        .HasColumnType("int");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -249,8 +246,6 @@ namespace TrickyTrayAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GiftId");
 
                     b.ToTable("Users");
                 });
@@ -313,31 +308,26 @@ namespace TrickyTrayAPI.Migrations
             modelBuilder.Entity("TrickyTrayAPI.Models.PurchaseItem", b =>
                 {
                     b.HasOne("TrickyTrayAPI.Models.Gift", "Gift")
-                        .WithMany()
+                        .WithMany("purchaseItems")
                         .HasForeignKey("GiftId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TrickyTrayAPI.Models.Purchase", null)
                         .WithMany("PurchaseItems")
-                        .HasForeignKey("PurchaseId");
+                        .HasForeignKey("PurchaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("TrickyTrayAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Gift");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TrickyTrayAPI.Models.User", b =>
-                {
-                    b.HasOne("TrickyTrayAPI.Models.Gift", null)
-                        .WithMany("Users")
-                        .HasForeignKey("GiftId");
                 });
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Donor", b =>
@@ -347,7 +337,7 @@ namespace TrickyTrayAPI.Migrations
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Gift", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("purchaseItems");
                 });
 
             modelBuilder.Entity("TrickyTrayAPI.Models.Purchase", b =>

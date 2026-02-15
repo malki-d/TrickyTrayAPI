@@ -39,16 +39,13 @@ namespace TrickyTrayAPI.Controllers
             return Ok(gift);
         }
 
-        //[Authorize]
         [HttpPost]
         public async Task<ActionResult<GetGiftDTO>> Create([FromForm] CreateGiftDTO gift)
         {
             var createdGift = await _giftservice.AddAsync(gift);
             return Ok(createdGift);
         }
-        //[Authorize]
         [HttpPut("{id}")]
-        // הוסיפי [FromForm] כדי לאפשר העלאת קובץ
         public async Task<ActionResult<GetGiftDTO>> Update([FromForm] UpdateGiftDTO gift, int id)
         {
             var exists = await _giftservice.ExistsAsync(id);
