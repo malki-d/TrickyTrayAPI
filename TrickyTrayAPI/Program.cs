@@ -132,6 +132,13 @@ if (app.Environment.IsDevelopment())
 // --- ����� �-CORS (���� ����� ���� Authentication) ---
 app.UseCors("AngularPolicy");
 
+// הוספת כותרת COOP כדי לאפשר popups עם same-origin-allow-popups
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
