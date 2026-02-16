@@ -81,30 +81,6 @@ namespace TrickyTrayAPI.Repositories
             return await GetByIdAsync(g.Id);
         }
 
-        // פעולה ייעודית להוספת משתמש למתנה (אם תרצה)
-  /*      public async Task AddUserToGiftAsync(int giftId, int userId)
-        {
-            var gift = await GetByIdAsync(giftId);
-            var user = await _context.Users.FindAsync(userId);
-            if (gift != null && user != null && !gift.Users.Any(u => u.Id == userId))
-            {
-                gift.Users.Add(user);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        // פעולה ייעודית להסרת משתמש ממתנה (אם תרצה)
-      /*  public async Task RemoveUserFromGiftAsync(int giftId, int userId)
-        {
-            var gift = await GetByIdAsync(giftId);
-            var user = await _context.Users.FindAsync(userId);
-            if (gift != null && user != null && gift.purchaseItems.Any(u => u.Id == userId))
-            {
-                gift.Users.Remove(user);
-                await _context.SaveChangesAsync();
-            }
-        }
-      */
         // בתוך GiftRepository.cs
         public async Task<bool> RunAllRandomWinnersAsync()
         {
