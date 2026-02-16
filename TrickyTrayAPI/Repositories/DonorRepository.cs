@@ -39,7 +39,7 @@ namespace TrickyTrayAPI.Repositories
             var donorex= await _context.Donors.FirstOrDefaultAsync(p => p.Id == id);
             donorex.Email=donor.Email;
             donorex.PhoneNumber=donor.PhoneNumber;
-            donor.Name=donor.Name;
+            donorex.Name=donor.Name;
             await _context.SaveChangesAsync();
             return donorex;
         }
