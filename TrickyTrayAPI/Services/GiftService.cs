@@ -39,8 +39,9 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "cant get gifts");
-                return null;
+                _logger.LogError(ex, "cant get gifts");
+                // ערך ברירת מחדל – רשימה ריקה
+                return Enumerable.Empty<GetGiftDTO>();
             }
         }
 
@@ -49,7 +50,13 @@ namespace TrickyTrayAPI.Services
             try
             {
                 var gift = await _giftrepository.GetByIdAsync(id);
-                _logger.LogInformation("get gift by id " + id);
+                _logger.LogInformation("get gift by id {GiftId}", id);
+
+                if (gift == null)
+                {
+                    _logger.LogWarning("Gift with id {GiftId} not found in GetByIdAsync", id);
+                    return null;
+                }
 
                 return new GetGiftDTO { Id = gift.Id, Name = gift.Name, Description = gift.Description, Category = gift.Category.Name, DonorName = gift.Donor.Name, ImgUrl = gift.ImgUrl };
 
@@ -96,6 +103,11 @@ namespace TrickyTrayAPI.Services
                     ImgUrl = newGift.ImgUrl
                 };
             }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Validation error while adding gift (missing related entity)");
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to add gift with image");
@@ -109,7 +121,10 @@ namespace TrickyTrayAPI.Services
             {
                 // 1. שליפת הנתונים הקיימים כדי לדעת מה היה נתיב התמונה הישנה
                 var existingGift = await _giftrepository.GetByIdAsync(id);
-                if (existingGift == null) throw new Exception("Gift not found");
+                if (existingGift == null)
+                {
+                    throw new KeyNotFoundException($"Gift with id {id} not found");
+                }
 
                 string finalImgUrl = existingGift.ImgUrl;
 
@@ -152,9 +167,14 @@ namespace TrickyTrayAPI.Services
                    
                 };
             }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Gift not found while updating {GiftId}", id);
+                throw;
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "cant update gift " + id);
+                _logger.LogError(ex, "cant update gift {GiftId}", id);
                 throw;
             }
         }
@@ -170,6 +190,11 @@ namespace TrickyTrayAPI.Services
                 }
                 return isSucceed;
 
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "database error while deleting gift {GiftId}", id);
+                return false;
             }
             catch (Exception ex)
             {
@@ -198,43 +223,71 @@ namespace TrickyTrayAPI.Services
         }
         public async Task<IEnumerable<GetGiftDTO>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
         {
-            var gifts = await _giftrepository.SearchAsync(giftName, donorName, purchaserCount);
-            return gifts.Select(g => new GetGiftDTO
+            try
             {
-                Id = g.Id,
-                Name = g.Name,
-                DonorName = g.Donor.Name,
-                Description = g.Description,
-                Category = g.Category.Name,
-                ImgUrl = g.ImgUrl
-            });
+                var gifts = await _giftrepository.SearchAsync(giftName, donorName, purchaserCount);
+                return gifts.Select(g => new GetGiftDTO
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    DonorName = g.Donor.Name,
+                    Description = g.Description,
+                    Category = g.Category.Name,
+                    ImgUrl = g.ImgUrl
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "invalid arguments in SearchAsync");
+                return Enumerable.Empty<GetGiftDTO>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in SearchAsync");
+                throw;
+            }
         }
         public async Task<IEnumerable<GetGiftDTO>> GetSortedAsync(bool sortByName, bool sortByCategory)
         {
-            var gifts = await _giftrepository.GetSortedAsync(sortByName, sortByCategory);
-            return gifts.Select(g => new GetGiftDTO
+            try
             {
-                Id = g.Id,
-                Name = g.Name,
-                DonorName = g.Donor.Name,
-                Description = g.Description,
-                Category = g.Category.Name,
-                ImgUrl = g.ImgUrl
-            });
+                var gifts = await _giftrepository.GetSortedAsync(sortByName, sortByCategory);
+                return gifts.Select(g => new GetGiftDTO
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    DonorName = g.Donor.Name,
+                    Description = g.Description,
+                    Category = g.Category.Name,
+                    ImgUrl = g.ImgUrl
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in GetSortedAsync");
+                throw;
+            }
         }
         public async Task<IEnumerable<GetGiftDTO>> GetByCategoryAsync(int categoryId)
         {
-            var gifts = await _giftrepository.GetByCategoryAsync(categoryId);
-            return gifts.Select(g => new GetGiftDTO
+            try
             {
-                Id = g.Id,
-                Name = g.Name,
-                DonorName = g.Donor.Name,
-                Description = g.Description,
-                Category = g.Category.Name,
-                ImgUrl = g.ImgUrl
-                // הוסף שדות נוספים לפי הצורך
-            });
+                var gifts = await _giftrepository.GetByCategoryAsync(categoryId);
+                return gifts.Select(g => new GetGiftDTO
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    DonorName = g.Donor.Name,
+                    Description = g.Description,
+                    Category = g.Category.Name,
+                    ImgUrl = g.ImgUrl
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in GetByCategoryAsync for category {CategoryId}", categoryId);
+                throw;
+            }
         }
 
         public async Task<IEnumerable<GetGiftDTO>> GetSortedGiftsAsync(string sortBy)
@@ -249,106 +302,144 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
-
-                _logger.LogError(ex.Message, "cant GetSortedGiftsAsync");
-                return null;
+                _logger.LogError(ex, "cant GetSortedGiftsAsync");
+                return Enumerable.Empty<GetGiftDTO>();
             }
         }
 
         public async Task<IEnumerable<GiftWinnerReportDTO>> GetGiftWinnersReportAsync()
         {
-            return await _giftrepository.GetGiftWinnersReportAsync();
+            try
+            {
+                return await _giftrepository.GetGiftWinnersReportAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in GetGiftWinnersReportAsync");
+                throw;
+            }
         }
 
         public async Task<byte[]> ExportWinnersReportCsvAsync()
         {
-            var report = await _giftrepository.GetGiftWinnersReportAsync();
-            var sb = new StringBuilder();
-            sb.AppendLine("GiftId,GiftName,WinnerId,WinnerName,WinnerEmail");
-            foreach (var r in report)
+            try
             {
-                var line = $"{r.GiftId},\"{r.GiftName.Replace("\"", "\"\"")}\",{r.WinnerId ?? 0},\"{(r.WinnerName ?? string.Empty).Replace("\"", "\"\"")}\",\"{(r.WinnerEmail ?? string.Empty).Replace("\"", "\"\"")}\"";
-                sb.AppendLine(line);
+                var report = await _giftrepository.GetGiftWinnersReportAsync();
+                var sb = new StringBuilder();
+                sb.AppendLine("GiftId,GiftName,WinnerId,WinnerName,WinnerEmail");
+                foreach (var r in report)
+                {
+                    var line = $"{r.GiftId},\"{r.GiftName.Replace("\"", "\"\"")}\",{r.WinnerId ?? 0},\"{(r.WinnerName ?? string.Empty).Replace("\"", "\"\"")}\",\"{(r.WinnerEmail ?? string.Empty).Replace("\"", "\"\"")}\"";
+                    sb.AppendLine(line);
+                }
+                return Encoding.UTF8.GetBytes(sb.ToString());
             }
-            return Encoding.UTF8.GetBytes(sb.ToString());
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in ExportWinnersReportCsvAsync");
+                throw;
+            }
         }
 
         public async Task<byte[]> ExportWinnersReportExcelAsync()
         {
-            var report = await _giftrepository.GetGiftWinnersReportAsync();
-            // Create a minimal SpreadsheetML (XML) for Excel compatibility
-            var sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\"?>");
-            sb.AppendLine("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\">\n<Worksheet ss:Name=\"Winners\">\n<Table>");
-            sb.AppendLine("<Row>");
-            sb.AppendLine("<Cell><Data>GiftId</Data></Cell>");
-            sb.AppendLine("<Cell><Data>GiftName</Data></Cell>");
-            sb.AppendLine("<Cell><Data>WinnerId</Data></Cell>");
-            sb.AppendLine("<Cell><Data>WinnerName</Data></Cell>");
-            sb.AppendLine("<Cell><Data>WinnerEmail</Data></Cell>");
-            sb.AppendLine("</Row>");
-            foreach (var r in report)
+            try
             {
+                var report = await _giftrepository.GetGiftWinnersReportAsync();
+                // Create a minimal SpreadsheetML (XML) for Excel compatibility
+                var sb = new StringBuilder();
+                sb.AppendLine("<?xml version=\"1.0\"?>");
+                sb.AppendLine("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\">\n<Worksheet ss:Name=\"Winners\">\n<Table>");
                 sb.AppendLine("<Row>");
-                sb.AppendLine($"<Cell><Data>{r.GiftId}</Data></Cell>");
-                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.GiftName ?? string.Empty)}</Data></Cell>");
-                sb.AppendLine($"<Cell><Data>{r.WinnerId ?? 0}</Data></Cell>");
-                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerName ?? string.Empty)}</Data></Cell>");
-                sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerEmail ?? string.Empty)}</Data></Cell>");
+                sb.AppendLine("<Cell><Data>GiftId</Data></Cell>");
+                sb.AppendLine("<Cell><Data>GiftName</Data></Cell>");
+                sb.AppendLine("<Cell><Data>WinnerId</Data></Cell>");
+                sb.AppendLine("<Cell><Data>WinnerName</Data></Cell>");
+                sb.AppendLine("<Cell><Data>WinnerEmail</Data></Cell>");
                 sb.AppendLine("</Row>");
+                foreach (var r in report)
+                {
+                    sb.AppendLine("<Row>");
+                    sb.AppendLine($"<Cell><Data>{r.GiftId}</Data></Cell>");
+                    sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.GiftName ?? string.Empty)}</Data></Cell>");
+                    sb.AppendLine($"<Cell><Data>{r.WinnerId ?? 0}</Data></Cell>");
+                    sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerName ?? string.Empty)}</Data></Cell>");
+                    sb.AppendLine($"<Cell><Data>{System.Security.SecurityElement.Escape(r.WinnerEmail ?? string.Empty)}</Data></Cell>");
+                    sb.AppendLine("</Row>");
+                }
+                sb.AppendLine("</Table>\n</Worksheet>\n</Workbook>");
+                return Encoding.UTF8.GetBytes(sb.ToString());
             }
-            sb.AppendLine("</Table>\n</Worksheet>\n</Workbook>");
-            return Encoding.UTF8.GetBytes(sb.ToString());
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in ExportWinnersReportExcelAsync");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
         {
-            // 1. קודם כל מבצעים את ההגרלה במסד הנתונים
-            await _giftrepository.RunAllRandomWinnersAsync();
-
-            // 2. מנקים את ה-Tracker כדי לראות את השינויים בשליפה הבאה
-            _giftrepository.ClearTracker();
-
-            // 3. שולפים את המתנות עם הזוכים החדשים
-            var updatedGifts = await _giftrepository.GetAllAsync();
-
-            // 4. ורק עכשיו מוחקים את פריטי העגלה
-            var cartitems = await _cartitemRepository.GetAllAsync();
-            foreach (var item in cartitems)
+            try
             {
-                await _cartitemRepository.DeleteAsync(item.Id);
+                // 1. קודם כל מבצעים את ההגרלה במסד הנתונים
+                await _giftrepository.RunAllRandomWinnersAsync();
+
+                // 2. מנקים את ה-Tracker כדי לראות את השינויים בשליפה הבאה
+                _giftrepository.ClearTracker();
+
+                // 3. שולפים את המתנות עם הזוכים החדשים
+                var updatedGifts = await _giftrepository.GetAllAsync();
+
+                // 4. ורק עכשיו מוחקים את פריטי העגלה
+                var cartitems = await _cartitemRepository.GetAllAsync();
+                foreach (var item in cartitems)
+                {
+                    await _cartitemRepository.DeleteAsync(item.Id);
+                }
+
+                // 5. מחזירים את התוצאה למשתמש
+                return updatedGifts.Select(g => new GetGiftWithWinnerDTO
+                {
+                    Name = g.Name,
+                    Description = g.Description,
+                    Category = g.Category?.Name,
+                    ImgUrl = g.ImgUrl,
+                    WinnerName = g.Winner != null ? $"{g.Winner.FirstName} {g.Winner.LastName}" : "No Winner",
+                    WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
+                });
             }
-
-            // 5. מחזירים את התוצאה למשתמש
-            return updatedGifts.Select(g => new GetGiftWithWinnerDTO
+            catch (Exception ex)
             {
-                Name = g.Name,
-                Description = g.Description,
-                Category = g.Category?.Name,
-                ImgUrl = g.ImgUrl,
-                WinnerName = g.Winner != null ? $"{g.Winner.FirstName} {g.Winner.LastName}" : "No Winner",
-                WinnerEmail = g.Winner != null ? g.Winner.Email : "No Winner"
-            });
+                _logger.LogError(ex, "error in RandomWinners");
+                throw;
+            }
         }
         public async Task<bool> RandomWinnerAsync(int giftId)
         {
-            Random rnd = new Random();
-            var gifts = await _giftrepository.GetByIdAsync(giftId);
-            if (gifts == null)
+            try
             {
-                _logger.LogInformation("cannot find gift " + giftId);
+                Random rnd = new Random();
+                var gifts = await _giftrepository.GetByIdAsync(giftId);
+                if (gifts == null)
+                {
+                    _logger.LogInformation("cannot find gift {GiftId}", giftId);
+                    return false;
+                }
+                var users = gifts.purchaseItems.ToList();
+                if (users.Count == 0)
+                {
+                    _logger.LogInformation("no users for gift {GiftId}", giftId);
+                    return false;
+                }
+                var winnerIndex = rnd.Next(users.Count);
+                var winnerId = users[winnerIndex].Id;
+                return await _giftrepository.UpdateWinnerAsync(giftId, winnerId, true);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error in RandomWinnerAsync for gift {GiftId}", giftId);
                 return false;
             }
-            var users = gifts.purchaseItems.ToList();
-            if (users.Count == 0)
-            {
-                _logger.LogInformation("no users for gift " + giftId);
-                return false;
-            }
-            var winnerIndex = rnd.Next(users.Count);
-            var winnerId = users[winnerIndex].Id;
-            return await _giftrepository.UpdateWinnerAsync(giftId, winnerId, true);
-
         }
     }
 }

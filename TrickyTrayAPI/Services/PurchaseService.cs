@@ -1,4 +1,5 @@
-﻿using NuGet.Protocol.Core.Types;
+﻿using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol.Core.Types;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Repositories;
@@ -59,34 +60,43 @@ public class PurchaseService : IPurchaseService
 
     public async Task<IEnumerable<UserPurchaseDto>> GetUserPurchasesLogic(int userId)
     {
-        // 1. שליפת הנתונים מה-DAL
-        var purchases = await _purchaseRepository.GetAllAsyncByUserId(userId);
-
-        // 2. המרה ועיבוד לוגי (Mapping & Logic)
-        var result = purchases.Select(p => new UserPurchaseDto
+        try
         {
-            PurchaseId = p.Id,
-            Date = p.Date,
-            TotalPrice = p.Price,
-            // סופר כמה שורות יש סה"כ ב-PurchaseItems עבור הקניה הזו
-            TotalTickets = p.PurchaseItems.Count,
+            // 1. שליפת הנתונים מה-DAL
+            var purchases = await _purchaseRepository.GetAllAsyncByUserId(userId);
 
-            // כאן הקסם קורה: קיבוץ לפי מתנה כדי לקבל "כמות"
-            Items = p.PurchaseItems
-                .GroupBy(pi => pi.GiftId) // מקבצים לפי מזהה המתנה
-                .Select(g => new PurchasedGiftItemDto
-                {
-                    GiftId = g.Key,
-                    // לוקחים את השם והתמונה מהפריט הראשון בקבוצה (הם זהים לכולם)
-                    GiftName = g.First().Gift.Name,
+            // 2. המרה ועיבוד לוגי (Mapping & Logic)
+            var result = purchases.Select(p => new UserPurchaseDto
+            {
+                PurchaseId = p.Id,
+                Date = p.Date,
+                TotalPrice = p.Price,
+                // סופר כמה שורות יש סה"כ ב-PurchaseItems עבור הקניה הזו
+                TotalTickets = p.PurchaseItems.Count,
 
-                    ImgUrl = g.First().Gift.ImgUrl,
-                    // הכמות היא מספר הפריטים בקבוצה הזו
-                    Quantity = g.Count()
-                }).ToList()
-        }).ToList();
+                // כאן הקסם קורה: קיבוץ לפי מתנה כדי לקבל "כמות"
+                Items = p.PurchaseItems
+                    .GroupBy(pi => pi.GiftId) // מקבצים לפי מזהה המתנה
+                    .Select(g => new PurchasedGiftItemDto
+                    {
+                        GiftId = g.Key,
+                        // לוקחים את השם והתמונה מהפריט הראשון בקבוצה (הם זהים לכולם)
+                        GiftName = g.First().Gift.Name,
 
-        return result;
+                        ImgUrl = g.First().Gift.ImgUrl,
+                        // הכמות היא מספר הפריטים בקבוצה הזו
+                        Quantity = g.Count()
+                    }).ToList()
+            }).ToList();
+
+            _logger.LogInformation("Successfully retrieved purchases for user {UserId}", userId);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting purchases for user {UserId}", userId);
+            throw;
+        }
     }
     public async Task<PurchaseRevenueDTO> GetTotalRevenueAsync()
     {
@@ -170,10 +180,15 @@ public class PurchaseService : IPurchaseService
             _logger.LogInformation("Purchase {PurchaseId} completed successfully for user {UserId}", purchase.Id, userId);
             return purchase;
         }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Database error while processing purchase for user {UserId}", userId);
+            throw new InvalidOperationException("ארעה שגיאה במסד הנתונים בתהליך התשלום, אנא נסה שוב.", ex);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to process purchase for user {UserId}", userId);
-            throw new Exception("ארעה שגיאה בתהליך התשלום, אנא נסה שוב.");
+            throw new InvalidOperationException("ארעה שגיאה בתהליך התשלום, אנא נסה שוב.", ex);
         }
     }
 }

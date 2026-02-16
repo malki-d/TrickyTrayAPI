@@ -40,15 +40,14 @@ namespace TrickyTrayAPI.Repositories
         }
 
         // Update category
-        public async Task<bool> UpdateAsync(Category category)
+        public async Task<bool> UpdateAsync(int id, string name)
         {
-            var existing = await _context.Categories.FindAsync(category.Id);
+            var existing = await _context.Categories.FindAsync(id);
             if (existing == null)
                 return false;
 
             // Update properties
-            existing.Name = category.Name;
-            // Add other properties as needed
+            existing.Name = name;
 
             await _context.SaveChangesAsync();
             return true;

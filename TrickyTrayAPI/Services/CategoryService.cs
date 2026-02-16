@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TrickyTrayAPI.Models;
 using TrickyTrayAPI.Repositories;
@@ -63,6 +64,11 @@ namespace TrickyTrayAPI.Services
                 _logger.LogInformation("Successfully added category with id {CategoryId}", added.Id);
                 return added;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error adding category with name {CategoryName}", name);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error adding category");
@@ -70,24 +76,29 @@ namespace TrickyTrayAPI.Services
             }
         }
 
-        public async Task<bool> UpdateAsync(Category category)
+        public async Task<bool> UpdateAsync(int id, string name)
         {
             try
             {
-                var result = await _repository.UpdateAsync(category);
+                var result = await _repository.UpdateAsync(id, name);
                 if (result)
                 {
-                    _logger.LogInformation("Successfully updated category with id {CategoryId}", category.Id);
+                    _logger.LogInformation("Successfully updated category with id {CategoryId}", id);
                 }
                 else
                 {
-                    _logger.LogWarning("Category with id {CategoryId} not found for update", category.Id);
+                    _logger.LogWarning("Category with id {CategoryId} not found for update", id);
                 }
                 return result;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error updating category with id {CategoryId}", id);
+                throw;
+            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error updating category with id {category.Id}");
+                _logger.LogError(ex, $"Error updating category with id {id}");
                 throw;
             }
         }
@@ -106,6 +117,11 @@ namespace TrickyTrayAPI.Services
                     _logger.LogWarning("Category with id {CategoryId} not found for deletion", id);
                 }
                 return result;
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error deleting category with id {CategoryId}", id);
+                throw;
             }
             catch (Exception ex)
             {

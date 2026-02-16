@@ -8,6 +8,6 @@ namespace TrickyTrayAPI.Repositories
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Category>> GetAllAsync();
         Task<Category?> GetByIdAsync(int id);
-        Task<bool> UpdateAsync(Category category);
+        Task<bool> UpdateAsync(int id, string name);
     }
 }

@@ -30,6 +30,19 @@ namespace TrickyTrayAPI.Repositories
         // שנה את המתודה הזו ב-GiftRepository.cs
         public async Task<Gift> AddAsync(CreateGiftDTO giftDto, string imageUrl)
         {
+            // ולידציה מפורשת של תורם וקטגוריה כדי לתת הודעה ברורה
+            var donorExists = await _context.Donors.AnyAsync(d => d.Id == giftDto.DonorId);
+            if (!donorExists)
+            {
+                throw new KeyNotFoundException($"לא נמצא תורם עם מזהה {giftDto.DonorId}.");
+            }
+
+            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == giftDto.CategoryId);
+            if (!categoryExists)
+            {
+                throw new KeyNotFoundException($"לא נמצאה קטגוריה עם מזהה {giftDto.CategoryId}.");
+            }
+
             // יצירת הישות עם הנתיב שנשלח מה-Service
             var g = new Gift
             {
@@ -48,6 +61,17 @@ namespace TrickyTrayAPI.Repositories
         public async Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id)
         {
             var g = await GetByIdAsync(id);
+            if (g == null)
+            {
+                throw new KeyNotFoundException($"לא נמצאה מתנה עם מזהה {id}.");
+            }
+
+            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == gift.CategoryId);
+            if (!categoryExists)
+            {
+                throw new KeyNotFoundException($"לא נמצאה קטגוריה עם מזהה {gift.CategoryId}.");
+            }
+
             g.Name = gift.Name;
             g.CategoryId = gift.CategoryId;
             g.Description = gift.Description;
