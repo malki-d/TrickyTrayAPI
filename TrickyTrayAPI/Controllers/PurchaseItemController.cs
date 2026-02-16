@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Services;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TrickyTrayAPI.Controllers
 {
@@ -34,7 +36,14 @@ namespace TrickyTrayAPI.Controllers
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in GetAll purchase items");
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת ניסיון להביא את פריטי הרכישה. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -47,14 +56,26 @@ namespace TrickyTrayAPI.Controllers
                 var item = await _service.GetByIdAsync(id);
                 if (item == null)
                 {
-                    return NotFound($"Purchase item with id {id} not found");
+                    return NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "לא נמצא",
+                        Detail = $"לא נמצא פריט רכישה עם מזהה {id}."
+                    });
                 }
                 return Ok(item);
             }
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in GetById purchase item: {Id}", id);
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת ניסיון להביא את פריט הרכישה. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -66,16 +87,39 @@ namespace TrickyTrayAPI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest(new ValidationProblemDetails(ModelState)
+                    {
+                        Title = "הנתונים שנשלחו אינם תקינים"
+                    });
                 }
 
                 var newItem = await _service.AddAsync(purchaseItem);
                 return CreatedAtAction(nameof(GetById), new { id = newItem.Id }, newItem);
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error in Create purchase item");
+
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה במסד הנתונים",
+                    Detail = "אירעה שגיאה בעת שמירת פריט הרכישה במסד הנתונים. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
+            }
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in Create purchase item");
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת יצירת פריט רכישה חדש. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -87,22 +131,50 @@ namespace TrickyTrayAPI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest(new ValidationProblemDetails(ModelState)
+                    {
+                        Title = "הנתונים שנשלחו אינם תקינים"
+                    });
                 }
 
                 var exists = await _service.ExistsAsync(id);
                 if (!exists)
                 {
-                    return NotFound($"Purchase item with id {id} not found");
+                    return NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "לא נמצא",
+                        Detail = $"לא נמצא פריט רכישה עם מזהה {id} לעדכון."
+                    });
                 }
 
                 var updatedItem = await _service.UpdateAsync(purchaseItem, id);
                 return Ok(updatedItem);
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error in Update purchase item: {Id}", id);
+
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה במסד הנתונים",
+                    Detail = "אירעה שגיאה בעת עדכון פריט הרכישה במסד הנתונים. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
+            }
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in Update purchase item: {Id}", id);
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת עדכון פריט הרכישה. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -115,7 +187,12 @@ namespace TrickyTrayAPI.Controllers
                 var exists = await _service.ExistsAsync(id);
                 if (!exists)
                 {
-                    return NotFound($"Purchase item with id {id} not found");
+                    return NotFound(new ProblemDetails
+                    {
+                        Status = StatusCodes.Status404NotFound,
+                        Title = "לא נמצא",
+                        Detail = $"לא נמצא פריט רכישה עם מזהה {id} למחיקה."
+                    });
                 }
 
                 var result = await _service.DeleteAsync(id);
@@ -123,12 +200,37 @@ namespace TrickyTrayAPI.Controllers
                 {
                     return NoContent();
                 }
-                return BadRequest("Failed to delete purchase item");
+                return BadRequest(new ProblemDetails
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Title = "מחיקה נכשלה",
+                    Detail = "לא ניתן היה למחוק את פריט הרכישה."
+                });
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error in Delete purchase item: {Id}", id);
+
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה במסד הנתונים",
+                    Detail = "אירעה שגיאה בעת מחיקת פריט הרכישה במסד הנתונים. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in Delete purchase item: {Id}", id);
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת מחיקת פריט הרכישה. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -144,7 +246,14 @@ namespace TrickyTrayAPI.Controllers
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in GetByGift purchase items: {GiftId}", giftId);
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת ניסיון להביא את פריטי הרכישה עבור מתנה זו. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
 
@@ -160,7 +269,14 @@ namespace TrickyTrayAPI.Controllers
             catch (System.Exception ex)
             {
                 _logger.LogError(ex, "Error in GetByUser purchase items: {UserId}", userId);
-                return StatusCode(500, "Internal server error");
+                var problem = new ProblemDetails
+                {
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "שגיאה בשרת",
+                    Detail = "אירעה שגיאה בעת ניסיון להביא את פריטי הרכישה עבור משתמש זה. נסה/י שוב מאוחר יותר."
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
     }

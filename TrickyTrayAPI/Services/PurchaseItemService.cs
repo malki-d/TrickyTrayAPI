@@ -1,4 +1,5 @@
-﻿using TrickyTrayAPI.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Repositories;
 
 namespace TrickyTrayAPI.Services
@@ -86,6 +87,12 @@ namespace TrickyTrayAPI.Services
                     IsWinner = newItem.IsWinner
                 };
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error creating purchase item for Gift: {GiftId}, User: {UserId}",
+                    purchaseItem.GiftId, purchaseItem.UserId);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating purchase item for Gift: {GiftId}, User: {UserId}",
@@ -117,6 +124,11 @@ namespace TrickyTrayAPI.Services
                     IsWinner = updatedItem.IsWinner
                 };
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error updating purchase item: {Id}", id);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating purchase item: {Id}", id);
@@ -138,6 +150,11 @@ namespace TrickyTrayAPI.Services
                     _logger.LogWarning("Cannot delete purchase item - not found: {Id}", id);
                 }
                 return isSucceed;
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error deleting purchase item: {Id}", id);
+                throw;
             }
             catch (Exception ex)
             {

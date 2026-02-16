@@ -1,4 +1,5 @@
-﻿using TrickyTrayAPI.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using TrickyTrayAPI.DTOs;
 using TrickyTrayAPI.Repositories;
 using TrickyTrayAPI.Models;
 
@@ -99,6 +100,11 @@ namespace TrickyTrayAPI.Services
                 _logger.LogInformation("Created cart item with id {Id}", created.Id);
                 return created;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while creating cart item for user {UserId} and gift {GiftId}", dto.UserId, dto.GiftId);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to create cart item");
@@ -117,6 +123,11 @@ namespace TrickyTrayAPI.Services
                     _logger.LogWarning("Cart item with id {Id} not found for update", id);
                 return dto;
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while updating cart item with id {Id}", id);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to update cart item with id {Id}", id);
@@ -134,6 +145,11 @@ namespace TrickyTrayAPI.Services
                 else
                     _logger.LogWarning("Cart item with id {Id} not found for deletion", id);
                 return result;
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while deleting cart item with id {Id}", id);
+                throw;
             }
             catch (Exception ex)
             {

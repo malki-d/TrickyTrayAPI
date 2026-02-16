@@ -48,7 +48,7 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "cant get donors");
+                _logger.LogError(ex, "cant get donors");
                 throw;
             }
         }
@@ -65,6 +65,11 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
+                if(ex is KeyNotFoundException)
+                {
+                    _logger.LogWarning(ex, "donor with id {DonorId} not found", id);
+                    return null;
+                }
                 _logger.LogError(ex, "cant get donor by id " + id);
                 throw;
             }
@@ -79,6 +84,11 @@ namespace TrickyTrayAPI.Services
                 _logger.LogInformation("create donor " + newDonor.Id);
                 return newDonor;
 
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while creating donor");
+                throw;
             }
             catch (Exception ex)
             {
@@ -98,6 +108,11 @@ namespace TrickyTrayAPI.Services
                 return new GetDonorDTO() { Email= updateDonor.Email, Name= updateDonor.Name };
 
             }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while updating donor {DonorId}", id);
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "cant update donor " + id);
@@ -115,6 +130,11 @@ namespace TrickyTrayAPI.Services
                 _logger.LogInformation("delete donor " + id);
                 return isSucceed;
 
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Database error while deleting donor {DonorId}", id);
+                throw;
             }
             catch (Exception ex)
             {
@@ -171,13 +191,27 @@ namespace TrickyTrayAPI.Services
         }
         public async Task<IEnumerable<GetDonorWithGiftsDTO>> FilterDonorsAsync(string? name, string? email, string? giftName)
         {
-            var donors = await _donorrepository.FilterDonorsAsync(name, email, giftName);
-
-            return donors.Select(d => new GetDonorWithGiftsDTO
+            try
             {
-                Name = d.Name,
-                Gifts = (ICollection<GetGiftDTO>)d.Gifts.Select(g => new GetGiftDTO() { Description = g.Description,Category=g.Category.Name,Name=g.Name }).ToList()
-            });
+                var donors = await _donorrepository.FilterDonorsAsync(name, email, giftName);
+                _logger.LogInformation("filter donors by name: {Name}, email: {Email}, giftName: {GiftName}", name, email, giftName);
+
+                return donors.Select(d => new GetDonorWithGiftsDTO
+                {
+                    Name = d.Name,
+                    Gifts = (ICollection<GetGiftDTO>)d.Gifts.Select(g => new GetGiftDTO() { Description = g.Description, Category = g.Category.Name, Name = g.Name }).ToList()
+                });
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogWarning(ex, "Invalid arguments while filtering donors");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error filtering donors");
+                throw;
+            }
         }
 
     }
