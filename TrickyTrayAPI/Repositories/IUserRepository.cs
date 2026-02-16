@@ -10,6 +10,7 @@ namespace TrickyTrayAPI.Repositories
         Task<bool> ExistsAsync(int id);
         Task<IEnumerable<User>> GetAllAsync();
         Task<User?> GetByEmailAsync(string email);
+        Task<User?> GetByGoogleIdAsync(string googleId);
         Task<User?> GetByIdAsync(int id);
         Task<User?> UpdateAsync(User user);
     }
