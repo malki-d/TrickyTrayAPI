@@ -1,0 +1,64 @@
+📧 הוראות הגדרת מייל לשליחת הודעות לזוכים
+================================================
+
+שלב 1: יצירת App Password ב-Gmail
+-----------------------------------
+1. היכנס ל-Gmail שלך
+2. לך ל-Google Account: https://myaccount.google.com/
+3. לחץ על "Security" (אבטחה) בתפריט צד
+4. ודא ש-"2-Step Verification" מופעל (אם לא, הפעל אותו)
+5. גלול למטה ל-"App passwords" (סיסמאות לאפליקציות)
+6. לחץ על "App passwords"
+7. בחר "Mail" ו-"Windows Computer" (או "Other")
+8. לחץ "Generate"
+9. העתק את הסיסמה בת 16 התווים (תיראה כך: "abcd efgh ijkl mnop")
+
+שלב 2: עדכון appsettings.Local.json
+-------------------------------------
+פתח את הקובץ: TrickyTrayAPI\appsettings.Local.json
+ועדכן את הערכים הבאים:
+
+"SenderEmail": "המייל-שלך@gmail.com"   <--- שנה למייל Gmail שלך
+"SenderPassword": "xxxx xxxx xxxx xxxx"  <--- הדבק את הסיסמה מהשלב הקודם
+"SenderName": "השם שיופיע במייל"       <--- אופציונלי
+
+דוגמה:
+{
+  "Email": {
+    "SmtpServer": "smtp.gmail.com",
+    "SmtpPort": "587",
+    "SenderEmail": "myemail@gmail.com",
+    "SenderPassword": "abcd efgh ijkl mnop",
+    "SenderName": "מערכת הגרלות Tricky Tray"
+  }
+}
+
+שלב 3: בדיקה
+-------------
+1. הפעל מחדש את השרת (Ctrl+C ואז dotnet run)
+2. בצע הגרלה דרך ה-API
+3. בדוק את ה-logs בקובץ: TrickyTrayAPI\logs\student-api[תאריך].log
+4. חפש שורות:
+   ✅ "Winner email successfully sent..." - הצלחה!
+   ❌ "Failed to send email..." - שגיאה (ראה את הפרטים)
+
+שימוש בספקי מייל אחרים
+-----------------------
+Outlook/Hotmail:
+  "SmtpServer": "smtp-mail.outlook.com"
+  "SmtpPort": "587"
+
+Yahoo:
+  "SmtpServer": "smtp.mail.yahoo.com"
+  "SmtpPort": "587"
+
+בעיות נפוצות
+-----------
+1. "Authentication failed" - סיסמת App Password לא נכונה או לא הופעלה
+2. "Mailbox unavailable" - כתובת מייל לא נכונה
+3. "Connection timeout" - בדוק חיבור אינטרנט או חומת אש
+
+קישורים שימושיים
+-----------------
+הגדרת App Password: https://myaccount.google.com/apppasswords
+הגדרת 2-Step Verification: https://myaccount.google.com/signinoptions/two-step-verification

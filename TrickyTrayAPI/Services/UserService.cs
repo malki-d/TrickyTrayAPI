@@ -11,17 +11,20 @@ public class UserService : IUserService
     private readonly ITokenService _tokenService;
     private readonly IConfiguration _configuration;
     private readonly ILogger<UserService> _logger;
+    private readonly IEmailService _emailService;
 
     public UserService(
         IUserRepository userRepository,
         ITokenService tokenService,
         IConfiguration configuration,
-        ILogger<UserService> logger)
+        ILogger<UserService> logger,
+        IEmailService emailService)
     {
         _userRepository = userRepository;
         _tokenService = tokenService;
         _configuration = configuration;
         _logger = logger;
+        _emailService = emailService;
     }
 
     public async Task<IEnumerable<UserResponseDTO>> GetAllUsersAsync()
@@ -52,10 +55,21 @@ public class UserService : IUserService
             PasswordHash = HashPassword(createDto.Password), // Simplified - use proper hashing
             PhoneNumber = createDto.Phone,
             TypeCostumer = TypeCostumer.User
-        };
-
-        var createdUser = await _userRepository.CreateAsync(user);
+        };        var createdUser = await _userRepository.CreateAsync(user);
         _logger.LogInformation("User created with ID: {UserId}", createdUser.Id);
+
+        // שליחת מייל ברוכים הבאים
+        try
+        {
+            var fullName = $"{createdUser.FirstName} {createdUser.LastName}";
+            await _emailService.SendWelcomeEmailAsync(createdUser.Email, fullName);
+            _logger.LogInformation("Welcome email sent to new user: {Email}", createdUser.Email);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to send welcome email to {Email}", createdUser.Email);
+            // לא זורקים חריגה - ההרשמה הצליחה גם אם המייל נכשל
+        }
 
         return MapToResponseDto(createdUser);
     }
@@ -117,9 +131,7 @@ public class UserService : IUserService
             ExpiresIn = expiryMinutes * 60, // Convert to seconds
             User = MapToResponseDto(user)
         };
-    }
-
-    public async Task<LoginResponseDTO?> AuthenticateWithGoogleAsync(string googleId, string email, string? firstName, string? lastName)
+    }    public async Task<LoginResponseDTO?> AuthenticateWithGoogleAsync(string googleId, string email, string? firstName, string? lastName)
     {
         // קודם ננסה למצוא לפי GoogleId, ואם לא נמצא אז לפי אימייל
         User? user = await _userRepository.GetByGoogleIdAsync(googleId);
@@ -129,23 +141,62 @@ public class UserService : IUserService
             user = await _userRepository.GetByEmailAsync(email);
         }
 
+        bool isNewUser = false;
+
         if (user == null)
         {
-            user = new User
+            // בדיקה כפולה - למקרה של Race Condition
+            user = await _userRepository.GetByEmailAsync(email);
+            
+            if (user == null)
             {
-                FirstName = string.IsNullOrWhiteSpace(firstName) ? email : firstName!,
-                LastName = lastName ?? string.Empty,
-                Email = email,
-                GoogleId = googleId,
-                // סיסמה אקראית רק כדי למלא את השדה (לא בשימוש בפועל)
-                PasswordHash = HashPassword(Guid.NewGuid().ToString()),
-                PhoneNumber = string.Empty,
-                TypeCostumer = TypeCostumer.User,
-                LastLoginAt = DateTime.UtcNow
-            };
+                user = new User
+                {
+                    FirstName = string.IsNullOrWhiteSpace(firstName) ? email : firstName!,
+                    LastName = lastName ?? string.Empty,
+                    Email = email,
+                    GoogleId = googleId,
+                    // סיסמה אקראית רק כדי למלא את השדה (לא בשימוש בפועל)
+                    PasswordHash = HashPassword(Guid.NewGuid().ToString()),
+                    PhoneNumber = string.Empty,
+                    TypeCostumer = TypeCostumer.User,
+                    LastLoginAt = DateTime.UtcNow
+                };
 
-            user = await _userRepository.CreateAsync(user);
-            _logger.LogInformation("Google user created with ID: {UserId}", user.Id);
+                try
+                {
+                    user = await _userRepository.CreateAsync(user);
+                    _logger.LogInformation("Google user created with ID: {UserId}", user.Id);
+                    isNewUser = true;
+                }
+                catch (Exception ex)
+                {
+                    // אם יש חריגה (כנראה duplicate email), ננסה לשלוף שוב
+                    _logger.LogWarning(ex, "Failed to create user, attempting to retrieve existing user with email {Email}", email);
+                    user = await _userRepository.GetByEmailAsync(email);
+                    
+                    if (user == null)
+                    {
+                        throw; // אם באמת לא קיים, נזרוק את השגיאה
+                    }
+                }
+            }
+
+            // שליחת מייל רק אם זה באמת משתמש חדש שנוצר עכשיו
+            if (isNewUser)
+            {
+                try
+                {
+                    var fullName = $"{user.FirstName} {user.LastName}";
+                    await _emailService.SendWelcomeEmailAsync(user.Email, fullName);
+                    _logger.LogInformation("Welcome email sent to new Google user: {Email}", user.Email);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to send welcome email to Google user {Email}", user.Email);
+                    // לא זורקים חריגה - ההרשמה הצליחה גם אם המייל נכשל
+                }
+            }
         }
         else
         {

@@ -10,21 +10,20 @@ using System.IO;
 using System.Text;
 
 namespace TrickyTrayAPI.Services
-{
-    public class GiftService : IGiftService
+{    public class GiftService : IGiftService
 
     {
         private readonly IGiftRepository _giftrepository;
         private readonly ICartItemRepository _cartitemRepository;
-
+        private readonly IEmailService _emailService;
         private readonly ILogger<GiftService> _logger;
 
-        public GiftService(ICartItemRepository cartitemRepository, IGiftRepository giftrepository, ILogger<GiftService> logger)
+        public GiftService(ICartItemRepository cartitemRepository, IGiftRepository giftrepository, IEmailService emailService, ILogger<GiftService> logger)
         {
             _giftrepository = giftrepository;
             _logger = logger;
             _cartitemRepository = cartitemRepository;
-
+            _emailService = emailService;
         }
 
         public async Task<IEnumerable<GetGiftDTO>> GetAllAsync()
@@ -375,29 +374,44 @@ namespace TrickyTrayAPI.Services
                 _logger.LogError(ex, "error in ExportWinnersReportExcelAsync");
                 throw;
             }
-        }
-
-        public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
+        }        public async Task<IEnumerable<GetGiftWithWinnerDTO>> RandomWinners()
         {
             try
             {
-                // 1. קודם כל מבצעים את ההגרלה במסד הנתונים
-                await _giftrepository.RunAllRandomWinnersAsync();
+                _logger.LogInformation("🎲 Starting RandomWinners process...");
+                
+                // 1. קודם כל מבצעים את ההגרלה במסד הנתונים - מקבלים רשימת מזהי מתנות שזכו כעת
+                var newWinnerGiftIds = await _giftrepository.RunAllRandomWinnersAsync();
+                
+                _logger.LogInformation($"📊 {newWinnerGiftIds.Count} new winners selected in this draw");
 
                 // 2. מנקים את ה-Tracker כדי לראות את השינויים בשליפה הבאה
                 _giftrepository.ClearTracker();
 
                 // 3. שולפים את המתנות עם הזוכים החדשים
                 var updatedGifts = await _giftrepository.GetAllAsync();
+                
+                // 4. שליחת מיילים רק לזוכים החדשים (מההגרלה הנוכחית)
+                var newWinnerGifts = updatedGifts.Where(g => newWinnerGiftIds.Contains(g.Id) && g.Winner != null).ToList();
+                _logger.LogInformation($"📧 Sending emails to {newWinnerGifts.Count} new winners...");
 
-                // 4. ורק עכשיו מוחקים את פריטי העגלה
+                foreach (var gift in newWinnerGifts)
+                {
+                    var winnerName = $"{gift.Winner.FirstName} {gift.Winner.LastName}";
+                    _logger.LogInformation($"   → Sending to {winnerName} ({gift.Winner.Email}) for gift: {gift.Name}");
+                    await _emailService.SendWinnerEmailAsync(gift.Winner.Email, winnerName, gift.Name);
+                }
+
+                // 5. ורק עכשיו מוחקים את פריטי העגלה
                 var cartitems = await _cartitemRepository.GetAllAsync();
                 foreach (var item in cartitems)
                 {
                     await _cartitemRepository.DeleteAsync(item.Id);
                 }
 
-                // 5. מחזירים את התוצאה למשתמש
+                _logger.LogInformation("✅ RandomWinners process completed successfully");
+
+                // 6. מחזירים את התוצאה למשתמש
                 return updatedGifts.Select(g => new GetGiftWithWinnerDTO
                 {
                     Name = g.Name,
@@ -410,7 +424,7 @@ namespace TrickyTrayAPI.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "error in RandomWinners");
+                _logger.LogError(ex, "❌ Error in RandomWinners");
                 throw;
             }
         }

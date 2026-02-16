@@ -16,8 +16,7 @@ namespace TrickyTrayAPI.Repositories
         {
             _context = context;
             _logger = logger;
-        }
-        public async Task<IEnumerable<Gift>> GetAllAsync()
+        }        public async Task<IEnumerable<Gift>> GetAllAsync()
         {
             return await _context.Gifts.Include(x => x.Category).Include(x => x.Donor).Include(x => x.Winner).Include(x => x.purchaseItems).ToListAsync();
         }
@@ -30,19 +29,6 @@ namespace TrickyTrayAPI.Repositories
         // שנה את המתודה הזו ב-GiftRepository.cs
         public async Task<Gift> AddAsync(CreateGiftDTO giftDto, string imageUrl)
         {
-            // ולידציה מפורשת של תורם וקטגוריה כדי לתת הודעה ברורה
-            var donorExists = await _context.Donors.AnyAsync(d => d.Id == giftDto.DonorId);
-            if (!donorExists)
-            {
-                throw new KeyNotFoundException($"לא נמצא תורם עם מזהה {giftDto.DonorId}.");
-            }
-
-            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == giftDto.CategoryId);
-            if (!categoryExists)
-            {
-                throw new KeyNotFoundException($"לא נמצאה קטגוריה עם מזהה {giftDto.CategoryId}.");
-            }
-
             // יצירת הישות עם הנתיב שנשלח מה-Service
             var g = new Gift
             {
@@ -61,17 +47,6 @@ namespace TrickyTrayAPI.Repositories
         public async Task<Gift> UpdateAsync(UpdateGiftDTO gift, int id)
         {
             var g = await GetByIdAsync(id);
-            if (g == null)
-            {
-                throw new KeyNotFoundException($"לא נמצאה מתנה עם מזהה {id}.");
-            }
-
-            var categoryExists = await _context.Categories.AnyAsync(c => c.Id == gift.CategoryId);
-            if (!categoryExists)
-            {
-                throw new KeyNotFoundException($"לא נמצאה קטגוריה עם מזהה {gift.CategoryId}.");
-            }
-
             g.Name = gift.Name;
             g.CategoryId = gift.CategoryId;
             g.Description = gift.Description;
@@ -79,15 +54,39 @@ namespace TrickyTrayAPI.Repositories
             // לא נוגעים ב-g.Users כאן בכלל כדי לא לדרוס את כל המשתמשים
             await _context.SaveChangesAsync();
             return await GetByIdAsync(g.Id);
+        }        // פעולה ייעודית להוספת משתמש למתנה (אם תרצה)
+        public async Task AddUserToGiftAsync(int giftId, int userId)
+        {
+            var gift = await GetByIdAsync(giftId);
+            var user = await _context.Users.FindAsync(userId);
+            if (gift != null && user != null && !gift.purchaseItems.Any(pi => pi.UserId == userId))
+            {
+                var purchaseItem = new PurchaseItem { GiftId = giftId, UserId = userId };
+                _context.PurchaseItems.Add(purchaseItem);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        // בתוך GiftRepository.cs
-        public async Task<bool> RunAllRandomWinnersAsync()
+        // פעולה ייעודית להסרת משתמש ממתנה (אם תרצה)
+        public async Task RemoveUserFromGiftAsync(int giftId, int userId)
+        {
+            var gift = await GetByIdAsync(giftId);
+            if (gift != null)
+            {
+                var purchaseItem = gift.purchaseItems.FirstOrDefault(pi => pi.UserId == userId);
+                if (purchaseItem != null)
+                {
+                    _context.PurchaseItems.Remove(purchaseItem);
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }        // בתוך GiftRepository.cs
+        public async Task<List<int>> RunAllRandomWinnersAsync()
         {
             // שליפת כל המתנות
             var gifts = await _context.Gifts.ToListAsync();
             var rnd = new Random();
-            bool changed = false;
+            var newWinnerGiftIds = new List<int>(); // רשימת מזהי מתנות שזכו כעת
 
             foreach (var g in gifts)
             {
@@ -107,16 +106,16 @@ namespace TrickyTrayAPI.Repositories
                     var winnerIndex = rnd.Next(purchaseItems.Count);
                     // השמת ה-UserId של הזוכה המאושר
                     g.WinnerId = purchaseItems[winnerIndex].UserId;
-                    changed = true;
+                    newWinnerGiftIds.Add(g.Id); // שמירת מזהה המתנה שזכתה כעת
                 }
             }
 
-            if (changed)
+            if (newWinnerGiftIds.Any())
             {
                 await _context.SaveChangesAsync(); // שמירה רק אם היו שינויים
             }
 
-            return true;
+            return newWinnerGiftIds; // החזרת רשימת המתנות שזכו כעת
         }
         public async Task<bool> UpdateWinnerAsync(int giftId, int winnerId, bool forceUpdate = false)
         {
@@ -135,11 +134,9 @@ namespace TrickyTrayAPI.Repositories
             g.WinnerId = winnerId;
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
+        }        public async Task<bool> DeleteAsync(int id)
         {
-            var product = await _context.Gifts.FindAsync(id);
+            var product = await _context.Gifts.Include(g => g.purchaseItems).FirstOrDefaultAsync(g => g.Id == id);
             if (product == null || product.purchaseItems.Count > 0)
             {
                 _logger.LogInformation("users buy thus gift cand delete " + id);
@@ -163,9 +160,7 @@ namespace TrickyTrayAPI.Repositories
         public async Task<bool> ExistsAsync(int id)
         {
             return await _context.Gifts.AnyAsync(p => p.Id == id);
-        }
-
-        public async Task<IEnumerable<Gift>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
+        }        public async Task<IEnumerable<Gift>> SearchAsync(string? giftName, string? donorName, int? purchaserCount)
         {
             var query = _context.Gifts
                 .Include(g => g.Donor)
@@ -183,8 +178,7 @@ namespace TrickyTrayAPI.Repositories
                 query = query.Where(g => g.purchaseItems.Count == purchaserCount.Value);
 
             return await query.ToListAsync();
-        }
-        public async Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory)
+        }        public async Task<IEnumerable<Gift>> GetSortedAsync(bool sortByName, bool sortByCategory)
         {
             var query = _context.Gifts.Include(g => g.Donor)
                 .Include(g => g.purchaseItems).
@@ -217,8 +211,7 @@ namespace TrickyTrayAPI.Repositories
                 WinnerName = g.Winner != null ? (g.Winner.FirstName + " " + g.Winner.LastName) : string.Empty,
                 WinnerEmail = g.Winner != null ? g.Winner.Email : string.Empty
             });
-        }
-        public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
+        }        public async Task<IEnumerable<Gift>> GetSortedGiftsAsync(string sortBy)
         {
             IQueryable<Gift> query = _context.Gifts
            .Include(g => g.purchaseItems).Include(g => g.Category).Include(g => g.Donor);
