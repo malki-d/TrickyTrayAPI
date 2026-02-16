@@ -20,6 +20,8 @@ namespace TrickyTrayAPI.Models
         public string PasswordHash { get; set; } = string.Empty;
         public string PhoneNumber { get; set; }
         public TypeCostumer TypeCostumer { get; set; } = TypeCostumer.User;
+        public string? GoogleId { get; set; }
+        public DateTime? LastLoginAt { get; set; }
         public ICollection<CartItem> CartItems { get; set; }
     }
 }

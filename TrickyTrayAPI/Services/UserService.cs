@@ -119,6 +119,60 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<LoginResponseDTO?> AuthenticateWithGoogleAsync(string googleId, string email, string? firstName, string? lastName)
+    {
+        // קודם ננסה למצוא לפי GoogleId, ואם לא נמצא אז לפי אימייל
+        User? user = await _userRepository.GetByGoogleIdAsync(googleId);
+
+        if (user == null)
+        {
+            user = await _userRepository.GetByEmailAsync(email);
+        }
+
+        if (user == null)
+        {
+            user = new User
+            {
+                FirstName = string.IsNullOrWhiteSpace(firstName) ? email : firstName!,
+                LastName = lastName ?? string.Empty,
+                Email = email,
+                GoogleId = googleId,
+                // סיסמה אקראית רק כדי למלא את השדה (לא בשימוש בפועל)
+                PasswordHash = HashPassword(Guid.NewGuid().ToString()),
+                PhoneNumber = string.Empty,
+                TypeCostumer = TypeCostumer.User,
+                LastLoginAt = DateTime.UtcNow
+            };
+
+            user = await _userRepository.CreateAsync(user);
+            _logger.LogInformation("Google user created with ID: {UserId}", user.Id);
+        }
+        else
+        {
+            // משתמש קיים: עדכון GoogleId (אם חסר) וזמן התחברות אחרון
+            if (string.IsNullOrEmpty(user.GoogleId))
+            {
+                user.GoogleId = googleId;
+            }
+
+            user.LastLoginAt = DateTime.UtcNow;
+            await _userRepository.UpdateAsync(user);
+        }
+
+        var token = _tokenService.GenerateToken(user.Id, user.Email!, user.FirstName, user.LastName, user.TypeCostumer);
+        var expiryMinutes = _configuration.GetValue<int>("JwtSettings:ExpiryMinutes", 60);
+
+        _logger.LogInformation("Google user {UserId} authenticated successfully", user.Id);
+
+        return new LoginResponseDTO
+        {
+            Token = token,
+            TokenType = "Bearer",
+            ExpiresIn = expiryMinutes * 60,
+            User = MapToResponseDto(user)
+        };
+    }
+
     private static UserResponseDTO MapToResponseDto(User user)
     {
         return new UserResponseDTO

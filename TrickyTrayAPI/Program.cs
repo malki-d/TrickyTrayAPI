@@ -12,7 +12,13 @@ using Microsoft.OpenApi.Models;
 Log.Information("Starting Store API application");
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. הגדרת CORS ---
+// Load configuration from main appsettings, optional local overrides, and environment variables
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+// --- 1. ן¿½ן¿½ן¿½ן¿½ן¿½ CORS ---
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularPolicy",
@@ -120,10 +126,10 @@ if (app.Environment.IsDevelopment())
 }
 
 
-// --- הוספת התמיכה בקבצים סטטיים (תמונות) ---
-// זה מאפשר לגשת לתמונות דרך הדפדפן (למשל localhost:xxxx/images/myimg.jpg)
+// --- ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ (ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½) ---
+// ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ן¿½ (ן¿½ן¿½ן¿½ן¿½ localhost:xxxx/images/myimg.jpg)
 
-// --- הפעלת ה-CORS (חייב להיות לפני Authentication) ---
+// --- ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½-CORS (ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ן¿½ ן¿½ן¿½ן¿½ן¿½ Authentication) ---
 app.UseCors("AngularPolicy");
 
 app.UseHttpsRedirection();
