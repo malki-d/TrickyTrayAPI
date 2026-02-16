@@ -13,13 +13,15 @@ public class PurchaseService : IPurchaseService
     private readonly IGiftRepository _giftRepository;
 
     private readonly ILogger<PurchaseService> _logger;
+    private readonly ITicketPriceService _ticketPriceService;
 
 
-    public PurchaseService(IGiftRepository giftRepository,IPurchaseRepository purchaseRepositor, ILogger<PurchaseService> logger)
+    public PurchaseService(IGiftRepository giftRepository,IPurchaseRepository purchaseRepositor, ILogger<PurchaseService> logger, ITicketPriceService ticketPriceService)
     {
         _purchaseRepository = purchaseRepositor;
         _logger = logger;
         _giftRepository = giftRepository;
+        _ticketPriceService = ticketPriceService;
     }
     public async Task<IEnumerable<UserPurchaseDto>> GetAllAsync()
     {
@@ -126,13 +128,16 @@ public class PurchaseService : IPurchaseService
 
         var purchaseItems = new List<PurchaseItem>();
         int totalPrice = 0;
-        const int TICKET_PRICE = 40; // הגדרה קבועה למחיר כרטיס
+
+        // קבלת מחיר הכרטיס מהשירות במקום ערך קבוע
+        var ticketPriceDto = await _ticketPriceService.GetAsync();
+        int ticketPrice = ticketPriceDto.Price;
 
         // 2. עיבוד פריטי העגלה והפיכתם לכרטיסים (PurchaseItems)
         foreach (var item in cartItems)
         {
-            // חישוב המחיר הכולל
-            totalPrice += TICKET_PRICE * item.Quantity;
+            // חישוב המחיר הכולל לפי מחיר מהשירות
+            totalPrice += ticketPrice * item.Quantity;
 
             // שליפת המתנה כדי לעדכן את הקשרים שלה
             var gift = await _giftRepository.GetByIdAsync(item.GiftId);

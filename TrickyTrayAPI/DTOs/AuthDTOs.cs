@@ -13,4 +13,9 @@
         public int ExpiresIn { get; set; }
         public UserResponseDTO User { get; set; } = null!;
     }
+
+    public class GoogleLoginRequestDTO
+    {
+        public string IdToken { get; set; } = string.Empty;
+    }
 }

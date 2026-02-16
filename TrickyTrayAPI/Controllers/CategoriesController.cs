@@ -9,7 +9,6 @@ using TrickyTrayAPI.Services;
 
 namespace TrickyTrayAPI.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -79,6 +78,7 @@ namespace TrickyTrayAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
+        [Authorize]
 
         // POST: api/Categories
         [HttpPost]
@@ -115,6 +115,7 @@ namespace TrickyTrayAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
+        [Authorize]
 
         // PUT: api/Categories/5
         [HttpPut("{id}")]
@@ -161,6 +162,7 @@ namespace TrickyTrayAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, problem);
             }
         }
+        [Authorize]
 
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
