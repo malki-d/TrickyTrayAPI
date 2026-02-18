@@ -96,7 +96,7 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=DESKTOP-1VUANBN;Database=DemoToTest_1;Trusted_Connection=True;TrustServerCertificate=True;"));
+    options.UseSqlServer("Server=Srv2\\pupils;Database=DemoToTest_216308940;Trusted_Connection=True;TrustServerCertificate=True;"));
 
 
 // Dependency Injection

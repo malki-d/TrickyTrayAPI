@@ -104,8 +104,11 @@ namespace TrickyTrayAPI.Repositories
                 if (purchaseItems.Any())
                 {
                     var winnerIndex = rnd.Next(purchaseItems.Count);
+                    var winnerPurchaseItem = purchaseItems[winnerIndex];
                     // השמת ה-UserId של הזוכה המאושר
-                    g.WinnerId = purchaseItems[winnerIndex].UserId;
+                    g.WinnerId = winnerPurchaseItem.UserId;
+                    // עדכון ה-IsWinner של הכרטיס הזוכה
+                    winnerPurchaseItem.IsWinner = true;
                     newWinnerGiftIds.Add(g.Id); // שמירת מזהה המתנה שזכתה כעת
                 }
             }
@@ -131,6 +134,16 @@ namespace TrickyTrayAPI.Repositories
                 _logger.LogInformation("gift " + giftId + " already has a winner");
                 return false;
             }
+            
+            // מציאת הכרטיס הזוכה ועדכון ה-IsWinner שלו
+            var winnerPurchaseItem = await _context.PurchaseItems
+                .FirstOrDefaultAsync(pi => pi.GiftId == giftId && pi.UserId == winnerId);
+            
+            if (winnerPurchaseItem != null)
+            {
+                winnerPurchaseItem.IsWinner = true;
+            }
+            
             g.WinnerId = winnerId;
             await _context.SaveChangesAsync();
             return true;

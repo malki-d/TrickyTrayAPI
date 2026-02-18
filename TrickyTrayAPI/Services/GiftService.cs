@@ -446,7 +446,7 @@ namespace TrickyTrayAPI.Services
                     return false;
                 }
                 var winnerIndex = rnd.Next(users.Count);
-                var winnerId = users[winnerIndex].Id;
+                var winnerId = users[winnerIndex].UserId; // שולחים UserId ולא PurchaseItem.Id
                 return await _giftrepository.UpdateWinnerAsync(giftId, winnerId, true);
             }
             catch (Exception ex)
